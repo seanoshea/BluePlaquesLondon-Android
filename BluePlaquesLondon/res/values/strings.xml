@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Blue Plaques London</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_map">Map</string>
+    <string name="title_about">About</string>
+
+</resources>
