@@ -17,10 +17,19 @@
 package com.upwardsnorthwards.blueplaqueslondon;
 
 public class Placemark {
+	private static String OverlayTitleDelimiter = "<br>";
+	private static String NameDelimiter = "(";
+	private static String EmphasisNoteOpeningTag = "<em>";
+	private static String EmphasisNoteClosingTag = "</em>";
 
 	private String featureDescription;
-	private String name;
 	private String title;
+	private String name;
+	private String occupation;
+	private String address;
+	private String note;
+	private String councilAndYear;
+
 	private String styleUrl;
 	private double latitude;
 	private double longitude;
@@ -28,6 +37,152 @@ public class Placemark {
 
 	public String key() {
 		return Double.toString(latitude) + Double.toString(longitude);
+	}
+
+	public void digestFeatureDescription() {
+		if (featureDescription != null) {
+			// these must be done in order ...
+			digestTitle();
+			digestName();
+			digestOccupation();
+			digestAddress();
+			digestNote();
+			digestCouncilAndYear();
+		}
+	}
+
+	private void digestTitle() {
+		this.title = featureDescription;
+		int index = featureDescription.indexOf(OverlayTitleDelimiter);
+		if (index != -1) {
+			title = featureDescription.substring(0, index);
+		}
+		this.title = this.trimWhitespaceFromString(this.title);
+	}
+
+	private void digestName() {
+		this.name = title;
+		int startOfYears = this.name.indexOf(NameDelimiter);
+		if (startOfYears != -1) {
+			this.name = this.name.replaceAll(EmphasisNoteOpeningTag, "");
+			this.name = this.name.replaceAll(EmphasisNoteClosingTag, "");
+			this.name = this.name.substring(0, startOfYears);
+		}
+		this.name = this.trimWhitespaceFromString(this.name);
+	}
+
+	private void digestOccupation() {
+		occupation = featureDescription;
+		int index = featureDescription.indexOf(OverlayTitleDelimiter);
+		if (index != -1) {
+			occupation = featureDescription.substring(index);
+			int start = occupation.indexOf(OverlayTitleDelimiter);
+			if (start == 0) {
+				int delimiterLength = OverlayTitleDelimiter.length();
+				int end = occupation.indexOf(OverlayTitleDelimiter, start
+						+ delimiterLength);
+				this.occupation = this.trimWhitespaceFromString(occupation
+						.substring(start + delimiterLength, end));
+				if (occupation.length() == 9) {
+					// TODO - parse components
+				}
+			}
+		}
+		this.occupation = this.trimWhitespaceFromString(this.occupation);
+	}
+
+	private void digestAddress() {
+		String[] components = this.featureDescription
+				.split(OverlayTitleDelimiter);
+		if (components.length != 0) {
+			switch (components.length) {
+			case 2:
+			case 3: {
+				address = this.trimWhitespaceFromString(components[1]);
+			}
+				break;
+			case 4:
+			case 5: {
+				address = this.trimWhitespaceFromString(components[2]);
+			}
+				break;
+			case 6: {
+				address = this.trimWhitespaceFromString(components[3]);
+			}
+				break;
+			case 7: {
+				address = this.trimWhitespaceFromString(components[4]);
+			}
+				break;
+			}
+		}
+	}
+
+	private void digestNote() {
+		int startOfEmphasis = this.featureDescription
+				.indexOf(EmphasisNoteOpeningTag);
+		if (startOfEmphasis != -1) {
+			int endOfEmphasisIndex = this.featureDescription
+					.indexOf(EmphasisNoteClosingTag);
+			if (endOfEmphasisIndex == -1) {
+				// some notes don't have the correct closing tag ... search for
+				// the starting tag again
+				int locationOfLastEmphasis = this.featureDescription
+						.lastIndexOf(EmphasisNoteOpeningTag);
+				if (locationOfLastEmphasis != startOfEmphasis) {
+					endOfEmphasisIndex = this.featureDescription.length()
+							- EmphasisNoteOpeningTag.length();
+				} else {
+					endOfEmphasisIndex = this.featureDescription.length();
+				}
+			}
+			note = this.featureDescription.substring(startOfEmphasis
+					+ EmphasisNoteOpeningTag.length(), endOfEmphasisIndex);
+			note = this.trimWhitespaceFromString(note);
+		}
+	}
+
+	private void digestCouncilAndYear() {
+		String withoutNote = this.removeNoteFromString(this.featureDescription);
+		String[] components = withoutNote.split(OverlayTitleDelimiter);
+		if (components.length > 2) {
+			councilAndYear = this.trimWhitespaceFromString(components[1]);
+		}
+	}
+
+	private String removeNoteFromString(String input) {
+		String inputWithNoteRemoved = input;
+		if (note != null) {
+			inputWithNoteRemoved = this
+					.trimWhitespaceFromString(inputWithNoteRemoved);
+			inputWithNoteRemoved = inputWithNoteRemoved.replaceAll(
+					EmphasisNoteOpeningTag, "");
+			inputWithNoteRemoved = inputWithNoteRemoved.replaceAll(note, "");
+			inputWithNoteRemoved = inputWithNoteRemoved.replaceAll(
+					EmphasisNoteClosingTag, "");
+			// check for a trailing delimiter
+			int locationOfFinalDelimiter = inputWithNoteRemoved
+					.lastIndexOf(OverlayTitleDelimiter);
+			if (locationOfFinalDelimiter != -1
+					&& locationOfFinalDelimiter == inputWithNoteRemoved
+							.length() - OverlayTitleDelimiter.length()) {
+				inputWithNoteRemoved.substring(locationOfFinalDelimiter);
+			}
+		}
+		return inputWithNoteRemoved;
+	}
+
+	private String trimWhitespaceFromString(String string) {
+
+		return string;
+	}
+
+	@Override
+	public String toString() {
+		String description = this.key() + " " + this.title + " " + this.name
+				+ " occupation " + this.occupation + " " + this.note + " "
+				+ this.councilAndYear;
+		return description;
 	}
 
 	public String getFeatureDescription() {
@@ -52,6 +207,38 @@ public class Placemark {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public String getOccupation() {
+		return occupation;
+	}
+
+	public void setOccupation(String occupation) {
+		this.occupation = occupation;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
+
+	public String getCouncilAndYear() {
+		return councilAndYear;
+	}
+
+	public void setCouncilAndYear(String councilAndYear) {
+		this.councilAndYear = councilAndYear;
 	}
 
 	public String getStyleUrl() {
