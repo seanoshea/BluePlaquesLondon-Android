@@ -20,8 +20,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.upwardsnorthwards.blueplaqueslondon.Placemark;
 import com.upwardsnorthwards.blueplaqueslondon.model.MapModel;
+import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 
 public class BluePlaquesKMLParser extends DefaultHandler {
 
@@ -34,15 +34,15 @@ public class BluePlaquesKMLParser extends DefaultHandler {
 	private boolean processingDescriptionTag = false;
 	private boolean processingCoordinateTag = false;
 
-	private MapModel mapModel = new MapModel();
+	private MapModel navigationDataSet = new MapModel();
 
-	public MapModel getMapModel() {
-		return this.mapModel;
+	public MapModel getParsedData() {
+		return this.navigationDataSet;
 	}
 
 	@Override
 	public void startDocument() throws SAXException {
-		this.mapModel = new MapModel();
+		this.navigationDataSet = new MapModel();
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class BluePlaquesKMLParser extends DefaultHandler {
 			String qName, Attributes atts) throws SAXException {
 
 		if (qName.equalsIgnoreCase(PLACEMARK_KEY)) {
-			mapModel.setCurrentPlacemark(new Placemark());
+			navigationDataSet.setCurrentPlacemark(new Placemark());
 		} else if (qName.equalsIgnoreCase(NAME_KEY)) {
 			this.processingNameTag = true;
 		} else if (qName.equalsIgnoreCase(DESCRIPTION_KEY)) {
@@ -65,15 +65,12 @@ public class BluePlaquesKMLParser extends DefaultHandler {
 		}
 	}
 
-	/**
-	 * Gets be called on closing tags like: </tag>
-	 */
 	@Override
 	public void endElement(String namespaceURI, String localName, String qName)
 			throws SAXException {
 
 		if (qName.equalsIgnoreCase(PLACEMARK_KEY)) {
-			mapModel.addCurrentPlacemark();
+			navigationDataSet.addCurrentPlacemark();
 		} else if (qName.equalsIgnoreCase(NAME_KEY)) {
 			this.processingNameTag = false;
 		} else if (qName.equalsIgnoreCase(DESCRIPTION_KEY)) {
@@ -83,33 +80,35 @@ public class BluePlaquesKMLParser extends DefaultHandler {
 		}
 	}
 
-	/**
-	 * Gets be called on the following structure: <tag>characters</tag>
-	 */
 	@Override
 	public void characters(char ch[], int start, int length) {
 		if (this.processingNameTag) {
-			if (mapModel.getCurrentPlacemark() == null)
-				mapModel.setCurrentPlacemark(new Placemark());
-			mapModel.getCurrentPlacemark().setTitle(
+			if (navigationDataSet.getCurrentPlacemark() == null)
+				navigationDataSet.setCurrentPlacemark(new Placemark());
+			navigationDataSet.getCurrentPlacemark().setTitle(
 					new String(ch, start, length));
 		} else if (this.processingDescriptionTag) {
-			if (mapModel.getCurrentPlacemark() == null) {
-				mapModel.setCurrentPlacemark(new Placemark());
+			if (navigationDataSet.getCurrentPlacemark() == null) {
+				navigationDataSet.setCurrentPlacemark(new Placemark());
 			}
-			mapModel.getCurrentPlacemark().setFeatureDescription(
+			navigationDataSet.getCurrentPlacemark().setFeatureDescription(
 					new String(ch, start, length));
+			navigationDataSet.getCurrentPlacemark().digestFeatureDescription();
 		} else if (this.processingCoordinateTag) {
-			if (mapModel.getCurrentPlacemark() == null) {
-				mapModel.setCurrentPlacemark(new Placemark());
+			if (navigationDataSet.getCurrentPlacemark() == null) {
+				navigationDataSet.setCurrentPlacemark(new Placemark());
 			}
-			String[] parts = new String(ch, start, length).split(",");
-			if (parts.length == 3) {
-				mapModel.getCurrentPlacemark().setLatitude(
-						Double.parseDouble(parts[0]));
-				mapModel.getCurrentPlacemark().setLongitude(
-						Double.parseDouble(parts[1]));
-			}
+			digestCoordinates(ch, start, length);
+		}
+	}
+
+	private void digestCoordinates(char ch[], int start, int length) {
+		String[] parts = new String(ch, start, length).split(",");
+		if (parts.length == 3) {
+			navigationDataSet.getCurrentPlacemark().setLatitude(
+					Double.parseDouble(parts[0]));
+			navigationDataSet.getCurrentPlacemark().setLongitude(
+					Double.parseDouble(parts[1]));
 		}
 	}
 }

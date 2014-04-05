@@ -28,6 +28,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		model = new MapModel();
+		loadMapData();
 	}
 
 	public void loadMapData() {

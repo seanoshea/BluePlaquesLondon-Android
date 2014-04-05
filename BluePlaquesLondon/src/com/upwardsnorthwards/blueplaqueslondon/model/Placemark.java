@@ -14,9 +14,10 @@
  limitations under the License.
  */
 
-package com.upwardsnorthwards.blueplaqueslondon;
+package com.upwardsnorthwards.blueplaqueslondon.model;
 
 public class Placemark {
+
 	private static String OverlayTitleDelimiter = "<br>";
 	private static String NameDelimiter = "(";
 	private static String EmphasisNoteOpeningTag = "<em>";

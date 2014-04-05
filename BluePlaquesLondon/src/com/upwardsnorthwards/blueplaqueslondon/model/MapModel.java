@@ -17,7 +17,9 @@
 package com.upwardsnorthwards.blueplaqueslondon.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.InputSource;
@@ -25,31 +27,33 @@ import org.xml.sax.XMLReader;
 
 import android.content.Context;
 
-import com.upwardsnorthwards.blueplaqueslondon.Placemark;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesKMLParser;
 
 public class MapModel {
 
-	private ArrayList<Placemark> placemarks = new ArrayList<Placemark>();
+	private List<Placemark> placemarks = new ArrayList<Placemark>();
 	private Placemark currentPlacemark;
 
 	public void loadMapData(Context context) {
 
 		try {
 
-			XMLReader xr = SAXParserFactory.newInstance().newSAXParser()
-					.getXMLReader();
+			SAXParserFactory spf = SAXParserFactory.newInstance();
+			SAXParser sp = spf.newSAXParser();
 
-			BluePlaquesKMLParser parser = new BluePlaquesKMLParser();
+			XMLReader xr = sp.getXMLReader();
 
-			xr.setContentHandler(parser);
+			BluePlaquesKMLParser navSax2Handler = new BluePlaquesKMLParser();
+			xr.setContentHandler(navSax2Handler);
+
 			xr.parse(new InputSource(context.getAssets()
 					.open("blueplaques.kml")));
 
-			parser.getMapModel();
-
 		} catch (Exception e) {
 
+			e.printStackTrace();
+
+			System.out.println(e);
 		}
 	}
 
@@ -57,7 +61,7 @@ public class MapModel {
 		placemarks.add(currentPlacemark);
 	}
 
-	public ArrayList<Placemark> getPlacemarks() {
+	public List<Placemark> getPlacemarks() {
 		return placemarks;
 	}
 
@@ -72,5 +76,4 @@ public class MapModel {
 	public void setCurrentPlacemark(Placemark currentPlacemark) {
 		this.currentPlacemark = currentPlacemark;
 	}
-
 }
