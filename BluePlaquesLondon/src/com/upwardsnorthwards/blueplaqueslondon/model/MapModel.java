@@ -49,11 +49,22 @@ public class MapModel {
 			xr.parse(new InputSource(context.getAssets()
 					.open("blueplaques.kml")));
 
+			MapModel mm = navSax2Handler.getParsedData();
+
+			int s = mm.placemarks.size();
+
+			for (Placemark placemark : mm.placemarks) {
+
+				System.out.println("Placemark " + placemark);
+			}
+
+			System.out.println("The size is " + s);
+
+			int j = 0;
+
 		} catch (Exception e) {
 
 			e.printStackTrace();
-
-			System.out.println(e);
 		}
 	}
 
