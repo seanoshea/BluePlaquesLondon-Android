@@ -20,12 +20,15 @@ import android.os.Bundle;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.model.MapModel;
+import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesSharedPreferences;
 
-public class MapFragment extends com.google.android.gms.maps.SupportMapFragment {
+public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
+		implements OnCameraChangeListener {
 
 	private GoogleMap googleMap;
 	private MapModel model;
@@ -33,28 +36,16 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 	@Override
 	public void onResume() {
 		super.onResume();
+		setupMap();
 
-		googleMap = getMap();
-
-		LatLng sfLatLng = new LatLng(37.7750, -122.4183);
+		LatLng lastKnownCoordinate = BluePlaquesSharedPreferences
+				.getLastKnownBPLCoordinate(getActivity());
 		googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-		googleMap.addMarker(new MarkerOptions()
-				.position(sfLatLng)
-				.title("San Francisco")
-				.snippet("Population: 776733")
-				.icon(BitmapDescriptorFactory
-						.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-
-		googleMap.getUiSettings().setCompassEnabled(true);
-		googleMap.getUiSettings().setZoomControlsEnabled(true);
-		googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-
-		LatLng cameraLatLng = sfLatLng;
-		float cameraZoom = 10;
 
 		googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-		googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(cameraLatLng,
-				cameraZoom));
+		googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+				lastKnownCoordinate,
+				BluePlaquesSharedPreferences.getMapZoom(getActivity())));
 	}
 
 	@Override
@@ -66,5 +57,29 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
 	public void loadMapData() {
 		model.loadMapData(getActivity());
+	}
+
+	private void setupMap() {
+		googleMap = getMap();
+		if (googleMap == null) {
+			googleMap = ((MapFragment) getFragmentManager().findFragmentById(
+					R.id.map)).getMap();
+			// Check if we were successful in obtaining the map.
+			if (googleMap != null) {
+				// a few settings
+				googleMap.setIndoorEnabled(false);
+				googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+				// listen for events
+				googleMap.setOnCameraChangeListener(this);
+			}
+		}
+	}
+
+	@Override
+	public void onCameraChange(CameraPosition position) {
+		BluePlaquesSharedPreferences.saveLastKnownCoordinate(getActivity(),
+				position.target);
+		BluePlaquesSharedPreferences.saveMapZoom(getActivity(), googleMap,
+				position.zoom);
 	}
 }
