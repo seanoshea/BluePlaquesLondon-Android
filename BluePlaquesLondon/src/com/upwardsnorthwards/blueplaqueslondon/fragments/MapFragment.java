@@ -23,8 +23,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.model.MapModel;
+import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesSharedPreferences;
 
 public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
@@ -40,9 +42,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
 
 		LatLng lastKnownCoordinate = BluePlaquesSharedPreferences
 				.getLastKnownBPLCoordinate(getActivity());
-		googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-		googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 		googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
 				lastKnownCoordinate,
 				BluePlaquesSharedPreferences.getMapZoom(getActivity())));
@@ -64,13 +64,20 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
 		if (googleMap == null) {
 			googleMap = ((MapFragment) getFragmentManager().findFragmentById(
 					R.id.map)).getMap();
-			// Check if we were successful in obtaining the map.
-			if (googleMap != null) {
-				// a few settings
-				googleMap.setIndoorEnabled(false);
-				googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-				// listen for events
-				googleMap.setOnCameraChangeListener(this);
+		}
+		if (googleMap != null) {
+			// a few settings
+			googleMap.setIndoorEnabled(false);
+			googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+			// listen for events
+			googleMap.setOnCameraChangeListener(this);
+			for (Placemark placemark : model.getPlacemarks()) {
+				googleMap.addMarker(new MarkerOptions()
+						.position(
+								new LatLng(placemark.getLatitude(), placemark
+										.getLongitude()))
+						.title(placemark.getTitle())
+						.snippet(placemark.getOccupation()));
 			}
 		}
 	}

@@ -16,6 +16,8 @@
 
 package com.upwardsnorthwards.blueplaqueslondon.model;
 
+import android.util.Log;
+
 public class Placemark {
 
 	private static String OverlayTitleDelimiter = "<br>";
@@ -79,13 +81,18 @@ public class Placemark {
 			occupation = featureDescription.substring(index);
 			int start = occupation.indexOf(OverlayTitleDelimiter);
 			if (start == 0) {
-				int delimiterLength = OverlayTitleDelimiter.length();
-				int end = occupation.indexOf(OverlayTitleDelimiter, start
-						+ delimiterLength);
-				this.occupation = this.trimWhitespaceFromString(occupation
-						.substring(start + delimiterLength, end));
-				if (occupation.length() == 9) {
-					// TODO - parse components
+				try {
+					int delimiterLength = OverlayTitleDelimiter.length();
+					int end = occupation.indexOf(OverlayTitleDelimiter, start
+							+ delimiterLength);
+					this.occupation = this.trimWhitespaceFromString(occupation
+							.substring(start + delimiterLength, end));
+					if (occupation.length() == 9) {
+						// TODO - parse components
+					}
+				} catch (java.lang.StringIndexOutOfBoundsException e) {
+
+					Log.v("ASD", "ERRPR " + featureDescription);
 				}
 			}
 		}

@@ -106,9 +106,9 @@ public class BluePlaquesKMLParser extends DefaultHandler {
 		String[] parts = new String(ch, start, length).split(",");
 		if (parts.length == 3) {
 			navigationDataSet.getCurrentPlacemark().setLatitude(
-					Double.parseDouble(parts[0]));
-			navigationDataSet.getCurrentPlacemark().setLongitude(
 					Double.parseDouble(parts[1]));
+			navigationDataSet.getCurrentPlacemark().setLongitude(
+					Double.parseDouble(parts[0]));
 		}
 	}
 }
