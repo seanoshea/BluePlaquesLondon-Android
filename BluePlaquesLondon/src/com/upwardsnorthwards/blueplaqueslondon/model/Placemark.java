@@ -78,7 +78,7 @@ public class Placemark {
 		occupation = featureDescription;
 		int index = featureDescription.indexOf(OverlayTitleDelimiter);
 		if (index != -1) {
-			occupation = featureDescription.substring(index);
+			occupation = occupation.substring(index);
 			int start = occupation.indexOf(OverlayTitleDelimiter);
 			if (start == 0) {
 				try {
@@ -92,11 +92,11 @@ public class Placemark {
 					}
 				} catch (java.lang.StringIndexOutOfBoundsException e) {
 
-					Log.v("ASD", "ERRPR " + featureDescription);
+					Log.v("ASD", "ERROR " + featureDescription);
 				}
 			}
 		}
-		this.occupation = this.trimWhitespaceFromString(this.occupation);
+		occupation = this.trimWhitespaceFromString(occupation);
 	}
 
 	private void digestAddress() {
@@ -198,6 +198,9 @@ public class Placemark {
 	}
 
 	public void setFeatureDescription(String featureDescription) {
+		
+		Log.v("SEAN ", featureDescription);
+		
 		this.featureDescription = featureDescription;
 	}
 
