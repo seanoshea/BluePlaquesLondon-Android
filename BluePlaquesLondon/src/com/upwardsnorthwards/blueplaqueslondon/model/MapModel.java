@@ -19,42 +19,92 @@ package com.upwardsnorthwards.blueplaqueslondon.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.content.Context;
 
-import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesKMLParser;
-
 public class MapModel {
+
+	private static final String COORDINATES_KEY = "coordinates";
+	private static final String DESCRIPTION_KEY = "description";
+	private static final String NAME_KEY = "name";
+	private static final String PLACEMARK_KEY = "placemark";
+
+	private boolean processingNameTag = false;
+	private boolean processingDescriptionTag = false;
+	private boolean processingCoordinateTag = false;
 
 	private List<Placemark> placemarks = new ArrayList<Placemark>();
 	private Placemark currentPlacemark;
 
 	public void loadMapData(Context context) {
-
 		try {
-
-			SAXParserFactory spf = SAXParserFactory.newInstance();
-			SAXParser sp = spf.newSAXParser();
-
-			XMLReader xr = sp.getXMLReader();
-
-			BluePlaquesKMLParser navSax2Handler = new BluePlaquesKMLParser();
-			xr.setContentHandler(navSax2Handler);
-			xr.parse(new InputSource(context.getAssets()
-					.open("blueplaques.kml")));
-
-			MapModel mm = navSax2Handler.getParsedData();
-
-			placemarks = mm.placemarks;
-
+			XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+			factory.setNamespaceAware(true);
+			XmlPullParser xpp = factory.newPullParser();
+			xpp.setInput(context.getAssets().open("blueplaques.kml"), "UTF-8");
+			int eventType = xpp.getEventType();
+			while (eventType != XmlPullParser.END_DOCUMENT) {
+				if (eventType == XmlPullParser.START_TAG) {
+					String qName = xpp.getName();
+					if (qName.equalsIgnoreCase(PLACEMARK_KEY)) {
+						setCurrentPlacemark(new Placemark());
+					} else if (qName.equalsIgnoreCase(NAME_KEY)) {
+						processingNameTag = true;
+					} else if (qName.equals(DESCRIPTION_KEY)) {
+						processingDescriptionTag = true;
+					} else if (qName.equalsIgnoreCase(COORDINATES_KEY)) {
+						processingCoordinateTag = true;
+					}
+				} else if (eventType == XmlPullParser.END_TAG) {
+					String qName = xpp.getName();
+					if (qName.equalsIgnoreCase(PLACEMARK_KEY)) {
+						addCurrentPlacemark();
+					} else if (qName.equalsIgnoreCase(NAME_KEY)) {
+						processingNameTag = false;
+					} else if (qName.equalsIgnoreCase(DESCRIPTION_KEY)) {
+						processingDescriptionTag = false;
+					} else if (qName.equalsIgnoreCase(COORDINATES_KEY)) {
+						processingCoordinateTag = false;
+					}
+				} else if (eventType == XmlPullParser.TEXT) {
+					if (this.processingNameTag) {
+						if (getCurrentPlacemark() == null)
+							setCurrentPlacemark(new Placemark());
+						getCurrentPlacemark().setTitle(xpp.getText());
+					} else if (this.processingDescriptionTag) {
+						if (getCurrentPlacemark() == null) {
+							setCurrentPlacemark(new Placemark());
+						}
+						getCurrentPlacemark().setFeatureDescription(
+								xpp.getText());
+						getCurrentPlacemark().digestFeatureDescription();
+						this.processingDescriptionTag = false;
+					} else if (this.processingCoordinateTag) {
+						if (getCurrentPlacemark() == null) {
+							setCurrentPlacemark(new Placemark());
+						}
+						digestCoordinates(xpp.getText());
+					}
+				}
+				eventType = xpp.next();
+			}
 		} catch (Exception e) {
-
 			e.printStackTrace();
+		}
+	}
+
+	private void digestCoordinates(String input) {
+		String[] parts = input.split(",");
+		if (parts.length == 3) {
+			try {
+				getCurrentPlacemark().setLatitude(Double.parseDouble(parts[1]));
+				getCurrentPlacemark()
+						.setLongitude(Double.parseDouble(parts[0]));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

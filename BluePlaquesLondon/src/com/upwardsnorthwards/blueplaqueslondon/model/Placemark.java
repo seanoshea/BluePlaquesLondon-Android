@@ -16,8 +16,6 @@
 
 package com.upwardsnorthwards.blueplaqueslondon.model;
 
-import android.util.Log;
-
 public class Placemark {
 
 	private static String OverlayTitleDelimiter = "<br>";
@@ -55,23 +53,23 @@ public class Placemark {
 	}
 
 	private void digestTitle() {
-		this.title = featureDescription;
+		title = featureDescription;
 		int index = featureDescription.indexOf(OverlayTitleDelimiter);
 		if (index != -1) {
 			title = featureDescription.substring(0, index);
 		}
-		this.title = this.trimWhitespaceFromString(this.title);
+		title = trimWhitespaceFromString(title);
 	}
 
 	private void digestName() {
-		this.name = title;
-		int startOfYears = this.name.indexOf(NameDelimiter);
+		name = title;
+		int startOfYears = name.indexOf(NameDelimiter);
 		if (startOfYears != -1) {
-			this.name = this.name.replaceAll(EmphasisNoteOpeningTag, "");
-			this.name = this.name.replaceAll(EmphasisNoteClosingTag, "");
-			this.name = this.name.substring(0, startOfYears);
+			name = name.replaceAll(EmphasisNoteOpeningTag, "");
+			name = name.replaceAll(EmphasisNoteClosingTag, "");
+			name = name.substring(0, startOfYears);
 		}
-		this.name = this.trimWhitespaceFromString(this.name);
+		name = trimWhitespaceFromString(name);
 	}
 
 	private void digestOccupation() {
@@ -81,45 +79,43 @@ public class Placemark {
 			occupation = occupation.substring(index);
 			int start = occupation.indexOf(OverlayTitleDelimiter);
 			if (start == 0) {
+				int delimiterLength = OverlayTitleDelimiter.length();
+				int end = occupation.indexOf(OverlayTitleDelimiter, start
+						+ delimiterLength);
 				try {
-					int delimiterLength = OverlayTitleDelimiter.length();
-					int end = occupation.indexOf(OverlayTitleDelimiter, start
-							+ delimiterLength);
-					this.occupation = this.trimWhitespaceFromString(occupation
-							.substring(start + delimiterLength, end));
+					occupation = trimWhitespaceFromString(occupation.substring(
+							start + delimiterLength, end));
 					if (occupation.length() == 9) {
 						// TODO - parse components
 					}
-				} catch (java.lang.StringIndexOutOfBoundsException e) {
+				} catch (Exception e) {
 
-					Log.v("ASD", "ERROR " + featureDescription);
 				}
 			}
 		}
-		occupation = this.trimWhitespaceFromString(occupation);
+		occupation = trimWhitespaceFromString(occupation);
 	}
 
 	private void digestAddress() {
-		String[] components = this.featureDescription
-				.split(OverlayTitleDelimiter);
+		String[] components = featureDescription.split(OverlayTitleDelimiter);
 		if (components.length != 0) {
 			switch (components.length) {
 			case 2:
 			case 3: {
-				address = this.trimWhitespaceFromString(components[1]);
+				address = trimWhitespaceFromString(components[1]);
 			}
 				break;
 			case 4:
 			case 5: {
-				address = this.trimWhitespaceFromString(components[2]);
+				address = trimWhitespaceFromString(components[2]);
 			}
 				break;
 			case 6: {
-				address = this.trimWhitespaceFromString(components[3]);
+				address = trimWhitespaceFromString(components[3]);
 			}
 				break;
 			case 7: {
-				address = this.trimWhitespaceFromString(components[4]);
+				address = trimWhitespaceFromString(components[4]);
 			}
 				break;
 			}
@@ -127,42 +123,41 @@ public class Placemark {
 	}
 
 	private void digestNote() {
-		int startOfEmphasis = this.featureDescription
+		int startOfEmphasis = featureDescription
 				.indexOf(EmphasisNoteOpeningTag);
 		if (startOfEmphasis != -1) {
-			int endOfEmphasisIndex = this.featureDescription
+			int endOfEmphasisIndex = featureDescription
 					.indexOf(EmphasisNoteClosingTag);
 			if (endOfEmphasisIndex == -1) {
 				// some notes don't have the correct closing tag ... search for
 				// the starting tag again
-				int locationOfLastEmphasis = this.featureDescription
+				int locationOfLastEmphasis = featureDescription
 						.lastIndexOf(EmphasisNoteOpeningTag);
 				if (locationOfLastEmphasis != startOfEmphasis) {
-					endOfEmphasisIndex = this.featureDescription.length()
+					endOfEmphasisIndex = featureDescription.length()
 							- EmphasisNoteOpeningTag.length();
 				} else {
-					endOfEmphasisIndex = this.featureDescription.length();
+					endOfEmphasisIndex = featureDescription.length();
 				}
 			}
-			note = this.featureDescription.substring(startOfEmphasis
+			note = featureDescription.substring(startOfEmphasis
 					+ EmphasisNoteOpeningTag.length(), endOfEmphasisIndex);
-			note = this.trimWhitespaceFromString(note);
+			note = trimWhitespaceFromString(note);
 		}
 	}
 
 	private void digestCouncilAndYear() {
-		String withoutNote = this.removeNoteFromString(this.featureDescription);
+		String withoutNote = removeNoteFromString(featureDescription);
 		String[] components = withoutNote.split(OverlayTitleDelimiter);
 		if (components.length > 2) {
-			councilAndYear = this.trimWhitespaceFromString(components[1]);
+			councilAndYear = trimWhitespaceFromString(components[1]);
 		}
 	}
 
 	private String removeNoteFromString(String input) {
 		String inputWithNoteRemoved = input;
 		if (note != null) {
-			inputWithNoteRemoved = this
-					.trimWhitespaceFromString(inputWithNoteRemoved);
+			inputWithNoteRemoved = trimWhitespaceFromString(inputWithNoteRemoved);
 			inputWithNoteRemoved = inputWithNoteRemoved.replaceAll(
 					EmphasisNoteOpeningTag, "");
 			inputWithNoteRemoved = inputWithNoteRemoved.replaceAll(note, "");
@@ -181,15 +176,15 @@ public class Placemark {
 	}
 
 	private String trimWhitespaceFromString(String string) {
-
+		string = string.replaceAll("\t", "");
+		string = string.replaceAll("^\\s*", "");
 		return string;
 	}
 
 	@Override
 	public String toString() {
-		String description = this.key() + " " + this.title + " " + this.name
-				+ " occupation " + this.occupation + " " + this.note + " "
-				+ this.councilAndYear;
+		String description = key() + " " + title + " " + name + " occupation "
+				+ occupation + " " + note + " " + councilAndYear;
 		return description;
 	}
 
@@ -198,9 +193,6 @@ public class Placemark {
 	}
 
 	public void setFeatureDescription(String featureDescription) {
-		
-		Log.v("SEAN ", featureDescription);
-		
 		this.featureDescription = featureDescription;
 	}
 
