@@ -116,6 +116,12 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
 		return false;
 	}
 
+	public void navigateToPlacemark(Placemark placemark) {
+		googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
+				placemark.getLatitude(), placemark.getLongitude()),
+				BluePlaquesSharedPreferences.getMapZoom(getActivity())));
+	}
+
 	private String getSnippetForPlacemark(Placemark placemark) {
 		String snippet;
 		List<Integer> numberOfPlacemarksAssociatedWithPlacemark = model
@@ -123,9 +129,16 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
 		if (numberOfPlacemarksAssociatedWithPlacemark.size() == 1) {
 			snippet = placemark.getOccupation();
 		} else {
-			// generic message should suffice
 			snippet = getString(R.string.multiple_placemarks);
 		}
 		return snippet;
+	}
+
+	public MapModel getModel() {
+		return model;
+	}
+
+	public void setModel(MapModel model) {
+		this.model = model;
 	}
 }
