@@ -17,7 +17,9 @@
 package com.upwardsnorthwards.blueplaqueslondon.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -36,6 +38,9 @@ public class MapModel {
 	private boolean processingCoordinateTag = false;
 
 	private List<Placemark> placemarks = new ArrayList<Placemark>();
+	private List<Placemark> massagedPlacemarks = new ArrayList<Placemark>();
+	private Map<String, List<Integer>> keyToArrayPositions = new HashMap<String, List<Integer>>();
+
 	private Placemark currentPlacemark;
 
 	public void loadMapData(Context context) {
@@ -93,15 +98,37 @@ public class MapModel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		conslidateDuplicates();
+	}
+
+	public void conslidateDuplicates() {
+		int index = 0;
+		for (Placemark placemark : placemarks) {
+			String key = placemark.key();
+			if (!keyToArrayPositions.containsKey(key)) {
+				List<Integer> positions = new ArrayList<Integer>();
+				positions.add(index);
+				keyToArrayPositions.put(key, positions);
+				massagedPlacemarks.add(placemark);
+			} else {
+				List<Integer> existingPlacemarks = keyToArrayPositions.get(key);
+				Placemark existingPlacemark = placemarks.get(existingPlacemarks
+						.get(0));
+				if (!placemark.getTitle().equals(existingPlacemark.getTitle())) {
+					existingPlacemarks.add(index);
+					keyToArrayPositions.put(key, existingPlacemarks);
+				}
+			}
+			index++;
+		}
 	}
 
 	private void digestCoordinates(String input) {
 		String[] parts = input.split(",");
 		if (parts.length == 3) {
 			try {
-				getCurrentPlacemark().setLatitude(Double.parseDouble(parts[1]));
-				getCurrentPlacemark()
-						.setLongitude(Double.parseDouble(parts[0]));
+				currentPlacemark.setLatitude(Double.parseDouble(parts[1]));
+				currentPlacemark.setLongitude(Double.parseDouble(parts[0]));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -126,5 +153,22 @@ public class MapModel {
 
 	public void setCurrentPlacemark(Placemark currentPlacemark) {
 		this.currentPlacemark = currentPlacemark;
+	}
+
+	public List<Placemark> getMassagedPlacemarks() {
+		return massagedPlacemarks;
+	}
+
+	public void setMassagedPlacemarks(List<Placemark> massagedPlacemarks) {
+		this.massagedPlacemarks = massagedPlacemarks;
+	}
+
+	public Map<String, List<Integer>> getKeyToArrayPositions() {
+		return keyToArrayPositions;
+	}
+
+	public void setKeyToArrayPositions(
+			Map<String, List<Integer>> keyToArrayPositions) {
+		this.keyToArrayPositions = keyToArrayPositions;
 	}
 }

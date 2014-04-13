@@ -16,6 +16,8 @@
 
 package com.upwardsnorthwards.blueplaqueslondon.fragments;
 
+import java.util.List;
+
 import android.os.Bundle;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -71,14 +73,26 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
 			googleMap.getUiSettings().setMyLocationButtonEnabled(true);
 			// listen for events
 			googleMap.setOnCameraChangeListener(this);
-			for (Placemark placemark : model.getPlacemarks()) {
-				googleMap.addMarker(new MarkerOptions()
-						.position(
-								new LatLng(placemark.getLatitude(), placemark
-										.getLongitude()))
-						.title(placemark.getTitle())
-						.snippet(placemark.getOccupation()));
+			addPlacemarksToMap();
+		}
+	}
+
+	private void addPlacemarksToMap() {
+		for (Placemark placemark : model.getMassagedPlacemarks()) {
+			String snippet;
+			List<Integer> numberOfPlacemarksAssociatedWithPlacemark = model
+					.getKeyToArrayPositions().get(placemark.key());
+			if (numberOfPlacemarksAssociatedWithPlacemark.size() == 1) {
+				snippet = placemark.getOccupation();
+			} else {
+				// generic message should suffice
+				snippet = getString(R.string.multiple_placemarks);
 			}
+			googleMap.addMarker(new MarkerOptions()
+					.position(
+							new LatLng(placemark.getLatitude(), placemark
+									.getLongitude()))
+					.title(placemark.getTitle()).snippet(snippet));
 		}
 	}
 
