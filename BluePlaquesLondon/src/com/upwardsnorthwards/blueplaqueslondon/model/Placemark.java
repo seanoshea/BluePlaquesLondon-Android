@@ -30,7 +30,7 @@ public class Placemark {
 	private String address;
 	private String note;
 	private String councilAndYear;
-
+	
 	private String styleUrl;
 	private double latitude;
 	private double longitude;

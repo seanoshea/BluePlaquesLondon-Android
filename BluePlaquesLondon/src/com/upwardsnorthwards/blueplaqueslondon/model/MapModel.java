@@ -32,10 +32,12 @@ public class MapModel {
 	private static final String DESCRIPTION_KEY = "description";
 	private static final String NAME_KEY = "name";
 	private static final String PLACEMARK_KEY = "placemark";
+	private static final String STYLE_URL_KEY = "styleUrl";
 
 	private boolean processingNameTag = false;
 	private boolean processingDescriptionTag = false;
 	private boolean processingCoordinateTag = false;
+	private boolean processingStyleUrlTag = false;
 
 	private List<Placemark> placemarks = new ArrayList<Placemark>();
 	private List<Placemark> massagedPlacemarks = new ArrayList<Placemark>();
@@ -54,13 +56,15 @@ public class MapModel {
 				if (eventType == XmlPullParser.START_TAG) {
 					String qName = xpp.getName();
 					if (qName.equalsIgnoreCase(PLACEMARK_KEY)) {
-						setCurrentPlacemark(new Placemark());
+						currentPlacemark = new Placemark();
 					} else if (qName.equalsIgnoreCase(NAME_KEY)) {
 						processingNameTag = true;
 					} else if (qName.equals(DESCRIPTION_KEY)) {
 						processingDescriptionTag = true;
 					} else if (qName.equalsIgnoreCase(COORDINATES_KEY)) {
 						processingCoordinateTag = true;
+					} else if (qName.equalsIgnoreCase(STYLE_URL_KEY)) {
+						processingStyleUrlTag = true;
 					}
 				} else if (eventType == XmlPullParser.END_TAG) {
 					String qName = xpp.getName();
@@ -72,25 +76,24 @@ public class MapModel {
 						processingDescriptionTag = false;
 					} else if (qName.equalsIgnoreCase(COORDINATES_KEY)) {
 						processingCoordinateTag = false;
+					} else if (qName.equalsIgnoreCase(STYLE_URL_KEY)) {
+						processingStyleUrlTag = false;
 					}
 				} else if (eventType == XmlPullParser.TEXT) {
-					if (this.processingNameTag) {
-						if (getCurrentPlacemark() == null)
-							setCurrentPlacemark(new Placemark());
-						getCurrentPlacemark().setTitle(xpp.getText());
-					} else if (this.processingDescriptionTag) {
-						if (getCurrentPlacemark() == null) {
-							setCurrentPlacemark(new Placemark());
-						}
-						getCurrentPlacemark().setFeatureDescription(
-								xpp.getText());
-						getCurrentPlacemark().digestFeatureDescription();
-						this.processingDescriptionTag = false;
-					} else if (this.processingCoordinateTag) {
-						if (getCurrentPlacemark() == null) {
-							setCurrentPlacemark(new Placemark());
-						}
+					if (processingNameTag) {
+						if (currentPlacemark == null)
+							currentPlacemark = new Placemark();
+						currentPlacemark.setTitle(xpp.getText());
+					} else if (processingDescriptionTag) {
+						setCurrentPlacemarkIfNecessary();
+						currentPlacemark.setFeatureDescription(xpp.getText());
+						currentPlacemark.digestFeatureDescription();
+						processingDescriptionTag = false;
+					} else if (processingCoordinateTag) {
+						setCurrentPlacemarkIfNecessary();
 						digestCoordinates(xpp.getText());
+					} else if (processingStyleUrlTag) {
+						currentPlacemark.setStyleUrl(xpp.getText());
 					}
 				}
 				eventType = xpp.next();
@@ -135,20 +138,14 @@ public class MapModel {
 		}
 	}
 
+	private void setCurrentPlacemarkIfNecessary() {
+		if (currentPlacemark == null) {
+			currentPlacemark = new Placemark();
+		}
+	}
+
 	public void addCurrentPlacemark() {
 		placemarks.add(currentPlacemark);
-	}
-
-	public List<Placemark> getPlacemarks() {
-		return placemarks;
-	}
-
-	public void setPlacemarks(ArrayList<Placemark> placemarks) {
-		this.placemarks = placemarks;
-	}
-
-	public Placemark getCurrentPlacemark() {
-		return currentPlacemark;
 	}
 
 	public void setCurrentPlacemark(Placemark currentPlacemark) {
