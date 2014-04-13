@@ -16,6 +16,8 @@
 
 package com.upwardsnorthwards.blueplaqueslondon.model;
 
+import android.text.Html;
+
 public class Placemark {
 
 	private static String OverlayTitleDelimiter = "<br>";
@@ -30,7 +32,7 @@ public class Placemark {
 	private String address;
 	private String note;
 	private String councilAndYear;
-	
+
 	private String styleUrl;
 	private double latitude;
 	private double longitude;
@@ -87,7 +89,8 @@ public class Placemark {
 				occupation = trimWhitespaceFromString(occupation);
 				if (occupation.length() == 9
 						&& occupation.matches("[0-9]{4}-[0-9]{4}")) {
-					String[] components = featureDescription.split(OverlayTitleDelimiter);
+					String[] components = featureDescription
+							.split(OverlayTitleDelimiter);
 					if (components.length > 3) {
 						occupation = components[2];
 					}
@@ -177,8 +180,8 @@ public class Placemark {
 	}
 
 	private String trimWhitespaceFromString(String string) {
-		string = string.replaceAll("\t", "");
-		string = string.replaceAll("^\\s*", "");
+		string = string.replaceAll("\t", "").replaceAll("^\\s*", "");
+		string = Html.fromHtml(string).toString();
 		return string;
 	}
 
