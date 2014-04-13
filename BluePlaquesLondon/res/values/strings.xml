@@ -6,5 +6,7 @@
     <string name="title_map">Map</string>
     <string name="title_about">About</string>
     <string name="multiple_placemarks">Multiple Placemarks at this location</string>
+    <string name="search_title">Search</string>
+    <string name="search_hint">Search for a Blue Plaque</string>
 
 </resources>
