@@ -82,14 +82,15 @@ public class Placemark {
 				int delimiterLength = OverlayTitleDelimiter.length();
 				int end = occupation.indexOf(OverlayTitleDelimiter, start
 						+ delimiterLength);
-				try {
-					occupation = trimWhitespaceFromString(occupation.substring(
-							start + delimiterLength, end));
-					if (occupation.length() == 9) {
-						// TODO - parse components
+				occupation = trimWhitespaceFromString(occupation.substring(
+						start + delimiterLength, end));
+				occupation = trimWhitespaceFromString(occupation);
+				if (occupation.length() == 9
+						&& occupation.matches("[0-9]{4}-[0-9]{4}")) {
+					String[] components = featureDescription.split(OverlayTitleDelimiter);
+					if (components.length > 3) {
+						occupation = components[2];
 					}
-				} catch (Exception e) {
-
 				}
 			}
 		}
