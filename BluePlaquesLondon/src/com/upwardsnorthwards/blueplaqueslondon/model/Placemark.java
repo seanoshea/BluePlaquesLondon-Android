@@ -38,6 +38,10 @@ public class Placemark {
 	private double longitude;
 	private int placemarkPinType;
 
+	public static String keyFromLatLng(double latitude, double longitude) {
+		return Double.toString(latitude) + Double.toString(longitude);
+	}
+
 	public String key() {
 		return Double.toString(latitude) + Double.toString(longitude);
 	}

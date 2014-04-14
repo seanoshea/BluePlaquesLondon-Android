@@ -16,6 +16,7 @@
 
 package com.upwardsnorthwards.blueplaqueslondon.fragments;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.upwardsnorthwards.blueplaqueslondon.R;
+import com.upwardsnorthwards.blueplaqueslondon.model.KeyedMarker;
 import com.upwardsnorthwards.blueplaqueslondon.model.MapModel;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesSharedPreferences;
@@ -39,6 +41,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
 
 	private GoogleMap googleMap;
 	private MapModel model;
+	private List<KeyedMarker> markers = new ArrayList<KeyedMarker>();
 
 	@Override
 	public void onResume() {
@@ -82,21 +85,22 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
 	}
 
 	private void addPlacemarksToMap() {
-
 		for (Placemark placemark : model.getMassagedPlacemarks()) {
-
 			int iconResource = R.drawable.blue;
 			if (!placemark.getStyleUrl().equalsIgnoreCase("#myDefaultStyles")) {
 				iconResource = R.drawable.green;
 			}
-
-			googleMap.addMarker(new MarkerOptions()
+			Marker marker = googleMap.addMarker(new MarkerOptions()
 					.position(
 							new LatLng(placemark.getLatitude(), placemark
 									.getLongitude()))
 					.title(placemark.getTitle())
 					.snippet(getSnippetForPlacemark(placemark))
 					.icon(BitmapDescriptorFactory.fromResource(iconResource)));
+			KeyedMarker keyedMarker = new KeyedMarker();
+			keyedMarker.setKey(placemark.key());
+			keyedMarker.setMarker(marker);
+			markers.add(keyedMarker);
 		}
 	}
 
@@ -120,6 +124,12 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
 		googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
 				placemark.getLatitude(), placemark.getLongitude()),
 				BluePlaquesSharedPreferences.getMapZoom(getActivity())));
+		for (KeyedMarker marker : markers) {
+			if (placemark.key().equals(marker.getKey())) {
+				marker.getMarker().showInfoWindow();
+				break;
+			}
+		}
 	}
 
 	private String getSnippetForPlacemark(Placemark placemark) {
