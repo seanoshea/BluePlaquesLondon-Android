@@ -8,5 +8,11 @@
     <string name="multiple_placemarks">Multiple Placemarks at this location</string>
     <string name="search_title">Search</string>
     <string name="search_hint">Search for a Blue Plaque</string>
+    <string name="developed_details">Developer Details</string>
+    <string name="developed_by">Developed by Sean O\' Shea</string>
+    <string name="designer_details">Designer Details</string>
+    <string name="designed_by">Application designed by Andy Dale</string>
+    <string name="map_details">Map Data Details</string>
+    <string name="map_data">Map Data for this application is maintained by Roy Reed</string>
 
 </resources>

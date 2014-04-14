@@ -26,7 +26,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
@@ -37,6 +39,7 @@ import android.widget.SearchView.OnQueryTextListener;
 
 import com.upwardsnorthwards.blueplaqueslondon.adapters.SearchAdapter;
 import com.upwardsnorthwards.blueplaqueslondon.adapters.SearchAdapter.ViewHolder;
+import com.upwardsnorthwards.blueplaqueslondon.fragments.AboutFragment;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.MapFragment;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 
@@ -63,6 +66,16 @@ public class MainActivity extends FragmentActivity implements
 		searchView.setSearchableInfo(searchManager
 				.getSearchableInfo(getComponentName()));
 		return true;
+	}
+
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		if (item.getActionView() == null) {
+			FragmentManager fm = getSupportFragmentManager();
+			AboutFragment editNameDialog = new AboutFragment();
+			editNameDialog.show(fm, "fragment_about");
+		}
+		return super.onMenuItemSelected(featureId, item);
 	}
 
 	@Override
