@@ -72,8 +72,8 @@ public class MainActivity extends FragmentActivity implements
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		if (item.getActionView() == null) {
 			FragmentManager fm = getSupportFragmentManager();
-			AboutFragment editNameDialog = new AboutFragment();
-			editNameDialog.show(fm, "fragment_about");
+			AboutFragment aboutFragment = new AboutFragment();
+			aboutFragment.show(fm, "fragment_about");
 		}
 		return super.onMenuItemSelected(featureId, item);
 	}

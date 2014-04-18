@@ -19,25 +19,30 @@ package com.upwardsnorthwards.blueplaqueslondon.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.upwardsnorthwards.blueplaqueslondon.MapDetailActivity;
 import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.model.KeyedMarker;
 import com.upwardsnorthwards.blueplaqueslondon.model.MapModel;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
+import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesSharedPreferences;
 
 public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
-		implements OnCameraChangeListener, OnMarkerClickListener {
+		implements OnCameraChangeListener, OnMarkerClickListener,
+		OnInfoWindowClickListener {
 
 	private GoogleMap googleMap;
 	private MapModel model;
@@ -47,10 +52,8 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
 	public void onResume() {
 		super.onResume();
 		setupMap();
-
 		LatLng lastKnownCoordinate = BluePlaquesSharedPreferences
 				.getLastKnownBPLCoordinate(getActivity());
-
 		googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
 				lastKnownCoordinate,
 				BluePlaquesSharedPreferences.getMapZoom(getActivity())));
@@ -80,6 +83,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
 			// listen for events
 			googleMap.setOnCameraChangeListener(this);
 			googleMap.setOnMarkerClickListener(this);
+			googleMap.setOnInfoWindowClickListener(this);
 			addPlacemarksToMap();
 		}
 	}
@@ -120,6 +124,15 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
 		return false;
 	}
 
+	@Override
+	public void onInfoWindowClick(Marker marker) {
+		Intent intent = new Intent(getActivity(), MapDetailActivity.class);
+		intent.putParcelableArrayListExtra(
+				BluePlaquesConstants.INFO_WINDOW_CLICKED_PARCLEABLE_KEY,
+				getListOfPlacemarksForMarker(marker));
+		startActivity(intent);
+	}
+
 	public void navigateToPlacemark(Placemark placemark) {
 		googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
 				placemark.getLatitude(), placemark.getLongitude()),
@@ -142,6 +155,20 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
 			snippet = getString(R.string.multiple_placemarks);
 		}
 		return snippet;
+	}
+
+	private ArrayList<Placemark> getListOfPlacemarksForMarker(Marker marker) {
+		ArrayList<Placemark> placemarks = new ArrayList<Placemark>();
+		for (KeyedMarker keyedMarker : markers) {
+			if (keyedMarker.getMarker().equals(marker)) {
+				List<Integer> numberOfPlacemarksAssociatedWithPlacemark = model
+						.getKeyToArrayPositions().get(keyedMarker.getKey());
+				placemarks = model
+						.getPlacemarksAtIndices(numberOfPlacemarksAssociatedWithPlacemark);
+				break;
+			}
+		}
+		return placemarks;
 	}
 
 	public MapModel getModel() {

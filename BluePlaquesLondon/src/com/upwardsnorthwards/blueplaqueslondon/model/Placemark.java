@@ -16,9 +16,11 @@
 
 package com.upwardsnorthwards.blueplaqueslondon.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.Html;
 
-public class Placemark {
+public class Placemark implements Parcelable {
 
 	private static String OverlayTitleDelimiter = "<br>";
 	private static String NameDelimiter = "(";
@@ -32,11 +34,59 @@ public class Placemark {
 	private String address;
 	private String note;
 	private String councilAndYear;
-
 	private String styleUrl;
 	private double latitude;
 	private double longitude;
 	private int placemarkPinType;
+
+	public Placemark() {
+
+	}
+
+	private Placemark(Parcel in) {
+		super();
+		featureDescription = in.readString();
+		title = in.readString();
+		name = in.readString();
+		occupation = in.readString();
+		address = in.readString();
+		note = in.readString();
+		councilAndYear = in.readString();
+		styleUrl = in.readString();
+		latitude = in.readDouble();
+		longitude = in.readDouble();
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(featureDescription);
+		dest.writeString(title);
+		dest.writeString(name);
+		dest.writeString(occupation);
+		dest.writeString(address);
+		dest.writeString(note);
+		dest.writeString(councilAndYear);
+		dest.writeString(styleUrl);
+		dest.writeDouble(latitude);
+		dest.writeDouble(longitude);
+	}
+
+	public static final Parcelable.Creator<Placemark> CREATOR = new Parcelable.Creator<Placemark>() {
+
+		public Placemark createFromParcel(Parcel source) {
+			return new Placemark(source);
+		}
+
+		public Placemark[] newArray(int size) {
+			return new Placemark[size];
+		}
+
+	};
 
 	public static String keyFromLatLng(double latitude, double longitude) {
 		return Double.toString(latitude) + Double.toString(longitude);
@@ -158,7 +208,7 @@ public class Placemark {
 		String withoutNote = removeNoteFromString(featureDescription);
 		String[] components = withoutNote.split(OverlayTitleDelimiter);
 		if (components.length > 2) {
-			councilAndYear = trimWhitespaceFromString(components[1]);
+			councilAndYear = trimWhitespaceFromString(components[components.length - 1]);
 		}
 	}
 

@@ -25,8 +25,10 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class MapModel {
+public class MapModel implements Parcelable {
 
 	private static final String COORDINATES_KEY = "coordinates";
 	private static final String DESCRIPTION_KEY = "description";
@@ -44,6 +46,40 @@ public class MapModel {
 	private Map<String, List<Integer>> keyToArrayPositions = new HashMap<String, List<Integer>>();
 
 	private Placemark currentPlacemark;
+
+	public MapModel() {
+
+	}
+
+	private MapModel(Parcel in) {
+		super();
+		ClassLoader loader = getClass().getClassLoader();
+		placemarks = in.readArrayList(loader);
+		massagedPlacemarks = in.readArrayList(loader);
+		keyToArrayPositions = in.readHashMap(loader);
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeList(placemarks);
+		dest.writeList(massagedPlacemarks);
+		dest.writeMap(keyToArrayPositions);
+	}
+
+	public static final Parcelable.Creator<MapModel> CREATOR = new Parcelable.Creator<MapModel>() {
+		public MapModel createFromParcel(Parcel in) {
+			return new MapModel(in);
+		}
+
+		public MapModel[] newArray(int size) {
+			return new MapModel[size];
+		}
+	};
 
 	public void loadMapData(Context context) {
 		try {
@@ -102,6 +138,14 @@ public class MapModel {
 			e.printStackTrace();
 		}
 		conslidateDuplicates();
+	}
+
+	public ArrayList<Placemark> getPlacemarksAtIndices(List<Integer> indices) {
+		ArrayList<Placemark> placemarksAtIndices = new ArrayList<Placemark>();
+		for (Integer index : indices) {
+			placemarksAtIndices.add(placemarks.get(index));
+		}
+		return placemarksAtIndices;
 	}
 
 	public void conslidateDuplicates() {
