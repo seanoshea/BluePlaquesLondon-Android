@@ -133,7 +133,11 @@ public class MapDetailActivity extends FragmentActivity implements
 	}
 
 	private void wikipediaArticleButtonClicked() {
-
+		Intent intent = new Intent(this, WikipediaActivity.class);
+		Placemark placemark = placemarks.get(0);
+		intent.putExtra(BluePlaquesConstants.WIKIPEDIA_CLICKED_PARCLEABLE_KEY,
+				placemark);
+		startActivity(intent);
 	}
 
 	private void streetViewButtonClicked() {
