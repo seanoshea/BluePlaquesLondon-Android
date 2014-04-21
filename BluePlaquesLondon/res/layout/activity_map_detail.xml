@@ -1,53 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/activity_map_details"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:background="#FFFFFF"
+    android:layout_height="fill_parent" >
 
-    <TextView
-        android:id="@+id/activity_map_details_occupation"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/activity_map_details_address"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/activity_map_details_council_and_year"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/activity_map_details_note"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/activity_map_details_street_view"
+    <LinearLayout
+        android:id="@+id/activity_map_details"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/street_view" />
+        android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/activity_map_details_wikipedia_article"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/wikipedia_article" />
+        <TextView
+            android:id="@+id/activity_map_details_occupation"
+            style="@style/PrimaryText" />
 
-    <Button
-        android:id="@+id/activity_map_details_directions"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/directions" />
+        <TextView
+            android:id="@+id/activity_map_details_address"
+            style="@style/SecondaryText" />
 
-    <Button
-        android:id="@+id/activity_map_details_more"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/multiple_placemarks"
-        android:visibility="gone" />
+        <TextView
+            android:id="@+id/activity_map_details_council_and_year"
+            style="@style/SecondaryText" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/activity_map_details_note"
+            style="@style/SecondaryText" />
+
+        <Button
+            android:id="@+id/activity_map_details_street_view"
+            style="@style/OrangeButton"
+            android:text="@string/street_view" />
+
+        <Button
+            android:id="@+id/activity_map_details_wikipedia_article"
+            style="@style/OrangeButton"
+            android:text="@string/wikipedia_article" />
+
+        <Button
+            android:id="@+id/activity_map_details_directions"
+            style="@style/OrangeButton"
+            android:text="@string/directions" />
+
+        <Button
+            android:id="@+id/activity_map_details_more"
+            style="@style/OrangeButton"
+            android:text="@string/multiple_placemarks"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</ScrollView>

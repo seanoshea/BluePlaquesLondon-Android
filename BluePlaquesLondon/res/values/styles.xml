@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <!--
@@ -13,8 +14,33 @@
     </style>
 
     <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    <style name="AppTheme" parent="AppBaseTheme"></style>
+
+    <style name="OrangeButton" parent="PrimaryHeader">
+        <item name="android:background">@drawable/orange_button_background</item>
+    </style>
+
+    <style name="Text">
+        <item name="android:textColor">@color/blue_color</item>
+        <item name="android:scaleType">centerInside</item>
+        <item name="android:layout_margin">@dimen/margin</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:typeface">sans</item>
+    </style>
+
+    <style name="PrimaryHeader" parent="PrimaryText">
+        <item name="android:textColor">@color/orange_color</item>
+    </style>
+    
+    <style name="PrimaryText" parent="Text">
+        <item name="android:textSize">@dimen/font_primary_size</item>
+    </style>
+
+    <style name="SecondaryText" parent="Text">
+        <item name="android:textSize">@dimen/font_secondary_size</item>
     </style>
 
 </resources>

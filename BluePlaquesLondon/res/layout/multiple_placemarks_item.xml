@@ -6,7 +6,6 @@
 
     <TextView
         android:id="@+id/multiple_placemarks_title"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        style="@style/PrimaryText" />
 
 </LinearLayout>
