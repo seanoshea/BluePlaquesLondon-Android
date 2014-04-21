@@ -18,6 +18,8 @@ package com.upwardsnorthwards.blueplaqueslondon;
 
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.location.Location;
@@ -29,6 +31,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.upwardsnorthwards.blueplaqueslondon.adapters.MultiplePlacemarksAdapter;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 
@@ -71,6 +74,12 @@ public class MapDetailActivity extends FragmentActivity implements
 		} else if (v.equals(moreButton)) {
 			moreButtonClicked();
 		}
+	}
+
+	protected void switchToPlacemark(Placemark placemark) {
+		placemarks.remove(placemark);
+		placemarks.add(0, placemark);
+		addTextToTextViews();
 	}
 
 	private void getPlacemarksFromIntent() {
@@ -126,7 +135,30 @@ public class MapDetailActivity extends FragmentActivity implements
 	}
 
 	private void moreButtonClicked() {
+		AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
+		builderSingle.setIcon(R.drawable.ic_launcher);
+		builderSingle
+				.setTitle(getString(R.string.multiple_placemarks_select_one));
+		final MultiplePlacemarksAdapter arrayAdapter = new MultiplePlacemarksAdapter(
+				this, R.layout.multiple_placemarks_item, placemarks);
+		builderSingle.setNegativeButton(getString(R.string.cancel),
+				new DialogInterface.OnClickListener() {
 
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+
+		builderSingle.setAdapter(arrayAdapter,
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						switchToPlacemark(arrayAdapter.getItem(which));
+					}
+				});
+		builderSingle.show();
 	}
 
 	private void directionsButtonClicked() {

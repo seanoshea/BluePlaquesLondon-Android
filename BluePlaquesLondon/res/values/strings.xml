@@ -18,6 +18,8 @@
     <string name="wikipedia_article">Wikipedia Article</string>
     <string name="directions">Directions</string>
     <string name="multiple_placemarks">Multiple Placemarks at this location</string>
+    <string name="multiple_placemarks_select_one">Select one Placemark for more details</string>
+    <string name="cancel">Cancel</string>
     <string name="wikipedia_url">http://en.wikipedia.org/wiki/%1$s</string>
 
 </resources>
