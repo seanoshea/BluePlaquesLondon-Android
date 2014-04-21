@@ -33,8 +33,6 @@ public class BluePlaquesSharedPreferences {
 	private static String MAP_ZOOM = "MAP_ZOOM";
 
 	static final float MAP_ZOOM_DEFAULT = 15.0f;
-	static final float BPLDefaultLatitude = 51.50016999993306f;
-	static final float BPLDefaultLongitude = -0.1814680000049975f;
 
 	public static LatLng getLastKnownBPLCoordinate(Context context) {
 		return getSavedCoordinate(context, LAST_KNOWN_BPL_COORDINATE_LATITUDE,
@@ -86,9 +84,10 @@ public class BluePlaquesSharedPreferences {
 			String latitudeKey, String longitudeKey) {
 		SharedPreferences preferences = context.getSharedPreferences(
 				PREFERENCES_KEY, Context.MODE_PRIVATE);
-		float latitude = preferences.getFloat(latitudeKey, BPLDefaultLatitude);
+		float latitude = preferences.getFloat(latitudeKey,
+				(float) BluePlaquesConstants.DEFAULT_LATITUDE);
 		float longitude = preferences.getFloat(longitudeKey,
-				BPLDefaultLongitude);
+				(float) BluePlaquesConstants.DEFAULT_LONGITUDE);
 		return new LatLng(latitude, longitude);
 	}
 }
