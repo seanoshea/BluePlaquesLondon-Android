@@ -137,6 +137,10 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
 		googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
 				placemark.getLatitude(), placemark.getLongitude()),
 				BluePlaquesSharedPreferences.getMapZoom(getActivity())));
+		LatLng latLng = new LatLng(placemark.getLatitude(),
+				placemark.getLongitude());
+		BluePlaquesSharedPreferences.saveLastKnownBPLCoordinate(getActivity(),
+				latLng);
 		for (KeyedMarker marker : markers) {
 			if (placemark.key().equals(marker.getKey())) {
 				marker.getMarker().showInfoWindow();

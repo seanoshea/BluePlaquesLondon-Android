@@ -17,7 +17,7 @@
     <style name="AppTheme" parent="AppBaseTheme"></style>
 
     <style name="OrangeButton" parent="PrimaryHeader">
-        <item name="android:background">@drawable/orange_button_background</item>
+        <item name="android:background">@drawable/orange_button</item>
     </style>
 
     <style name="Text">
