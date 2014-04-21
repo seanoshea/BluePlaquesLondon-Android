@@ -135,13 +135,12 @@ public class MapDetailActivity extends FragmentActivity implements
 	}
 
 	private void moreButtonClicked() {
-		AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
-		builderSingle.setIcon(R.drawable.ic_launcher);
-		builderSingle
-				.setTitle(getString(R.string.multiple_placemarks_select_one));
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setIcon(R.drawable.ic_launcher);
+		builder.setTitle(getString(R.string.multiple_placemarks_select_one));
 		final MultiplePlacemarksAdapter arrayAdapter = new MultiplePlacemarksAdapter(
 				this, R.layout.multiple_placemarks_item, placemarks);
-		builderSingle.setNegativeButton(getString(R.string.cancel),
+		builder.setNegativeButton(getString(R.string.cancel),
 				new DialogInterface.OnClickListener() {
 
 					@Override
@@ -150,15 +149,14 @@ public class MapDetailActivity extends FragmentActivity implements
 					}
 				});
 
-		builderSingle.setAdapter(arrayAdapter,
-				new DialogInterface.OnClickListener() {
+		builder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						switchToPlacemark(arrayAdapter.getItem(which));
-					}
-				});
-		builderSingle.show();
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switchToPlacemark(arrayAdapter.getItem(which));
+			}
+		});
+		builder.show();
 	}
 
 	private void directionsButtonClicked() {
@@ -180,7 +178,7 @@ public class MapDetailActivity extends FragmentActivity implements
 			if (intentActivities.size() > 0) {
 				startActivity(intent);
 			} else {
-				// TODO - prompt the user to install google maps?
+				promptUserToInstallGoogleMaps();
 			}
 		}
 	}
@@ -204,7 +202,32 @@ public class MapDetailActivity extends FragmentActivity implements
 		if (intentActivities.size() > 0) {
 			startActivity(intent);
 		} else {
-			// TODO - prompt the user to install street view?
+			promptUserToInstallGoogleMaps();
 		}
+	}
+
+	private void promptUserToInstallGoogleMaps() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setIcon(R.drawable.ic_launcher);
+		builder.setTitle(getString(R.string.app_required));
+		builder.setMessage(getString(R.string.install_google_maps));
+		builder.setPositiveButton(getString(R.string.ok),
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+					}
+				});
+		builder.setNegativeButton(getString(R.string.cancel),
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+
+		builder.show();
 	}
 }
