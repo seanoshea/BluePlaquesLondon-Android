@@ -34,7 +34,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
@@ -59,6 +61,18 @@ public class WikipediaActivity extends Activity {
 	}
 
 	protected void onRetriveWikipediaUrlSuccess(String url) {
+		final Activity activity = this;
+		webView.setWebChromeClient(new WebChromeClient() {
+			public void onProgressChanged(WebView view, int progress) {
+				activity.setProgress(progress * 1000);
+			}
+		});
+		webView.setWebViewClient(new WebViewClient() {
+			public void onReceivedError(WebView view, int errorCode,
+					String description, String failingUrl) {
+				onRetriveWikipediaUrlFailure();
+			}
+		});
 		webView.loadUrl(url);
 	}
 
@@ -96,9 +110,9 @@ public class WikipediaActivity extends Activity {
 					throw new IOException(statusLine.getReasonPhrase());
 				}
 			} catch (ClientProtocolException e) {
-				// TODO Handle problems..
+				onRetriveWikipediaUrlFailure();
 			} catch (IOException e) {
-				// TODO Handle problems..
+				onRetriveWikipediaUrlFailure();
 			}
 			return responseString;
 		}
@@ -125,7 +139,6 @@ public class WikipediaActivity extends Activity {
 					onRetriveWikipediaUrlFailure();
 				}
 			} catch (JSONException e) {
-				e.printStackTrace();
 				onRetriveWikipediaUrlFailure();
 			}
 		}
