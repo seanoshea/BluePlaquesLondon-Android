@@ -23,6 +23,7 @@ import java.util.List;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -109,7 +110,13 @@ public class MainActivity extends FragmentActivity implements
 		MapFragment mapFragment = getMapFragment();
 		if (mapFragment != null) {
 			ViewHolder holder = (ViewHolder) view.getTag();
-			mapFragment.navigateToPlacemark(holder.placemark);
+			// if the holder doesnt have a placemark associated with it,
+			// it must be the 'find the closest plaque' item
+			Placemark placemark = holder.placemark;
+			if (placemark == null) {
+				placemark = getClosestPlacemark();
+			}
+			mapFragment.navigateToPlacemark(placemark);
 		}
 	}
 
@@ -163,5 +170,17 @@ public class MainActivity extends FragmentActivity implements
 			mapFragment = (MapFragment) fragments.get(0);
 		}
 		return mapFragment;
+	}
+
+	private Placemark getClosestPlacemark() {
+		Placemark closestPlacemark = null;
+		BluePlaquesLondonApplication application = (BluePlaquesLondonApplication) getApplication();
+		Location currentLocation = application.getCurrentLocation();
+		MapFragment mapFragment = getMapFragment();
+		if (mapFragment != null) {
+			closestPlacemark = mapFragment.getModel()
+					.getPlacemarkClosestToPlacemark(currentLocation);
+		}
+		return closestPlacemark;
 	}
 }

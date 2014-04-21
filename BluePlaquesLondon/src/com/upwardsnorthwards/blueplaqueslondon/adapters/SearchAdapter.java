@@ -49,21 +49,27 @@ public class SearchAdapter extends ArrayAdapter<Placemark> {
 					.findViewById(R.id.search_subtitle);
 			v.setTag(viewHolder);
 		}
-		if (placemarks != null && position < placemarks.size()) {
-			final Placemark placemark = placemarks.get(position);
+		if (placemarks != null && position < getCount()) {
+			final Placemark placemark;
 			final ViewHolder holder = (ViewHolder) v.getTag();
-			holder.placemark = placemark;
-			holder.title.setText(placemark.getTitle());
-			holder.subtitle.setText("");
+			if (position == 0) {
+				holder.title.setText(parent.getContext().getString(
+						R.string.closest));
+			} else {
+				placemark = placemarks.get(position);
+				holder.placemark = placemark;
+				holder.title.setText(placemark.getTitle());
+				holder.subtitle.setText("");
+			}
 		}
 		return v;
 	}
 
 	@Override
 	public int getCount() {
-		int size = 0;
+		int size = 1;
 		if (placemarks != null) {
-			size = placemarks.size();
+			size += placemarks.size();
 		}
 		return size;
 	}

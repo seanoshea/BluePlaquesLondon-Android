@@ -25,6 +25,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.content.Context;
+import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -146,6 +147,25 @@ public class MapModel implements Parcelable {
 			placemarksAtIndices.add(placemarks.get(index));
 		}
 		return placemarksAtIndices;
+	}
+
+	public Placemark getPlacemarkClosestToPlacemark(Location location) {
+		Placemark closestPlacemark = null;
+		float currentDistance = 0;
+		for (Placemark placemark : massagedPlacemarks) {
+			Location placemarkLocation = new Location("");
+			placemarkLocation.setLatitude(placemark.getLatitude());
+			placemarkLocation.setLongitude(placemark.getLatitude());
+			float distance = location.distanceTo(placemarkLocation);
+			if (closestPlacemark == null) {
+				currentDistance = distance;
+				closestPlacemark = placemark;
+			} else if (distance < currentDistance) {
+				currentDistance = distance;
+				closestPlacemark = placemark;
+			}
+		}
+		return closestPlacemark;
 	}
 
 	public void conslidateDuplicates() {

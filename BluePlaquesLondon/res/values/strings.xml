@@ -24,5 +24,6 @@
     <string name="app_required">App Required</string>
     <string name="install_google_maps">You need to install Google Maps to view Street View</string>
     <string name="ok">OK</string>
+    <string name="closest">Find the Plaque closest to me</string>
 
 </resources>
