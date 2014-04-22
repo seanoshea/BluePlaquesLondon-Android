@@ -30,7 +30,8 @@ public class MultiplePlacemarksAdapter extends ArrayAdapter<Placemark> {
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			v = vi.inflate(R.layout.multiple_placemarks_item, parent, false);
 			ViewHolder viewHolder = new ViewHolder();
-			viewHolder.title = (TextView) v.findViewById(R.id.multiple_placemarks_title);
+			viewHolder.title = (TextView) v
+					.findViewById(R.id.multiple_placemarks_title);
 			v.setTag(viewHolder);
 		}
 		if (placemarks != null && position < placemarks.size()) {
@@ -54,13 +55,5 @@ public class MultiplePlacemarksAdapter extends ArrayAdapter<Placemark> {
 	public static class ViewHolder {
 		public Placemark placemark;
 		public TextView title;
-	}
-
-	public List<Placemark> getPlacemarks() {
-		return placemarks;
-	}
-
-	public void setPlacemarks(List<Placemark> placemarks) {
-		this.placemarks = placemarks;
 	}
 }
