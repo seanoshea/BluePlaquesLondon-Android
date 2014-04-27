@@ -5,6 +5,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="font_primary_size">20dp</dimen>
     <dimen name="font_secondary_size">16dp</dimen>
+    <dimen name="font_note_size">12dp</dimen>
     <dimen name="padding">8dp</dimen>
     <dimen name="margin">8dp</dimen>
     <dimen name="one">2dp</dimen>

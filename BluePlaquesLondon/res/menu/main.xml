@@ -5,6 +5,12 @@
         android:id="@+id/action_about"
         android:showAsAction="never"
         android:title="@string/action_about"/>
+    
+    <item
+        android:id="@+id/action_settings"
+        android:showAsAction="never"
+        android:title="@string/action_settings"/>
+    
     <item
         android:id="@+id/search"
         android:actionViewClass="android.widget.SearchView"

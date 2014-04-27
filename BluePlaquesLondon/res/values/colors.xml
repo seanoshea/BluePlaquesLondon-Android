@@ -3,6 +3,7 @@
 
     <color name="blue_color">#0E3884</color>
     <color name="grey_color">#EFEFEF</color>
+    <color name="dark_grey_color">#666666</color>
     <color name="orange_color">#FF9900</color>
 
 </resources>

@@ -17,7 +17,6 @@
     <string name="street_view">Street View</string>
     <string name="wikipedia_article">Wikipedia Article</string>
     <string name="directions">Directions</string>
-    <string name="multiple_placemarks">Multiple Placemarks at this location</string>
     <string name="multiple_placemarks_select_one">Select one</string>
     <string name="cancel">Cancel</string>
     <string name="wikipedia_url">http://en.wikipedia.org/wiki/%1$s</string>
@@ -25,5 +24,9 @@
     <string name="install_google_maps">You need to install Google Maps to view Street View</string>
     <string name="ok">OK</string>
     <string name="closest">Find the Plaque closest to me</string>
+    <string name="action_settings">Settings</string>
+    <string name="analytics">Analytics</string>
+    <string name="analytics_title">Allow analytics to be collected</string>
+    <string name="analytics_note">Blue Plaques London does not collect any personal information.</string>
 
 </resources>

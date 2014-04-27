@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_settings"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/fragment_settings_analytics"
+        style="@style/PrimaryHeader"
+        android:layout_alignParentTop="true"
+        android:text="@string/analytics" />
+
+    <CheckBox
+        android:id="@+id/fragment_settings_analytics_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_settings_analytics"
+        android:text="@string/analytics_title"
+        android:textColor="@color/dark_grey_color" />
+
+    <TextView
+        style="@style/PreferenceNote"
+        android:layout_below="@+id/fragment_settings_analytics_checkbox"
+        android:text="@string/analytics_note" />
+
+</RelativeLayout>

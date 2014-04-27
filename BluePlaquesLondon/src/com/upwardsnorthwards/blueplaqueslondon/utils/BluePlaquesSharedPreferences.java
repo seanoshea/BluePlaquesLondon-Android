@@ -31,8 +31,10 @@ public class BluePlaquesSharedPreferences {
 	private static String LAST_KNOWN_COORDINATE_LATITUDE = "LAST_KNOWN_COORDINATE_LATITUDE";
 	private static String LAST_KNOWN_COORDINATE_LONGITUDE = "LAST_KNOWN_COORDINATE_LONGITUDE";
 	private static String MAP_ZOOM = "MAP_ZOOM";
+	private static String ANALYTICS_ENABLED = "ANALYTICS_ENABLED";
 
 	static final float MAP_ZOOM_DEFAULT = 15.0f;
+	static final boolean ANALYTICS_ENABLED_DEFAULT = true;
 
 	public static LatLng getLastKnownBPLCoordinate(Context context) {
 		return getSavedCoordinate(context, LAST_KNOWN_BPL_COORDINATE_LATITUDE,
@@ -68,6 +70,21 @@ public class BluePlaquesSharedPreferences {
 			editor.putFloat(MAP_ZOOM, zoom);
 			editor.commit();
 		}
+	}
+
+	public static boolean getAnalyticsEnabled(Context context) {
+		SharedPreferences preferences = context.getSharedPreferences(
+				PREFERENCES_KEY, Context.MODE_PRIVATE);
+		return preferences.getBoolean(ANALYTICS_ENABLED,
+				ANALYTICS_ENABLED_DEFAULT);
+	}
+
+	public static void saveAnalyticsEnabled(Context context, boolean enabled) {
+		SharedPreferences preferences = context.getSharedPreferences(
+				PREFERENCES_KEY, Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.putBoolean(ANALYTICS_ENABLED, enabled);
+		editor.commit();
 	}
 
 	private static void saveCoordinate(Context context, LatLng latLng,

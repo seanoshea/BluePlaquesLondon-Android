@@ -42,6 +42,7 @@ import com.upwardsnorthwards.blueplaqueslondon.adapters.SearchAdapter;
 import com.upwardsnorthwards.blueplaqueslondon.adapters.SearchAdapter.ViewHolder;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.AboutFragment;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.MapFragment;
+import com.upwardsnorthwards.blueplaqueslondon.fragments.SettingsFragment;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 
 public class MainActivity extends FragmentActivity implements
@@ -71,10 +72,18 @@ public class MainActivity extends FragmentActivity implements
 
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
-		if (item.getActionView() == null) {
-			FragmentManager fm = getSupportFragmentManager();
+		FragmentManager fm = getSupportFragmentManager();
+		switch (item.getItemId()) {
+		case R.id.action_about:
 			AboutFragment aboutFragment = new AboutFragment();
 			aboutFragment.show(fm, "fragment_about");
+			break;
+		case R.id.action_settings:
+			SettingsFragment settingsFragment = new SettingsFragment();
+			settingsFragment.show(fm, "fragment_settings");
+			break;
+		default:
+			break;
 		}
 		return super.onMenuItemSelected(featureId, item);
 	}
