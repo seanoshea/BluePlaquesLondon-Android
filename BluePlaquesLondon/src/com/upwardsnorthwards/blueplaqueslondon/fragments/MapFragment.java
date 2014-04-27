@@ -152,7 +152,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
 	private String getSnippetForPlacemark(Placemark placemark) {
 		String snippet;
 		List<Integer> numberOfPlacemarksAssociatedWithPlacemark = model
-				.getKeyToArrayPositions().get(placemark.key());
+				.getParser().getKeyToArrayPositions().get(placemark.key());
 		if (numberOfPlacemarksAssociatedWithPlacemark.size() == 1) {
 			snippet = placemark.getOccupation();
 		} else {
@@ -166,7 +166,8 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
 		for (KeyedMarker keyedMarker : markers) {
 			if (keyedMarker.getMarker().equals(marker)) {
 				List<Integer> numberOfPlacemarksAssociatedWithPlacemark = model
-						.getKeyToArrayPositions().get(keyedMarker.getKey());
+						.getParser().getKeyToArrayPositions()
+						.get(keyedMarker.getKey());
 				placemarks = model
 						.getPlacemarksAtIndices(numberOfPlacemarksAssociatedWithPlacemark);
 				break;

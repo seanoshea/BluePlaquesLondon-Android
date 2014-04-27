@@ -16,12 +16,16 @@
 
 package com.upwardsnorthwards.blueplaqueslondon;
 
+import java.util.HashMap;
+
 import android.app.Application;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.LocationClient;
@@ -33,6 +37,21 @@ public class BluePlaquesLondonApplication extends Application implements
 		GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
 
 	private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+
+	public enum TrackerName {
+		APP_TRACKER, GLOBAL_TRACKER,
+	}
+
+	private HashMap<TrackerName, Tracker> trackers = new HashMap<TrackerName, Tracker>();
+
+	synchronized Tracker getTracker(TrackerName trackerId) {
+		if (!trackers.containsKey(trackerId)) {
+			GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+			Tracker t = analytics.newTracker(R.xml.global_tracker);
+			trackers.put(trackerId, t);
+		}
+		return trackers.get(trackerId);
+	}
 
 	private LocationClient locationClient;
 	private Location currentLocation;
