@@ -44,6 +44,7 @@ import com.upwardsnorthwards.blueplaqueslondon.fragments.AboutFragment;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.MapFragment;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.SettingsFragment;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
+import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 
 public class MainActivity extends FragmentActivity implements
 		OnFocusChangeListener, OnQueryTextListener, OnItemClickListener {
@@ -125,6 +126,10 @@ public class MainActivity extends FragmentActivity implements
 			if (placemark == null) {
 				placemark = getClosestPlacemark();
 			}
+			BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
+			app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
+					BluePlaquesConstants.TABLE_ROW_PRESSED_EVENT,
+					placemark.getName());
 			mapFragment.navigateToPlacemark(placemark);
 		}
 	}

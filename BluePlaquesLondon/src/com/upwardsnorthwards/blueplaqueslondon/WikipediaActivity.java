@@ -77,7 +77,10 @@ public class WikipediaActivity extends Activity {
 	}
 
 	protected void onRetriveWikipediaUrlFailure() {
-
+		BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
+		app.trackEvent(BluePlaquesConstants.ERROR_CATEGORY,
+				BluePlaquesConstants.WIKIPEDIA_PAGE_LOAD_ERROR_EVENT,
+				placemark.getName());
 	}
 
 	public class WikipediaModel extends AsyncTask<String, String, String> {

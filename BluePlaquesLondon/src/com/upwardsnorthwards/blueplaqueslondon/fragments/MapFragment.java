@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
 import com.upwardsnorthwards.blueplaqueslondon.MapDetailActivity;
 import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.model.KeyedMarker;
@@ -121,6 +122,10 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
 		LatLng latLng = marker.getPosition();
 		BluePlaquesSharedPreferences.saveLastKnownBPLCoordinate(getActivity(),
 				latLng);
+		BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getActivity()
+				.getApplication();
+		app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
+				BluePlaquesConstants.MARKER_PRESSED_EVENT, marker.getTitle());
 		return false;
 	}
 
@@ -130,6 +135,11 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
 		intent.putParcelableArrayListExtra(
 				BluePlaquesConstants.INFO_WINDOW_CLICKED_PARCLEABLE_KEY,
 				getListOfPlacemarksForMarker(marker));
+		BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getActivity()
+				.getApplication();
+		app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
+				BluePlaquesConstants.MARKER_INFO_WINDOW_PRESSED_EVENT,
+				marker.getTitle());
 		startActivity(intent);
 	}
 

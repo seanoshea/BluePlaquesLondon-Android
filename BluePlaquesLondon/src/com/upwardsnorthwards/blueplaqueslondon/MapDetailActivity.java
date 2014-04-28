@@ -157,13 +157,20 @@ public class MapDetailActivity extends FragmentActivity implements
 			}
 		});
 		builder.show();
+		BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
+		app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
+				BluePlaquesConstants.DETAILS_BUTTON_PRESSED_EVENT, placemarks
+						.get(0).getTitle());
 	}
 
 	private void directionsButtonClicked() {
+		Placemark currentPlacemark = placemarks.get(0);
 		BluePlaquesLondonApplication application = (BluePlaquesLondonApplication) getApplication();
 		Location currentLocation = application.getCurrentLocation();
+		application.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
+				BluePlaquesConstants.DIRECTIONS_BUTTON_PRESSED_EVENT,
+				currentPlacemark.getTitle());
 		if (currentLocation != null) {
-			Placemark currentPlacemark = placemarks.get(0);
 			String url = "http://maps.google.com/maps?saddr="
 					+ currentLocation.getLatitude() + ","
 					+ currentLocation.getLongitude() + "&daddr="
@@ -184,14 +191,22 @@ public class MapDetailActivity extends FragmentActivity implements
 	}
 
 	private void wikipediaArticleButtonClicked() {
-		Intent intent = new Intent(this, WikipediaActivity.class);
 		Placemark placemark = placemarks.get(0);
+		BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
+		app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
+				BluePlaquesConstants.WIKIPEDIA_BUTTON_PRESSED_EVENT,
+				placemark.getTitle());
+		Intent intent = new Intent(this, WikipediaActivity.class);
 		intent.putExtra(BluePlaquesConstants.WIKIPEDIA_CLICKED_PARCLEABLE_KEY,
 				placemark);
 		startActivity(intent);
 	}
 
 	private void streetViewButtonClicked() {
+		BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
+		app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
+				BluePlaquesConstants.STREETVIEW_BUTTON_PRESSED_EVENT,
+				placemarks.get(0).getTitle());
 		Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
 				Uri.parse("google.streetview:cbll="
 						+ currentPlacemark.getLatitude() + ","

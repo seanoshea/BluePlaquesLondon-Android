@@ -23,7 +23,7 @@ public class BluePlaquesConstants {
 	public static final double DEFAULT_LATITUDE = 51.50016999993306f;
 	public static final double DEFAULT_LONGITUDE = -0.1814680000049975f;
 
-	public static final String APPLICATIONL_OADED = "ApplicationLoaded";
+	public static final String APPLICATION_LOADED = "ApplicationLoaded";
 	public static final String UI_ACTION_CATEGORY = "BPLUIActionCategory";
 	public static final String ERROR_CATEGORY = "BPLErrorCategory";
 	public static final String KMZ_FILE_PARSING = "BPLKMZFileParsing";

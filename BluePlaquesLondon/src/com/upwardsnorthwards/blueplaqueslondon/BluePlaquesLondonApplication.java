@@ -20,11 +20,14 @@ import java.util.HashMap;
 
 import android.app.Application;
 import android.content.IntentSender;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -43,16 +46,6 @@ public class BluePlaquesLondonApplication extends Application implements
 	}
 
 	private HashMap<TrackerName, Tracker> trackers = new HashMap<TrackerName, Tracker>();
-
-	synchronized Tracker getTracker(TrackerName trackerId) {
-		if (!trackers.containsKey(trackerId)) {
-			GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-			Tracker t = analytics.newTracker(R.xml.global_tracker);
-			trackers.put(trackerId, t);
-		}
-		return trackers.get(trackerId);
-	}
-
 	private LocationClient locationClient;
 	private Location currentLocation;
 
@@ -69,6 +62,7 @@ public class BluePlaquesLondonApplication extends Application implements
 			currentLocation
 					.setLongitude(BluePlaquesConstants.DEFAULT_LONGITUDE);
 		}
+		trackApplicationLoadedEvent();
 	}
 
 	@Override
@@ -96,6 +90,34 @@ public class BluePlaquesLondonApplication extends Application implements
 	@Override
 	public void onLocationChanged(Location location) {
 		currentLocation = location;
+	}
+
+	public void trackEvent(String category, String action, String label) {
+		Tracker tracker = getTracker(TrackerName.GLOBAL_TRACKER);
+		tracker.send(new HitBuilders.EventBuilder().setCategory(category)
+				.setAction(action).setLabel(label).build());
+	}
+
+	private synchronized Tracker getTracker(TrackerName trackerId) {
+		if (!trackers.containsKey(trackerId)) {
+			GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+			Tracker t = analytics.newTracker(R.xml.global_tracker);
+			trackers.put(trackerId, t);
+		}
+		return trackers.get(trackerId);
+	}
+
+	private void trackApplicationLoadedEvent() {
+		PackageInfo pInfo;
+		try {
+			pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+			trackEvent(
+					BluePlaquesConstants.APPLICATION_LOADED,
+					String.format("Application Version: %s", pInfo.versionName),
+					String.format("Android Version %s", Build.VERSION.RELEASE));
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public Location getCurrentLocation() {
