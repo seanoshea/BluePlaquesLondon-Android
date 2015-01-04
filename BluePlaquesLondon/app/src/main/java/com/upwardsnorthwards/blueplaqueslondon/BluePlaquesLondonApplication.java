@@ -31,13 +31,14 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationListener;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 
 public class BluePlaquesLondonApplication extends Application implements
-		GooglePlayServicesClient.ConnectionCallbacks,
-		GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
 	private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
@@ -46,13 +47,17 @@ public class BluePlaquesLondonApplication extends Application implements
 	}
 
 	private HashMap<TrackerName, Tracker> trackers = new HashMap<TrackerName, Tracker>();
-	private LocationClient locationClient;
+	private GoogleApiClient locationClient;
 	private Location currentLocation;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		locationClient = new LocationClient(this, this, this);
+        locationClient = new GoogleApiClient.Builder(getApplicationContext())
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
 		if (!Build.HARDWARE.contains("vbox")) {
 			locationClient.connect();
 		} else {
@@ -82,10 +87,10 @@ public class BluePlaquesLondonApplication extends Application implements
 
 	}
 
-	@Override
-	public void onDisconnected() {
+    @Override
+    public void onConnectionSuspended(int i) {
 
-	}
+    }
 
 	@Override
 	public void onLocationChanged(Location location) {
