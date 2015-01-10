@@ -1,18 +1,30 @@
-/*
- Copyright 2014 Sean O' Shea
- 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.apache.org/licenses/LICENSE-2.0
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
+// Copyright (c) 2014 - 2015 Upwards Northwards Software Limited
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+// 1. Redistributions of source code must retain the above copyright
+// notice, this list of conditions and the following disclaimer.
+// 2. Redistributions in binary form must reproduce the above copyright
+// notice, this list of conditions and the following disclaimer in the
+// documentation and/or other materials provided with the distribution.
+// 3. All advertising materials mentioning features or use of this software
+// must display the following acknowledgement:
+// This product includes software developed by Upwards Northwards Software Limited.
+// 4. Neither the name of Upwards Northwards Software Limited nor the
+// names of its contributors may be used to endorse or promote products
+// derived from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY UPWARDS NORTHWARDS SOFTWARE LIMITED ''AS IS'' AND ANY
+// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+// DISCLAIMED. IN NO EVENT SHALL THE UPWARDS NORTHWARDS SOFTWARE LIMITED BE LIABLE FOR ANY
+// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+// ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.upwardsnorthwards.blueplaqueslondon.fragments;
 
@@ -35,51 +47,51 @@ import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesSharedPreferences;
 
 public class SettingsFragment extends DialogFragment implements
-		OnCheckedChangeListener {
+        OnCheckedChangeListener {
 
-	private CheckBox checkBox;
+    private CheckBox checkBox;
 
-	public SettingsFragment() {
+    public SettingsFragment() {
 
-	}
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_settings, container);
-		getDialog().setTitle(getString(R.string.action_settings));
-		return view;
-	}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_settings, container);
+        getDialog().setTitle(getString(R.string.action_settings));
+        return view;
+    }
 
-	@Override
-	public void onStart() {
-		super.onStart();
-		Dialog dialog = getDialog();
-		if (dialog != null) {
-			dialog.setCanceledOnTouchOutside(true);
-			WindowManager wm = (WindowManager) getActivity().getSystemService(
-					Context.WINDOW_SERVICE);
-			Display display = wm.getDefaultDisplay();
-			Point size = new Point();
-			display.getSize(size);
-			dialog.getWindow().setLayout(size.x / 100 * 80, size.y / 100 * 80);
-		}
-	}
+    @Override
+    public void onStart() {
+        super.onStart();
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            dialog.setCanceledOnTouchOutside(true);
+            WindowManager wm = (WindowManager) getActivity().getSystemService(
+                    Context.WINDOW_SERVICE);
+            Display display = wm.getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            dialog.getWindow().setLayout(size.x / 100 * 80, size.y / 100 * 80);
+        }
+    }
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		checkBox = (CheckBox) getView().findViewById(
-				R.id.fragment_settings_analytics_checkbox);
-		checkBox.setOnCheckedChangeListener(this);
-		checkBox.setChecked(BluePlaquesSharedPreferences
-				.getAnalyticsEnabled(getActivity()));
-	}
+    @Override
+    public void onResume() {
+        super.onResume();
+        checkBox = (CheckBox) getView().findViewById(
+                R.id.fragment_settings_analytics_checkbox);
+        checkBox.setOnCheckedChangeListener(this);
+        checkBox.setChecked(BluePlaquesSharedPreferences
+                .getAnalyticsEnabled(getActivity()));
+    }
 
-	@Override
-	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		GoogleAnalytics.getInstance(getActivity()).setAppOptOut(!isChecked);
-		BluePlaquesSharedPreferences.saveAnalyticsEnabled(getActivity(),
-				isChecked);
-	}
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        GoogleAnalytics.getInstance(getActivity()).setAppOptOut(!isChecked);
+        BluePlaquesSharedPreferences.saveAnalyticsEnabled(getActivity(),
+                isChecked);
+    }
 }
