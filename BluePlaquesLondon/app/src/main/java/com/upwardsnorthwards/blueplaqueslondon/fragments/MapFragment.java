@@ -27,6 +27,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -55,6 +56,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
 		setupMap();
 		LatLng lastKnownCoordinate = BluePlaquesSharedPreferences
 				.getLastKnownBPLCoordinate(getActivity());
+        MapsInitializer.initialize(getActivity());
 		googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
 				lastKnownCoordinate,
 				BluePlaquesSharedPreferences.getMapZoom(getActivity())));

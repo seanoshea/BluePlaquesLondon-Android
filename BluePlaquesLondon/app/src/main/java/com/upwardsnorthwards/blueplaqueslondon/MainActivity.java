@@ -38,6 +38,9 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
 import com.upwardsnorthwards.blueplaqueslondon.adapters.SearchAdapter;
 import com.upwardsnorthwards.blueplaqueslondon.adapters.SearchAdapter.ViewHolder;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.AboutFragment;
@@ -92,6 +95,7 @@ public class MainActivity extends FragmentActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
+        checkForGooglePlayServicesAvailability();
 		setupSearchListView();
 	}
 
@@ -197,4 +201,16 @@ public class MainActivity extends FragmentActivity implements
 		}
 		return closestPlacemark;
 	}
+
+    private void checkForGooglePlayServicesAvailability() {
+        int playServicesAvailable = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        switch(playServicesAvailable) {
+            case ConnectionResult.SUCCESS: {
+
+            } break;
+            default: {
+                GooglePlayServicesUtil.showErrorDialogFragment(playServicesAvailable, this, 123);
+            }
+        }
+    }
 }
