@@ -1,18 +1,30 @@
-/*
- Copyright 2014 Sean O' Shea
- 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.apache.org/licenses/LICENSE-2.0
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
+// Copyright (c) 2014 - 2015 Upwards Northwards Software Limited
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+// 1. Redistributions of source code must retain the above copyright
+// notice, this list of conditions and the following disclaimer.
+// 2. Redistributions in binary form must reproduce the above copyright
+// notice, this list of conditions and the following disclaimer in the
+// documentation and/or other materials provided with the distribution.
+// 3. All advertising materials mentioning features or use of this software
+// must display the following acknowledgement:
+// This product includes software developed by Upwards Northwards Software Limited.
+// 4. Neither the name of Upwards Northwards Software Limited nor the
+// names of its contributors may be used to endorse or promote products
+// derived from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY UPWARDS NORTHWARDS SOFTWARE LIMITED ''AS IS'' AND ANY
+// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+// DISCLAIMED. IN NO EVENT SHALL THE UPWARDS NORTHWARDS SOFTWARE LIMITED BE LIABLE FOR ANY
+// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+// ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.upwardsnorthwards.blueplaqueslondon.fragments;
 
@@ -43,156 +55,156 @@ import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesSharedPreferences;
 
 public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
-		implements OnCameraChangeListener, OnMarkerClickListener,
-		OnInfoWindowClickListener {
+        implements OnCameraChangeListener, OnMarkerClickListener,
+        OnInfoWindowClickListener {
 
-	private GoogleMap googleMap;
-	private MapModel model;
-	private List<KeyedMarker> markers = new ArrayList<KeyedMarker>();
+    private GoogleMap googleMap;
+    private MapModel model;
+    private List<KeyedMarker> markers = new ArrayList<KeyedMarker>();
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		setupMap();
-		LatLng lastKnownCoordinate = BluePlaquesSharedPreferences
-				.getLastKnownBPLCoordinate(getActivity());
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupMap();
+        LatLng lastKnownCoordinate = BluePlaquesSharedPreferences
+                .getLastKnownBPLCoordinate(getActivity());
         MapsInitializer.initialize(getActivity());
-		googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-				lastKnownCoordinate,
-				BluePlaquesSharedPreferences.getMapZoom(getActivity())));
-	}
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                lastKnownCoordinate,
+                BluePlaquesSharedPreferences.getMapZoom(getActivity())));
+    }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		model = new MapModel();
-		loadMapData();
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        model = new MapModel();
+        loadMapData();
+    }
 
-	public void loadMapData() {
-		model.loadMapData(getActivity());
-	}
+    public void loadMapData() {
+        model.loadMapData(getActivity());
+    }
 
-	private void setupMap() {
-		googleMap = getMap();
-		if (googleMap == null) {
-			googleMap = ((MapFragment) getFragmentManager().findFragmentById(
-					R.id.map)).getMap();
-		}
-		if (googleMap != null) {
-			// a few settings
-			googleMap.setIndoorEnabled(false);
-			googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-			// listen for events
-			googleMap.setOnCameraChangeListener(this);
-			googleMap.setOnMarkerClickListener(this);
-			googleMap.setOnInfoWindowClickListener(this);
-			addPlacemarksToMap();
-		}
-	}
+    private void setupMap() {
+        googleMap = getMap();
+        if (googleMap == null) {
+            googleMap = ((MapFragment) getFragmentManager().findFragmentById(
+                    R.id.map)).getMap();
+        }
+        if (googleMap != null) {
+            // a few settings
+            googleMap.setIndoorEnabled(false);
+            googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+            // listen for events
+            googleMap.setOnCameraChangeListener(this);
+            googleMap.setOnMarkerClickListener(this);
+            googleMap.setOnInfoWindowClickListener(this);
+            addPlacemarksToMap();
+        }
+    }
 
-	private void addPlacemarksToMap() {
-		for (Placemark placemark : model.getMassagedPlacemarks()) {
-			int iconResource = R.drawable.blue;
-			if (!placemark.getStyleUrl().equalsIgnoreCase("#myDefaultStyles")) {
-				iconResource = R.drawable.green;
-			}
-			Marker marker = googleMap.addMarker(new MarkerOptions()
-					.position(
-							new LatLng(placemark.getLatitude(), placemark
-									.getLongitude()))
-					.title(placemark.getTitle())
-					.snippet(getSnippetForPlacemark(placemark))
-					.icon(BitmapDescriptorFactory.fromResource(iconResource)));
-			KeyedMarker keyedMarker = new KeyedMarker();
-			keyedMarker.setKey(placemark.key());
-			keyedMarker.setMarker(marker);
-			markers.add(keyedMarker);
-		}
-	}
+    private void addPlacemarksToMap() {
+        for (Placemark placemark : model.getMassagedPlacemarks()) {
+            int iconResource = R.drawable.blue;
+            if (!placemark.getStyleUrl().equalsIgnoreCase("#myDefaultStyles")) {
+                iconResource = R.drawable.green;
+            }
+            Marker marker = googleMap.addMarker(new MarkerOptions()
+                    .position(
+                            new LatLng(placemark.getLatitude(), placemark
+                                    .getLongitude()))
+                    .title(placemark.getTitle())
+                    .snippet(getSnippetForPlacemark(placemark))
+                    .icon(BitmapDescriptorFactory.fromResource(iconResource)));
+            KeyedMarker keyedMarker = new KeyedMarker();
+            keyedMarker.setKey(placemark.key());
+            keyedMarker.setMarker(marker);
+            markers.add(keyedMarker);
+        }
+    }
 
-	@Override
-	public void onCameraChange(CameraPosition position) {
-		BluePlaquesSharedPreferences.saveLastKnownCoordinate(getActivity(),
-				position.target);
-		BluePlaquesSharedPreferences.saveMapZoom(getActivity(), googleMap,
-				position.zoom);
-	}
+    @Override
+    public void onCameraChange(CameraPosition position) {
+        BluePlaquesSharedPreferences.saveLastKnownCoordinate(getActivity(),
+                position.target);
+        BluePlaquesSharedPreferences.saveMapZoom(getActivity(), googleMap,
+                position.zoom);
+    }
 
-	@Override
-	public boolean onMarkerClick(Marker marker) {
-		LatLng latLng = marker.getPosition();
-		BluePlaquesSharedPreferences.saveLastKnownBPLCoordinate(getActivity(),
-				latLng);
-		BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getActivity()
-				.getApplication();
-		app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
-				BluePlaquesConstants.MARKER_PRESSED_EVENT, marker.getTitle());
-		return false;
-	}
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        LatLng latLng = marker.getPosition();
+        BluePlaquesSharedPreferences.saveLastKnownBPLCoordinate(getActivity(),
+                latLng);
+        BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getActivity()
+                .getApplication();
+        app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
+                BluePlaquesConstants.MARKER_PRESSED_EVENT, marker.getTitle());
+        return false;
+    }
 
-	@Override
-	public void onInfoWindowClick(Marker marker) {
-		Intent intent = new Intent(getActivity(), MapDetailActivity.class);
-		intent.putParcelableArrayListExtra(
-				BluePlaquesConstants.INFO_WINDOW_CLICKED_PARCLEABLE_KEY,
-				getListOfPlacemarksForMarker(marker));
-		BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getActivity()
-				.getApplication();
-		app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
-				BluePlaquesConstants.MARKER_INFO_WINDOW_PRESSED_EVENT,
-				marker.getTitle());
-		startActivity(intent);
-	}
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Intent intent = new Intent(getActivity(), MapDetailActivity.class);
+        intent.putParcelableArrayListExtra(
+                BluePlaquesConstants.INFO_WINDOW_CLICKED_PARCLEABLE_KEY,
+                getListOfPlacemarksForMarker(marker));
+        BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getActivity()
+                .getApplication();
+        app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
+                BluePlaquesConstants.MARKER_INFO_WINDOW_PRESSED_EVENT,
+                marker.getTitle());
+        startActivity(intent);
+    }
 
-	public void navigateToPlacemark(Placemark placemark) {
-		googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
-				placemark.getLatitude(), placemark.getLongitude()),
-				BluePlaquesSharedPreferences.getMapZoom(getActivity())));
-		LatLng latLng = new LatLng(placemark.getLatitude(),
-				placemark.getLongitude());
-		BluePlaquesSharedPreferences.saveLastKnownBPLCoordinate(getActivity(),
-				latLng);
-		for (KeyedMarker marker : markers) {
-			if (placemark.key().equals(marker.getKey())) {
-				marker.getMarker().showInfoWindow();
-				break;
-			}
-		}
-	}
+    public void navigateToPlacemark(Placemark placemark) {
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
+                        placemark.getLatitude(), placemark.getLongitude()),
+                BluePlaquesSharedPreferences.getMapZoom(getActivity())));
+        LatLng latLng = new LatLng(placemark.getLatitude(),
+                placemark.getLongitude());
+        BluePlaquesSharedPreferences.saveLastKnownBPLCoordinate(getActivity(),
+                latLng);
+        for (KeyedMarker marker : markers) {
+            if (placemark.key().equals(marker.getKey())) {
+                marker.getMarker().showInfoWindow();
+                break;
+            }
+        }
+    }
 
-	private String getSnippetForPlacemark(Placemark placemark) {
-		String snippet;
-		List<Integer> numberOfPlacemarksAssociatedWithPlacemark = model
-				.getParser().getKeyToArrayPositions().get(placemark.key());
-		if (numberOfPlacemarksAssociatedWithPlacemark.size() == 1) {
-			snippet = placemark.getOccupation();
-		} else {
-			snippet = getString(R.string.multiple_placemarks);
-		}
-		return snippet;
-	}
+    private String getSnippetForPlacemark(Placemark placemark) {
+        String snippet;
+        List<Integer> numberOfPlacemarksAssociatedWithPlacemark = model
+                .getParser().getKeyToArrayPositions().get(placemark.key());
+        if (numberOfPlacemarksAssociatedWithPlacemark.size() == 1) {
+            snippet = placemark.getOccupation();
+        } else {
+            snippet = getString(R.string.multiple_placemarks);
+        }
+        return snippet;
+    }
 
-	private ArrayList<Placemark> getListOfPlacemarksForMarker(Marker marker) {
-		ArrayList<Placemark> placemarks = new ArrayList<Placemark>();
-		for (KeyedMarker keyedMarker : markers) {
-			if (keyedMarker.getMarker().equals(marker)) {
-				List<Integer> numberOfPlacemarksAssociatedWithPlacemark = model
-						.getParser().getKeyToArrayPositions()
-						.get(keyedMarker.getKey());
-				placemarks = model
-						.getPlacemarksAtIndices(numberOfPlacemarksAssociatedWithPlacemark);
-				break;
-			}
-		}
-		return placemarks;
-	}
+    private ArrayList<Placemark> getListOfPlacemarksForMarker(Marker marker) {
+        ArrayList<Placemark> placemarks = new ArrayList<Placemark>();
+        for (KeyedMarker keyedMarker : markers) {
+            if (keyedMarker.getMarker().equals(marker)) {
+                List<Integer> numberOfPlacemarksAssociatedWithPlacemark = model
+                        .getParser().getKeyToArrayPositions()
+                        .get(keyedMarker.getKey());
+                placemarks = model
+                        .getPlacemarksAtIndices(numberOfPlacemarksAssociatedWithPlacemark);
+                break;
+            }
+        }
+        return placemarks;
+    }
 
-	public MapModel getModel() {
-		return model;
-	}
+    public MapModel getModel() {
+        return model;
+    }
 
-	public void setModel(MapModel model) {
-		this.model = model;
-	}
+    public void setModel(MapModel model) {
+        this.model = model;
+    }
 }

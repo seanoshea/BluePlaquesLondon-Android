@@ -1,18 +1,31 @@
-/*
- Copyright 2014 Sean O' Shea
- 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.apache.org/licenses/LICENSE-2.0
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
+// Copyright (c) 2014 - 2015 Upwards Northwards Software Limited
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+// 1. Redistributions of source code must retain the above copyright
+// notice, this list of conditions and the following disclaimer.
+// 2. Redistributions in binary form must reproduce the above copyright
+// notice, this list of conditions and the following disclaimer in the
+// documentation and/or other materials provided with the distribution.
+// 3. All advertising materials mentioning features or use of this software
+// must display the following acknowledgement:
+// This product includes software developed by Upwards Northwards Software Limited.
+// 4. Neither the name of Upwards Northwards Software Limited nor the
+// names of its contributors may be used to endorse or promote products
+// derived from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY UPWARDS NORTHWARDS SOFTWARE LIMITED ''AS IS'' AND ANY
+// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+// DISCLAIMED. IN NO EVENT SHALL THE UPWARDS NORTHWARDS SOFTWARE LIMITED BE LIABLE FOR ANY
+// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+// ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 package com.upwardsnorthwards.blueplaqueslondon;
 
 import java.io.ByteArrayOutputStream;
@@ -43,107 +56,107 @@ import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 
 public class WikipediaActivity extends Activity {
 
-	private WebView webView;
-	private Placemark placemark;
+    private WebView webView;
+    private Placemark placemark;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_wikipedia);
-		webView = (WebView) findViewById(R.id.activity_wikipedia_web_view);
-		Intent intent = getIntent();
-		if (intent != null) {
-			placemark = (Placemark) intent
-					.getParcelableExtra(BluePlaquesConstants.WIKIPEDIA_CLICKED_PARCLEABLE_KEY);
-		}
-		new WikipediaModel().execute(placemark.getName(),
-				getString(R.string.wikipedia_url));
-	}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_wikipedia);
+        webView = (WebView) findViewById(R.id.activity_wikipedia_web_view);
+        Intent intent = getIntent();
+        if (intent != null) {
+            placemark = (Placemark) intent
+                    .getParcelableExtra(BluePlaquesConstants.WIKIPEDIA_CLICKED_PARCLEABLE_KEY);
+        }
+        new WikipediaModel().execute(placemark.getName(),
+                getString(R.string.wikipedia_url));
+    }
 
-	protected void onRetriveWikipediaUrlSuccess(String url) {
-		final Activity activity = this;
-		webView.setWebChromeClient(new WebChromeClient() {
-			public void onProgressChanged(WebView view, int progress) {
-				activity.setProgress(progress * 1000);
-			}
-		});
-		webView.setWebViewClient(new WebViewClient() {
-			public void onReceivedError(WebView view, int errorCode,
-					String description, String failingUrl) {
-				onRetriveWikipediaUrlFailure();
-			}
-		});
-		webView.loadUrl(url);
-	}
+    protected void onRetriveWikipediaUrlSuccess(String url) {
+        final Activity activity = this;
+        webView.setWebChromeClient(new WebChromeClient() {
+            public void onProgressChanged(WebView view, int progress) {
+                activity.setProgress(progress * 1000);
+            }
+        });
+        webView.setWebViewClient(new WebViewClient() {
+            public void onReceivedError(WebView view, int errorCode,
+                                        String description, String failingUrl) {
+                onRetriveWikipediaUrlFailure();
+            }
+        });
+        webView.loadUrl(url);
+    }
 
-	protected void onRetriveWikipediaUrlFailure() {
-		BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
-		app.trackEvent(BluePlaquesConstants.ERROR_CATEGORY,
-				BluePlaquesConstants.WIKIPEDIA_PAGE_LOAD_ERROR_EVENT,
-				placemark.getName());
-	}
+    protected void onRetriveWikipediaUrlFailure() {
+        BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
+        app.trackEvent(BluePlaquesConstants.ERROR_CATEGORY,
+                BluePlaquesConstants.WIKIPEDIA_PAGE_LOAD_ERROR_EVENT,
+                placemark.getName());
+    }
 
-	public class WikipediaModel extends AsyncTask<String, String, String> {
+    public class WikipediaModel extends AsyncTask<String, String, String> {
 
-		private static final String WIKIPEDIA_SEARCH_URL_FORMAT = "http://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=%s&srprop=timestamp&format=json";
-		private String responseUrl;
+        private static final String WIKIPEDIA_SEARCH_URL_FORMAT = "http://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=%s&srprop=timestamp&format=json";
+        private String responseUrl;
 
-		@Override
-		protected String doInBackground(String... params) {
-			String name = params[0];
-			responseUrl = params[1];
+        @Override
+        protected String doInBackground(String... params) {
+            String name = params[0];
+            responseUrl = params[1];
 
-			HttpClient httpclient = new DefaultHttpClient();
-			HttpResponse response;
-			String responseString = null;
-			try {
-				String url = String.format(WIKIPEDIA_SEARCH_URL_FORMAT,
-						URLEncoder.encode(name, "UTF-8"));
-				HttpGet get = new HttpGet(url);
-				response = httpclient.execute(get);
-				StatusLine statusLine = response.getStatusLine();
-				if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-					ByteArrayOutputStream out = new ByteArrayOutputStream();
-					response.getEntity().writeTo(out);
-					out.close();
-					responseString = out.toString();
-				} else {
-					// Closes the connection.
-					response.getEntity().getContent().close();
-					throw new IOException(statusLine.getReasonPhrase());
-				}
-			} catch (ClientProtocolException e) {
-				onRetriveWikipediaUrlFailure();
-			} catch (IOException e) {
-				onRetriveWikipediaUrlFailure();
-			}
-			return responseString;
-		}
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpResponse response;
+            String responseString = null;
+            try {
+                String url = String.format(WIKIPEDIA_SEARCH_URL_FORMAT,
+                        URLEncoder.encode(name, "UTF-8"));
+                HttpGet get = new HttpGet(url);
+                response = httpclient.execute(get);
+                StatusLine statusLine = response.getStatusLine();
+                if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    response.getEntity().writeTo(out);
+                    out.close();
+                    responseString = out.toString();
+                } else {
+                    // Closes the connection.
+                    response.getEntity().getContent().close();
+                    throw new IOException(statusLine.getReasonPhrase());
+                }
+            } catch (ClientProtocolException e) {
+                onRetriveWikipediaUrlFailure();
+            } catch (IOException e) {
+                onRetriveWikipediaUrlFailure();
+            }
+            return responseString;
+        }
 
-		@Override
-		protected void onPostExecute(String result) {
-			super.onPostExecute(result);
-			try {
-				if (result.length() > 0) {
-					JSONObject jObject = new JSONObject(result);
-					JSONObject query = jObject.getJSONObject("query");
-					JSONArray search = query.getJSONArray("search");
-					if (search.length() > 0) {
-						// take the first result ...
-						JSONObject wikipediaArticle = (JSONObject) search
-								.get(0);
-						String title = wikipediaArticle.getString("title");
-						onRetriveWikipediaUrlSuccess(String.format(responseUrl,
-								title.replace(" ", "_")));
-					} else {
-						onRetriveWikipediaUrlFailure();
-					}
-				} else {
-					onRetriveWikipediaUrlFailure();
-				}
-			} catch (JSONException e) {
-				onRetriveWikipediaUrlFailure();
-			}
-		}
-	}
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            try {
+                if (result.length() > 0) {
+                    JSONObject jObject = new JSONObject(result);
+                    JSONObject query = jObject.getJSONObject("query");
+                    JSONArray search = query.getJSONArray("search");
+                    if (search.length() > 0) {
+                        // take the first result ...
+                        JSONObject wikipediaArticle = (JSONObject) search
+                                .get(0);
+                        String title = wikipediaArticle.getString("title");
+                        onRetriveWikipediaUrlSuccess(String.format(responseUrl,
+                                title.replace(" ", "_")));
+                    } else {
+                        onRetriveWikipediaUrlFailure();
+                    }
+                } else {
+                    onRetriveWikipediaUrlFailure();
+                }
+            } catch (JSONException e) {
+                onRetriveWikipediaUrlFailure();
+            }
+        }
+    }
 }
