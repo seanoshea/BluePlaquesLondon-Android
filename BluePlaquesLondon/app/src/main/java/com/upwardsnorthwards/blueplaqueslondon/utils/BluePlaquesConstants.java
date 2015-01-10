@@ -44,7 +44,6 @@ public class BluePlaquesConstants {
     public static final String DETAILS_BUTTON_PRESSED_EVENT = "BPLDetailsButtonPressedEvent";
     public static final String WIKIPEDIA_BUTTON_PRESSED_EVENT = "BPLWikipediaButtonPressedEvent";
     public static final String STREETVIEW_BUTTON_PRESSED_EVENT = "BPLStreetViewButtonPressedEvent";
-    public static final String DIRECTIONS_BUTTON_PRESSED_EVENT = "BPLDirectionsButtonPressedEvent";
     public static final String TABLE_ROW_PRESSED_EVENT = "BPLTableRowPressedEvent";
     public static final String MARKER_PRESSED_EVENT = "BPLMarkerPressedEvent";
     public static final String MARKER_INFO_WINDOW_PRESSED_EVENT = "BPLMarkerInfoWindowPressedEvent";

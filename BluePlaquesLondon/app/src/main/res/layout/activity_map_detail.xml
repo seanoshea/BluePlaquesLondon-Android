@@ -65,11 +65,6 @@
             android:text="@string/wikipedia_article" />
 
         <Button
-            android:id="@+id/activity_map_details_directions"
-            style="@style/OrangeButton"
-            android:text="@string/directions" />
-
-        <Button
             android:id="@+id/activity_map_details_more"
             style="@style/OrangeButton"
             android:text="@string/multiple_placemarks"
