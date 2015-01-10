@@ -59,7 +59,6 @@ public class MapDetailActivity extends FragmentActivity implements
     private TextView noteTextView;
     private Button streetViewButton;
     private Button wikipediaArticleButton;
-    private Button directionsButton;
     private Button moreButton;
 
     @Override
@@ -81,8 +80,6 @@ public class MapDetailActivity extends FragmentActivity implements
             streetViewButtonClicked();
         } else if (v.equals(wikipediaArticleButton)) {
             wikipediaArticleButtonClicked();
-        } else if (v.equals(directionsButton)) {
-            directionsButtonClicked();
         } else if (v.equals(moreButton)) {
             moreButtonClicked();
         }
@@ -109,7 +106,6 @@ public class MapDetailActivity extends FragmentActivity implements
         noteTextView = (TextView) findViewById(R.id.activity_map_details_note);
         streetViewButton = (Button) findViewById(R.id.activity_map_details_street_view);
         wikipediaArticleButton = (Button) findViewById(R.id.activity_map_details_wikipedia_article);
-        directionsButton = (Button) findViewById(R.id.activity_map_details_directions);
         moreButton = (Button) findViewById(R.id.activity_map_details_more);
         addClickListenersToButtons();
         addTextToTextViews();
@@ -118,7 +114,6 @@ public class MapDetailActivity extends FragmentActivity implements
     private void addClickListenersToButtons() {
         streetViewButton.setOnClickListener(this);
         wikipediaArticleButton.setOnClickListener(this);
-        directionsButton.setOnClickListener(this);
         moreButton.setOnClickListener(this);
         moreButton.setVisibility(placemarks.size() == 1 ? View.GONE
                 : View.VISIBLE);
@@ -173,33 +168,6 @@ public class MapDetailActivity extends FragmentActivity implements
         app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
                 BluePlaquesConstants.DETAILS_BUTTON_PRESSED_EVENT, placemarks
                         .get(0).getTitle());
-    }
-
-    private void directionsButtonClicked() {
-        Placemark currentPlacemark = placemarks.get(0);
-        BluePlaquesLondonApplication application = (BluePlaquesLondonApplication) getApplication();
-        Location currentLocation = application.getCurrentLocation();
-        application.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
-                BluePlaquesConstants.DIRECTIONS_BUTTON_PRESSED_EVENT,
-                currentPlacemark.getTitle());
-        if (currentLocation != null) {
-            String url = "http://maps.google.com/maps?saddr="
-                    + currentLocation.getLatitude() + ","
-                    + currentLocation.getLongitude() + "&daddr="
-                    + currentPlacemark.getLatitude() + ","
-                    + currentPlacemark.getLongitude() + "&mode=walking";
-            Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                    Uri.parse(url));
-            intent.setClassName("com.google.android.apps.maps",
-                    "com.google.android.maps.MapsActivity");
-            List<ResolveInfo> intentActivities = getPackageManager()
-                    .queryIntentActivities(intent, 0);
-            if (intentActivities.size() > 0) {
-                startActivity(intent);
-            } else {
-                promptUserToInstallGoogleMaps();
-            }
-        }
     }
 
     private void wikipediaArticleButtonClicked() {
