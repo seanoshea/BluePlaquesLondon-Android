@@ -13,6 +13,7 @@ android:
     - android-21
     - extra-google-google_play_services
     - extra-android-support
+    - extra
 
 script: travis/script.sh
 
