@@ -4,10 +4,14 @@ env:
   matrix:
     - ANDROID_TARGET=android-21  ANDROID_ABI=armeabi-v7a
 
+before_install:
+  - chmod a+x travis/script.sh
+
 android:
   components:
     - build-tools-21.1.2
     - android-21
     - extra-google-google_play_services
 
-script: ./BluePlaquesLondon/gradlew connectedAndroidTest
+script: travis/script.sh
+
