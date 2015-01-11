@@ -61,6 +61,9 @@ import com.upwardsnorthwards.blueplaqueslondon.fragments.SettingsFragment;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 
+import hotchemi.android.rate.AppRate;
+import hotchemi.android.rate.OnClickButtonListener;
+
 public class MainActivity extends FragmentActivity implements
         OnFocusChangeListener, OnQueryTextListener, OnItemClickListener {
 
@@ -71,6 +74,7 @@ public class MainActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initialiseAppRating();
     }
 
     @Override
@@ -225,5 +229,43 @@ public class MainActivity extends FragmentActivity implements
                 GooglePlayServicesUtil.showErrorDialogFragment(playServicesAvailable, this, 123);
             }
         }
+    }
+
+    private void initialiseAppRating() {
+        AppRate.with(this)
+                .setInstallDays(10)
+                .setLaunchTimes(10)
+                .setRemindInterval(1)
+                .setOnClickButtonListener(new OnClickButtonListener() {
+                    @Override
+                    public void onClickButton(int which) {
+                        String event = analyticsStringForButtonPress(which);
+                        BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
+                        app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
+                                BluePlaquesConstants.RATE_APP_BUTTON_PRESSED_EVENT,
+                                event);
+                    }
+                })
+                .monitor();
+        AppRate.showRateDialogIfMeetsConditions(this);
+    }
+
+    private String analyticsStringForButtonPress(int which) {
+        String event = "";
+        switch (which) {
+            case 0: {
+                event = BluePlaquesConstants.DECLINE_RATE_APP_BUTTON_PRESSED_EVENT;
+            }
+            break;
+            case 1: {
+                event = BluePlaquesConstants.REMIND_RATE_APP_BUTTON_PRESSED_EVENT;
+            }
+            break;
+            case 2: {
+                event = BluePlaquesConstants.RATE_APP_STORE_OPENED_EVENT;
+            }
+            break;
+        }
+        return event;
     }
 }

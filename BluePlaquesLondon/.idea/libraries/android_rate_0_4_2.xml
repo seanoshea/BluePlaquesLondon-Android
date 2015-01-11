@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="android-rate-0.4.2">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.github.hotchemi/android-rate/0.4.2/res" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.github.hotchemi/android-rate/0.4.2/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
