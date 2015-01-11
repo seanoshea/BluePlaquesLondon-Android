@@ -42,7 +42,6 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationListener;
@@ -55,7 +54,7 @@ public class BluePlaquesLondonApplication extends Application implements
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
     public enum TrackerName {
-        APP_TRACKER, GLOBAL_TRACKER,
+        APP_TRACKER,
     }
 
     private HashMap<TrackerName, Tracker> trackers = new HashMap<TrackerName, Tracker>();
@@ -110,7 +109,7 @@ public class BluePlaquesLondonApplication extends Application implements
     }
 
     public void trackEvent(String category, String action, String label) {
-        Tracker tracker = getTracker(TrackerName.GLOBAL_TRACKER);
+        Tracker tracker = getTracker(TrackerName.APP_TRACKER);
         tracker.send(new HitBuilders.EventBuilder().setCategory(category)
                 .setAction(action).setLabel(label).build());
     }
@@ -118,7 +117,7 @@ public class BluePlaquesLondonApplication extends Application implements
     private synchronized Tracker getTracker(TrackerName trackerId) {
         if (!trackers.containsKey(trackerId)) {
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            Tracker t = analytics.newTracker(R.xml.global_tracker);
+            Tracker t = analytics.newTracker(R.xml.app_tracker);
             trackers.put(trackerId, t);
         }
         return trackers.get(trackerId);

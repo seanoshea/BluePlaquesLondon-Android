@@ -47,7 +47,7 @@
     <string name="multiple_placemarks_select_one">Select one</string>
     <string name="cancel">Cancel</string>
     <string name="wikipedia_url">http://en.wikipedia.org/wiki/%1$s</string>
-    <string name="app_required">App Required</string>
+    <string name="app_required">Google Maps Required</string>
     <string name="install_google_maps">You need to install Google Maps to view Street View</string>
     <string name="ok">OK</string>
     <string name="closest">Find the Plaque closest to me</string>
