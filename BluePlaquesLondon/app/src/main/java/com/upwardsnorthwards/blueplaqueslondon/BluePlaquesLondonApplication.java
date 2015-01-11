@@ -37,6 +37,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -50,6 +51,8 @@ import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 public class BluePlaquesLondonApplication extends Application implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
+
+    private final static String TAG = "BluePlaquesLondonApplication";
 
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
@@ -89,7 +92,7 @@ public class BluePlaquesLondonApplication extends Application implements
                         CONNECTION_FAILURE_RESOLUTION_REQUEST);
             }
         } catch (IntentSender.SendIntentException e) {
-            e.printStackTrace();
+            Log.e(TAG, "An error occurred when loading the map", e);
         }
     }
 
@@ -132,7 +135,7 @@ public class BluePlaquesLondonApplication extends Application implements
                     String.format("Application Version: %s", pInfo.versionName),
                     String.format("Android Version %s", Build.VERSION.RELEASE));
         } catch (NameNotFoundException e) {
-            e.printStackTrace();
+            Log.e(TAG, "An error occurred when requesting the package information from the app", e);
         }
     }
 

@@ -37,10 +37,13 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 
 public class BluePlaquesKMLParser {
+
+    private static final String TAG = "BluePlaquesKMLParser";
 
     private List<Placemark> massagedPlacemarks = new ArrayList<Placemark>();
     private List<Placemark> placemarks = new ArrayList<Placemark>();
@@ -112,7 +115,7 @@ public class BluePlaquesKMLParser {
                 eventType = xpp.next();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "An error occurred when parsing the list of placemarks from the kml file", e);
         }
         conslidateDuplicates();
     }
@@ -124,7 +127,7 @@ public class BluePlaquesKMLParser {
                 currentPlacemark.setLatitude(Double.parseDouble(parts[1]));
                 currentPlacemark.setLongitude(Double.parseDouble(parts[0]));
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, "An error occurred when parsing the lat and long of a placemark", e);
             }
         }
     }
