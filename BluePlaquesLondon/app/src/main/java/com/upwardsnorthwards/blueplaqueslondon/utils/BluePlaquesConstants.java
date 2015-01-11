@@ -49,7 +49,6 @@ public class BluePlaquesConstants {
     public static final String MARKER_INFO_WINDOW_PRESSED_EVENT = "BPLMarkerInfoWindowPressedEvent";
     public static final String ABOUT_LINK_PRESSED_EVENT = "BPLAboutLinkPressedEvent";
     public static final String WIKIPEDIA_PAGE_LOAD_ERROR_EVENT = "BPLWikipediaPageLoadErrorEvent";
-    public static final String STREET_MAPS_PAGE_LOAD_ERROR_EVENT = "BPLStreetMapsPageLoadErrorEvent";
     public static final String TWEET_SENT = "BPLTweetSent";
     public static final String RATE_APP_BUTTON_PRESSED_EVENT = "BPLRateAppButtonPressedEvent";
     public static final String DECLINE_RATE_APP_BUTTON_PRESSED_EVENT = "BPLDeclineRateAppButtonPressedEvent";

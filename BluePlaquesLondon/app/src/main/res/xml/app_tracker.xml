@@ -34,18 +34,23 @@
         300
     </integer>
 
-    <bool name="ga_autoActivityTracking">
+    <bool name="ga_reportUncaughtExceptions">
         true
     </bool>
 
-    <screenName name="com.google.android.gms.analytics.samples.mobileplayground.ScreenviewFragment">
-        AnalyticsSampleApp ScreenView
+    <bool name="ga_autoActivityTracking">true</bool>
+
+    <screenName name="com.upwardsnorthwards.blueplaqueslondon.fragments.AboutFragment">
+        About Screen
     </screenName>
-    <screenName name="com.google.android.gms.analytics.samples.mobileplayground.EcommerceFragment">
-        AnalyticsSampleApp EcommerceView
+    <screenName name="com.upwardsnorthwards.blueplaqueslondon.fragments.MapFragment">
+        Maps Screen
+    </screenName>
+    <screenName name="com.upwardsnorthwards.blueplaqueslondon.fragments.SettingsFragment">
+        Settings Screen
     </screenName>
 
-    <string name="ga_trackingId">UA-XXXXXXX-Y
+    <string name="ga_trackingId">UA-46153093-3
     </string>
 
 </resources>

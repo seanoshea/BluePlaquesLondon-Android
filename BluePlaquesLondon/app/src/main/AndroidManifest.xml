@@ -64,7 +64,7 @@
                 android:resource="@xml/searchable" />
             <meta-data
                 android:name="com.google.android.gms.analytics.globalConfigResource"
-                android:resource="@xml/global_tracker" />
+                android:resource="@xml/app_tracker" />
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
