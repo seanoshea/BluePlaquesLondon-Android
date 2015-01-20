@@ -28,18 +28,15 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@android:color/white"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/search_title"
-        style="@style/PrimaryText" />
-
-    <TextView
-        android:id="@+id/search_subtitle"
+    <ListView
+        android:id="@+id/search_list"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_height="fill_parent"
+        android:fastScrollEnabled="true"
+        android:padding="2dp"></ListView>
 
 </LinearLayout>

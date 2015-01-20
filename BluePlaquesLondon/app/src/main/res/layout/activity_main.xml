@@ -37,12 +37,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <ListView
-        android:id="@+id/search_list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:fastScrollEnabled="true"
-        android:padding="2dp"
-        android:visibility="invisible"></ListView>
-
 </FrameLayout>

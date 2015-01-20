@@ -27,22 +27,24 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bpl="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/action_about"
-        android:showAsAction="never"
-        android:title="@string/action_about" />
+        android:title="@string/action_about"
+        bpl:showAsAction="never" />
 
     <item
         android:id="@+id/action_settings"
-        android:showAsAction="never"
-        android:title="@string/action_settings" />
+        android:title="@string/action_settings"
+        bpl:showAsAction="never" />
 
     <item
-        android:id="@+id/search"
-        android:actionViewClass="android.widget.SearchView"
-        android:showAsAction="collapseActionView|ifRoom"
-        android:title="@string/search_title" />
+        android:id="@+id/action_search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="TITLE"
+        bpl:actionViewClass="com.upwardsnorthwards.blueplaqueslondon.ArrayAdapterSearchView"
+        bpl:showAsAction="ifRoom|collapseActionView"/>
 
 </menu>
