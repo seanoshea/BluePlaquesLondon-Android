@@ -62,6 +62,15 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
         placemarks = objects;
     }
 
+    public Placemark getFilteredPlacemarkAtPosition(int index) {
+        Placemark placemark = getClosestPlacemark();
+        List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
+        if (relevantPlacemarks.size() > index) {
+            placemark = relevantPlacemarks.get(index);
+        }
+        return placemark;
+    }
+
     @Override
     public Filter getFilter() {
         if (placemarksFilter == null) {
@@ -163,6 +172,12 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
         this.placemarks = placemarks;
     }
 
+    protected Placemark getClosestPlacemark() {
+        Placemark placemark = new Placemark();
+        placemark.setName(closestPlacemarkTitle);
+        return placemark;
+    }
+
     private class PlacemarksFilter extends Filter {
 
         @Override
@@ -186,12 +201,6 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
             } else {
                 notifyDataSetInvalidated();
             }
-        }
-
-        private Placemark getClosestPlacemark() {
-            Placemark placemark = new Placemark();
-            placemark.setName(closestPlacemarkTitle);
-            return placemark;
         }
     }
 }
