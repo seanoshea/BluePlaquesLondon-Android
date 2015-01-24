@@ -65,7 +65,7 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
     public Placemark getFilteredPlacemarkAtPosition(int index) {
         Placemark placemark = getClosestPlacemark();
         List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
-        if (relevantPlacemarks.size() >= index) {
+        if (relevantPlacemarks.size() + 1 >= index) {
             placemark = relevantPlacemarks.get(index);
         }
         return placemark;
@@ -83,7 +83,7 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
     public Placemark getItem(int position) {
         Placemark placemark = null;
         List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
-        if (relevantPlacemarks != null && position < relevantPlacemarks.size() - 1) {
+        if (relevantPlacemarks != null && position < relevantPlacemarks.size()) {
             placemark = relevantPlacemarks.get(position);
         }
         return placemark;
@@ -107,9 +107,13 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
             final Placemark placemark;
             final ViewHolder holder = (ViewHolder) v.getTag();
             if (position == 0) {
+                v.setBackgroundResource(R.drawable.search_item_closest_background);
+                holder.title.setTextColor(parent.getContext().getResources().getColor(android.R.color.white));
                 holder.title.setText(parent.getContext().getString(
                         R.string.closest));
             } else {
+                v.setBackgroundResource(R.drawable.search_item_background);
+                holder.title.setTextColor(parent.getContext().getResources().getColor(R.color.blue_color));
                 if (relevantPlacemarks.size() > position) {
                     placemark = relevantPlacemarks.get(position);
                     holder.placemark = placemark;
@@ -123,7 +127,7 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
 
     @Override
     public int getCount() {
-        int size = 1;
+        int size = (filteredPlacemarks != null && filteredPlacemarks.size() > 1) ? 0 : 1;
         List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
         if (relevantPlacemarks != null) {
             size += relevantPlacemarks.size();
@@ -143,7 +147,7 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
         Collections.sort(localPlacemarks, new Comparator<Placemark>() {
             @Override
             public int compare(Placemark lhs, Placemark rhs) {
-            return lhs.getName().compareTo(rhs.getName());
+                return lhs.getName().compareTo(rhs.getName());
             }
         });
         Log.v(TAG, "Filtering the list of filters with " + filterText + " " + localPlacemarks.size());
