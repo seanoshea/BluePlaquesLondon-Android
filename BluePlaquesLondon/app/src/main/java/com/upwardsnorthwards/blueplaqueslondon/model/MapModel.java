@@ -28,13 +28,13 @@
 
 package com.upwardsnorthwards.blueplaqueslondon.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.location.Location;
 
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesKMLParser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapModel {
 
@@ -59,11 +59,10 @@ public class MapModel {
     public Placemark getPlacemarkClosestToPlacemark(Location location) {
         Placemark closestPlacemark = null;
         float currentDistance = 0;
-        for (Placemark placemark : parser.getMassagedPlacemarks()) {
-            Location placemarkLocation = new Location("");
-            placemarkLocation.setLatitude(placemark.getLatitude());
-            placemarkLocation.setLongitude(placemark.getLatitude());
-            float distance = location.distanceTo(placemarkLocation);
+        for (Placemark placemark : getMassagedPlacemarks()) {
+            float [] results = new float[1];
+            Location.distanceBetween(location.getLatitude(), location.getLongitude(), placemark.getLatitude(), placemark.getLongitude(), results);
+            float distance = results[0];
             if (closestPlacemark == null) {
                 currentDistance = distance;
                 closestPlacemark = placemark;

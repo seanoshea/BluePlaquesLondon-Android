@@ -28,8 +28,6 @@
 
 package com.upwardsnorthwards.blueplaqueslondon;
 
-import java.util.HashMap;
-
 import android.app.Application;
 import android.content.IntentSender;
 import android.content.pm.PackageInfo;
@@ -44,9 +42,14 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
+
+import java.util.HashMap;
 
 public class BluePlaquesLondonApplication extends Application implements
         GoogleApiClient.ConnectionCallbacks,
@@ -63,6 +66,7 @@ public class BluePlaquesLondonApplication extends Application implements
     private HashMap<TrackerName, Tracker> trackers = new HashMap<TrackerName, Tracker>();
     private GoogleApiClient locationClient;
     private Location currentLocation;
+    public static Bus bus = new Bus(ThreadEnforcer.MAIN);
 
     @Override
     public void onCreate() {
@@ -86,6 +90,7 @@ public class BluePlaquesLondonApplication extends Application implements
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.e(TAG, "onConnectionFailed " + connectionResult);
         try {
             if (connectionResult.hasResolution()) {
                 connectionResult.startResolutionForResult(null,
@@ -98,12 +103,19 @@ public class BluePlaquesLondonApplication extends Application implements
 
     @Override
     public void onConnected(Bundle connectionHint) {
-
+        currentLocation = LocationServices.FusedLocationApi.getLastLocation(
+                locationClient);
+        LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                locationClient, locationRequest, this);
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        Log.w(TAG, "onConnectionSuspended " + i);
     }
 
     @Override

@@ -28,25 +28,65 @@
 
 package com.upwardsnorthwards.blueplaqueslondon.adapters;
 
-import java.util.List;
-
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 
-public class SearchAdapter extends ArrayAdapter<Placemark> {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable {
+
+    private static final String TAG = "SearchAdapter";
 
     private List<Placemark> placemarks;
+    private List<Placemark> filteredPlacemarks;
+    private PlacemarksFilter placemarksFilter;
+
+    private String closestPlacemarkTitle;
 
     public SearchAdapter(Context context, int resource, List<Placemark> objects) {
         super(context, resource, objects);
+        closestPlacemarkTitle = context.getString(R.string.closest);
         placemarks = objects;
+    }
+
+    public Placemark getFilteredPlacemarkAtPosition(int index) {
+        Placemark placemark = getClosestPlacemark();
+        List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
+        if (relevantPlacemarks.size() + getOffset() >= index) {
+            placemark = relevantPlacemarks.get(index);
+        }
+        return placemark;
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (placemarksFilter == null) {
+            placemarksFilter = new PlacemarksFilter();
+        }
+        return placemarksFilter;
+    }
+
+    @Override
+    public Placemark getItem(int position) {
+        Placemark placemark = null;
+        List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
+        if (relevantPlacemarks != null && position < relevantPlacemarks.size()) {
+            placemark = relevantPlacemarks.get(position);
+        }
+        return placemark;
     }
 
     @Override
@@ -62,17 +102,24 @@ public class SearchAdapter extends ArrayAdapter<Placemark> {
                     .findViewById(R.id.search_subtitle);
             v.setTag(viewHolder);
         }
-        if (placemarks != null && position < getCount()) {
+        List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
+        if (relevantPlacemarks != null && position < getCount()) {
             final Placemark placemark;
             final ViewHolder holder = (ViewHolder) v.getTag();
             if (position == 0) {
+                v.setBackgroundResource(R.drawable.search_item_closest_background);
+                holder.title.setTextColor(parent.getContext().getResources().getColor(android.R.color.white));
                 holder.title.setText(parent.getContext().getString(
                         R.string.closest));
             } else {
-                placemark = placemarks.get(position);
-                holder.placemark = placemark;
-                holder.title.setText(placemark.getTitle());
-                holder.subtitle.setText("");
+                v.setBackgroundResource(R.drawable.search_item_background);
+                holder.title.setTextColor(parent.getContext().getResources().getColor(R.color.blue_color));
+                if (relevantPlacemarks.size() > position) {
+                    placemark = relevantPlacemarks.get(position);
+                    holder.placemark = placemark;
+                    holder.title.setText(placemark.getName());
+                    holder.subtitle.setText("");
+                }
             }
         }
         return v;
@@ -80,11 +127,31 @@ public class SearchAdapter extends ArrayAdapter<Placemark> {
 
     @Override
     public int getCount() {
-        int size = 1;
-        if (placemarks != null) {
-            size += placemarks.size();
+        int size = getOffset();
+        List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
+        if (relevantPlacemarks != null) {
+            size += relevantPlacemarks.size();
         }
         return size;
+    }
+
+    private List<Placemark> filterPlacemarksWithText(String filterText) {
+        List<Placemark> localPlacemarks = new ArrayList<Placemark>();
+        for (Placemark placemark : placemarks) {
+            if (placemark.getName().toLowerCase()
+                    .contains(filterText.toLowerCase())) {
+                localPlacemarks.add(placemark);
+            }
+        }
+        // alphabetically sort 'em
+        Collections.sort(localPlacemarks, new Comparator<Placemark>() {
+            @Override
+            public int compare(Placemark lhs, Placemark rhs) {
+                return lhs.getName().compareTo(rhs.getName());
+            }
+        });
+        Log.v(TAG, "Filtering the list of filters with " + filterText + " " + localPlacemarks.size());
+        return localPlacemarks;
     }
 
     public static class ViewHolder {
@@ -93,11 +160,55 @@ public class SearchAdapter extends ArrayAdapter<Placemark> {
         public TextView subtitle;
     }
 
+    public List<Placemark> getRelevantPlacemarks() {
+        if (filteredPlacemarks != null) {
+            return filteredPlacemarks;
+        } else {
+            return placemarks;
+        }
+    }
+
     public List<Placemark> getPlacemarks() {
         return placemarks;
     }
 
     public void setPlacemarks(List<Placemark> placemarks) {
         this.placemarks = placemarks;
+    }
+
+    protected Placemark getClosestPlacemark() {
+        Placemark placemark = new Placemark();
+        placemark.setName(closestPlacemarkTitle);
+        return placemark;
+    }
+
+    private class PlacemarksFilter extends Filter {
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults filterResults = new FilterResults();
+            if (constraint != null && constraint.length() > 0) {
+                List<Placemark> filteredPlacemarks = filterPlacemarksWithText(constraint.toString());
+                // always have the closest placemark as an option, regardless of the filtering result
+                filteredPlacemarks.add(0, getClosestPlacemark());
+                filterResults.values = filteredPlacemarks;
+                filterResults.count = filteredPlacemarks.size();
+            }
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            if (results != null && results.count > 0) {
+                filteredPlacemarks = (List<Placemark>) results.values;
+                notifyDataSetChanged();
+            } else {
+                notifyDataSetInvalidated();
+            }
+        }
+    }
+
+    private int getOffset() {
+        return (filteredPlacemarks != null && filteredPlacemarks.size() > 1) ? 0 : 1;
     }
 }

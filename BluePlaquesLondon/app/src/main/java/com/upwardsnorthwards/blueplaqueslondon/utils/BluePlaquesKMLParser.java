@@ -28,18 +28,18 @@
 
 package com.upwardsnorthwards.blueplaqueslondon.utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserFactory;
-
 import android.content.Context;
 import android.util.Log;
 
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class BluePlaquesKMLParser {
 

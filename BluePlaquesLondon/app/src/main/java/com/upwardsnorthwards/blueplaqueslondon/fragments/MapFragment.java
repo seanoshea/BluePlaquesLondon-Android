@@ -28,10 +28,8 @@
 
 package com.upwardsnorthwards.blueplaqueslondon.fragments;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -45,6 +43,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.otto.Subscribe;
 import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
 import com.upwardsnorthwards.blueplaqueslondon.MapDetailActivity;
 import com.upwardsnorthwards.blueplaqueslondon.R;
@@ -53,6 +52,9 @@ import com.upwardsnorthwards.blueplaqueslondon.model.MapModel;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesSharedPreferences;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
         implements OnCameraChangeListener, OnMarkerClickListener,
@@ -72,6 +74,13 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                 lastKnownCoordinate,
                 BluePlaquesSharedPreferences.getMapZoom(getActivity())));
+        BluePlaquesLondonApplication.bus.register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        BluePlaquesLondonApplication.bus.unregister(this);
     }
 
     @Override
@@ -79,6 +88,22 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
         super.onCreate(savedInstanceState);
         model = new MapModel();
         loadMapData();
+    }
+
+    @Subscribe
+    public void onPlacemarkSelected(Placemark placemark) {
+        if (placemark.getName() == getString(R.string.closest)) {
+            BluePlaquesLondonApplication app = (BluePlaquesLondonApplication)getActivity().getApplication();
+            Location currentLocation = app.getCurrentLocation();
+            if (currentLocation != null) {
+                placemark = model.getPlacemarkClosestToPlacemark(currentLocation);
+            }
+        }
+        if (placemark != null) {
+            BluePlaquesLondonApplication app = (BluePlaquesLondonApplication)getActivity().getApplication();
+            app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY, BluePlaquesConstants.TABLE_ROW_PRESSED_EVENT, placemark.getName());
+            navigateToPlacemark(placemark);
+        }
     }
 
     public void loadMapData() {
@@ -95,6 +120,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
             // a few settings
             googleMap.setIndoorEnabled(false);
             googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+            googleMap.setMyLocationEnabled(true);
             // listen for events
             googleMap.setOnCameraChangeListener(this);
             googleMap.setOnMarkerClickListener(this);
@@ -165,9 +191,9 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
                 placemark.getLongitude());
         BluePlaquesSharedPreferences.saveLastKnownBPLCoordinate(getActivity(),
                 latLng);
-        for (KeyedMarker marker : markers) {
-            if (placemark.key().equals(marker.getKey())) {
-                marker.getMarker().showInfoWindow();
+        for (KeyedMarker keyedMarker : markers) {
+            if (placemark.key().equals(keyedMarker.getKey())) {
+                keyedMarker.getMarker().showInfoWindow();
                 break;
             }
         }
