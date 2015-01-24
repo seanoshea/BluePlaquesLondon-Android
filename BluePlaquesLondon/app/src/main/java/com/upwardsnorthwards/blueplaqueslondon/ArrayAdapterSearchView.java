@@ -33,6 +33,7 @@ import android.support.v7.widget.SearchView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 
@@ -42,7 +43,7 @@ import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArrayAdapterSearchView extends SearchView implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener, android.view.View.OnFocusChangeListener {
+public class ArrayAdapterSearchView extends SearchView implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener, android.view.View.OnFocusChangeListener, OnItemClickListener {
 
     private static final String TAG = "ArrayAdapterSearchView";
 
@@ -91,6 +92,12 @@ public class ArrayAdapterSearchView extends SearchView implements SearchView.OnQ
         }
     }
 
+    public void onItemClick(AdapterView<?> p, View v, int pos, long id) {
+        if (pos == 0) {
+            navigateToPlacemarkAtIndex(pos);
+        }
+    }
+
     public boolean onSuggestionSelect(int index) {
         navigateToPlacemarkAtIndex(index);
         return true;
@@ -104,6 +111,7 @@ public class ArrayAdapterSearchView extends SearchView implements SearchView.OnQ
     private void navigateToPlacemarkAtIndex(int index) {
         Placemark placemark = searchAdapter.getFilteredPlacemarkAtPosition(index);
         Log.v(TAG, "Navigating to placemark " + placemark.getName());
+        BluePlaquesLondonApplication.bus.post(placemark);
     }
 
     private void initialize(Context context) {
@@ -114,6 +122,7 @@ public class ArrayAdapterSearchView extends SearchView implements SearchView.OnQ
         setOnQueryTextListener(this);
         setOnQueryTextFocusChangeListener(this);
         setOnSuggestionListener(this);
+        setOnItemClickListener(this);
     }
 
     public List<Placemark> getPlacemarks() {

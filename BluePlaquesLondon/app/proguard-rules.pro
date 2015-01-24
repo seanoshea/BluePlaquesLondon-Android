@@ -36,3 +36,9 @@
 -keep class android.support.v7.app.** { *; }
 -keep class android.support.v4.app.** { *; }
 -keep interface android.support.v4.app.** { *; }
+
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @com.squareup.otto.Subscribe public *;
+    @com.squareup.otto.Produce public *;
+}

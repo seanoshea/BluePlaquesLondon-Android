@@ -65,7 +65,7 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
     public Placemark getFilteredPlacemarkAtPosition(int index) {
         Placemark placemark = getClosestPlacemark();
         List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
-        if (relevantPlacemarks.size() > index) {
+        if (relevantPlacemarks.size() >= index) {
             placemark = relevantPlacemarks.get(index);
         }
         return placemark;
@@ -143,7 +143,7 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
         Collections.sort(localPlacemarks, new Comparator<Placemark>() {
             @Override
             public int compare(Placemark lhs, Placemark rhs) {
-                return lhs.getName().compareTo(rhs.getName());
+            return lhs.getName().compareTo(rhs.getName());
             }
         });
         Log.v(TAG, "Filtering the list of filters with " + filterText + " " + localPlacemarks.size());
