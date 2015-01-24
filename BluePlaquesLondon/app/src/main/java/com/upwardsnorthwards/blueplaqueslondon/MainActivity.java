@@ -39,7 +39,9 @@ import android.view.MenuItem;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.squareup.otto.Subscribe;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.MapFragment;
+import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 
 import java.util.List;
@@ -48,6 +50,8 @@ import hotchemi.android.rate.AppRate;
 import hotchemi.android.rate.OnClickButtonListener;
 
 public class MainActivity extends ActionBarActivity {
+
+    private ArrayAdapterSearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +66,20 @@ public class MainActivity extends ActionBarActivity {
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        final ArrayAdapterSearchView searchView = (ArrayAdapterSearchView) MenuItemCompat.getActionView(searchItem);
+        searchView = (ArrayAdapterSearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
         searchView.notifyAdapterOfPlacemarks(getMapFragment().getModel().getMassagedPlacemarks());
         return true;
     }
-//
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        BluePlaquesLondonApplication.bus.unregister(this);
+    }
+
+    //
 //    @Override
 //    public boolean onMenuItemSelected(int featureId, MenuItem item) {
 //        FragmentManager fm = getSupportFragmentManager();
@@ -90,7 +101,15 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        BluePlaquesLondonApplication.bus.register(this);
         checkForGooglePlayServicesAvailability();
+    }
+
+    @Subscribe
+    public void onPlacemarkSelected(Placemark placemark) {
+        searchView.setQuery("", false);
+        searchView.setIconified(true);
+        searchView.clearFocus();
     }
 
     private MapFragment getMapFragment() {

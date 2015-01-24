@@ -43,7 +43,7 @@ import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArrayAdapterSearchView extends SearchView implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener, android.view.View.OnFocusChangeListener, OnItemClickListener {
+public class ArrayAdapterSearchView extends SearchView implements SearchView.OnQueryTextListener, android.view.View.OnFocusChangeListener, OnItemClickListener {
 
     private static final String TAG = "ArrayAdapterSearchView";
 
@@ -93,19 +93,7 @@ public class ArrayAdapterSearchView extends SearchView implements SearchView.OnQ
     }
 
     public void onItemClick(AdapterView<?> p, View v, int pos, long id) {
-        if (pos == 0) {
-            navigateToPlacemarkAtIndex(pos);
-        }
-    }
-
-    public boolean onSuggestionSelect(int index) {
-        navigateToPlacemarkAtIndex(index);
-        return true;
-    }
-
-    public boolean onSuggestionClick(int index) {
-        navigateToPlacemarkAtIndex(index);
-        return true;
+        navigateToPlacemarkAtIndex(pos);
     }
 
     private void navigateToPlacemarkAtIndex(int index) {
@@ -121,7 +109,6 @@ public class ArrayAdapterSearchView extends SearchView implements SearchView.OnQ
         setAdapter(searchAdapter);
         setOnQueryTextListener(this);
         setOnQueryTextFocusChangeListener(this);
-        setOnSuggestionListener(this);
         setOnItemClickListener(this);
     }
 

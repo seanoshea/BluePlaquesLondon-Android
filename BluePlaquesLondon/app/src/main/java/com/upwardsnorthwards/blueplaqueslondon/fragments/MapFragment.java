@@ -116,6 +116,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
             // a few settings
             googleMap.setIndoorEnabled(false);
             googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+            googleMap.setMyLocationEnabled(true);
             // listen for events
             googleMap.setOnCameraChangeListener(this);
             googleMap.setOnMarkerClickListener(this);
