@@ -32,6 +32,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -40,7 +41,9 @@ import android.view.MenuItem;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.squareup.otto.Subscribe;
+import com.upwardsnorthwards.blueplaqueslondon.fragments.AboutFragment;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.MapFragment;
+import com.upwardsnorthwards.blueplaqueslondon.fragments.SettingsFragment;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 
@@ -79,24 +82,23 @@ public class MainActivity extends ActionBarActivity {
         BluePlaquesLondonApplication.bus.unregister(this);
     }
 
-    //
-//    @Override
-//    public boolean onMenuItemSelected(int featureId, MenuItem item) {
-//        FragmentManager fm = getSupportFragmentManager();
-//        switch (item.getItemId()) {
-//            case R.id.action_about:
-//                AboutFragment aboutFragment = new AboutFragment();
-//                aboutFragment.show(fm, "fragment_about");
-//                break;
-//            case R.id.action_settings:
-//                SettingsFragment settingsFragment = new SettingsFragment();
-//                settingsFragment.show(fm, "fragment_settings");
-//                break;
-//            default:
-//                break;
-//        }
-//        return super.onMenuItemSelected(featureId, item);
-//    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        FragmentManager fm = getSupportFragmentManager();
+        switch (item.getItemId()) {
+            case R.id.action_about:
+                AboutFragment aboutFragment = new AboutFragment();
+                aboutFragment.show(fm, "fragment_about");
+                break;
+            case R.id.action_settings:
+                SettingsFragment settingsFragment = new SettingsFragment();
+                settingsFragment.show(fm, "fragment_settings");
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onResume() {

@@ -43,7 +43,7 @@
     <item
         android:id="@+id/action_search"
         android:icon="@android:drawable/ic_menu_search"
-        android:title="TITLE"
+        android:title="@string/app_name"
         bpl:actionViewClass="com.upwardsnorthwards.blueplaqueslondon.ArrayAdapterSearchView"
         bpl:showAsAction="ifRoom|collapseActionView"/>
 
