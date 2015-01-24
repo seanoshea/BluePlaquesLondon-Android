@@ -65,7 +65,7 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
     public Placemark getFilteredPlacemarkAtPosition(int index) {
         Placemark placemark = getClosestPlacemark();
         List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
-        if (relevantPlacemarks.size() + 1 >= index) {
+        if (relevantPlacemarks.size() + getOffset() >= index) {
             placemark = relevantPlacemarks.get(index);
         }
         return placemark;
@@ -127,7 +127,7 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
 
     @Override
     public int getCount() {
-        int size = (filteredPlacemarks != null && filteredPlacemarks.size() > 1) ? 0 : 1;
+        int size = getOffset();
         List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
         if (relevantPlacemarks != null) {
             size += relevantPlacemarks.size();
@@ -206,5 +206,9 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
                 notifyDataSetInvalidated();
             }
         }
+    }
+
+    private int getOffset() {
+        return (filteredPlacemarks != null && filteredPlacemarks.size() > 1) ? 0 : 1;
     }
 }

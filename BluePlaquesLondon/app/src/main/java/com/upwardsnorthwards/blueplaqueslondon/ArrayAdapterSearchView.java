@@ -31,7 +31,6 @@ package com.upwardsnorthwards.blueplaqueslondon;
 import android.content.Context;
 import android.support.v7.widget.SearchView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -98,7 +97,6 @@ public class ArrayAdapterSearchView extends SearchView implements SearchView.OnQ
 
     private void navigateToPlacemarkAtIndex(int index) {
         Placemark placemark = searchAdapter.getFilteredPlacemarkAtPosition(index);
-        Log.v(TAG, "Navigating to placemark " + placemark.getName());
         BluePlaquesLondonApplication.bus.post(placemark);
     }
 

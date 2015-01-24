@@ -99,7 +99,11 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
                 placemark = model.getPlacemarkClosestToPlacemark(currentLocation);
             }
         }
-        navigateToPlacemark(placemark);
+        if (placemark != null) {
+            BluePlaquesLondonApplication app = (BluePlaquesLondonApplication)getActivity().getApplication();
+            app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY, BluePlaquesConstants.TABLE_ROW_PRESSED_EVENT, placemark.getName());
+            navigateToPlacemark(placemark);
+        }
     }
 
     public void loadMapData() {
