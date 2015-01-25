@@ -43,6 +43,7 @@
     <TextView
         android:id="@+id/fragment_about_developed_by"
         style="@style/SecondaryText"
+        android:linksClickable="true"
         android:text="@string/developed_by" />
 
     <TextView
@@ -53,6 +54,7 @@
     <TextView
         android:id="@+id/fragment_about_designed_by"
         style="@style/SecondaryText"
+        android:linksClickable="true"
         android:text="@string/designed_by" />
 
     <TextView
@@ -63,6 +65,7 @@
     <TextView
         android:id="@+id/fragment_about_map_data"
         style="@style/SecondaryText"
+        android:linksClickable="true"
         android:text="@string/map_data" />
 
 </LinearLayout>

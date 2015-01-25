@@ -30,9 +30,12 @@ package com.upwardsnorthwards.blueplaqueslondon.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.upwardsnorthwards.blueplaqueslondon.R;
 
@@ -45,7 +48,22 @@ public class AboutFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_about, container);
+
+        // allow users click on the links in the text views
+        TextView developedByTextView = (TextView) view.findViewById(R.id.fragment_about_developed_by);
+        TextView designedByTextView = (TextView) view.findViewById(R.id.fragment_about_designed_by);
+        TextView mapDataTextView = (TextView) view.findViewById(R.id.fragment_about_map_data);
+
+        developedByTextView.setText(Html.fromHtml(getResources().getString(R.string.developed_by)));
+        designedByTextView.setText(Html.fromHtml(getResources().getString(R.string.designed_by)));
+        mapDataTextView.setText(Html.fromHtml(getResources().getString(R.string.map_data)));
+
+        developedByTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        designedByTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        mapDataTextView.setMovementMethod(LinkMovementMethod.getInstance());
+
         getDialog().setTitle(getString(R.string.action_about));
+
         return view;
     }
 }
