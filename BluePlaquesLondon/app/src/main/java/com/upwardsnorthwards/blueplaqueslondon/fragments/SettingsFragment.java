@@ -29,15 +29,11 @@
 package com.upwardsnorthwards.blueplaqueslondon.fragments;
 
 import android.app.Dialog;
-import android.content.Context;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -69,12 +65,6 @@ public class SettingsFragment extends DialogFragment implements
         Dialog dialog = getDialog();
         if (dialog != null) {
             dialog.setCanceledOnTouchOutside(true);
-            WindowManager wm = (WindowManager) getActivity().getSystemService(
-                    Context.WINDOW_SERVICE);
-            Display display = wm.getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            dialog.getWindow().setLayout(size.x / 100 * 80, size.y / 100 * 80);
         }
     }
 

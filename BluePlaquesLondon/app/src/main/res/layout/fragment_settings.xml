@@ -31,6 +31,8 @@
     android:id="@+id/fragment_settings"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@android:color/white"
+    android:layout_gravity="center"
     android:orientation="vertical">
 
     <TextView
