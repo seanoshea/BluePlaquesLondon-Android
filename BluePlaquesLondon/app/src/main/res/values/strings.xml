@@ -37,11 +37,11 @@
     <string name="search_title">Search</string>
     <string name="search_hint">Search for a Blue Plaque</string>
     <string name="developed_details">Developer Details</string>
-    <string name="developed_by">Developed by Sean O\' Shea</string>
+    <string name="developed_by">Developed by &lt;a href="http://www.twitter.com/seanoshea"&gt;Sean O\'Shea&lt;/a&gt;</string>
     <string name="designer_details">Designer Details</string>
-    <string name="designed_by">Application designed by Andy Dale</string>
+    <string name="designed_by">Application designed by &lt;a href="http://www.andydale.info"&gt;Andy Dale&lt;/a&gt;</string>
     <string name="map_details">Map Data Details</string>
-    <string name="map_data">Map Data for this application is maintained by Roy Reed</string>
+    <string name="map_data">Map Data for this application is maintained by &lt;a href="http://www.reeddesign.co.uk"&gt;Roy Reid&lt;/a&gt;</string>
     <string name="street_view">Street View</string>
     <string name="wikipedia_article">Wikipedia Article</string>
     <string name="multiple_placemarks_select_one">Select one</string>

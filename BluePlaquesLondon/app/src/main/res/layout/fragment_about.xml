@@ -31,6 +31,7 @@
     android:id="@+id/fragment_about"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@android:color/white"
     android:layout_gravity="center"
     android:orientation="vertical">
 
@@ -42,6 +43,7 @@
     <TextView
         android:id="@+id/fragment_about_developed_by"
         style="@style/SecondaryText"
+        android:linksClickable="true"
         android:text="@string/developed_by" />
 
     <TextView
@@ -52,6 +54,7 @@
     <TextView
         android:id="@+id/fragment_about_designed_by"
         style="@style/SecondaryText"
+        android:linksClickable="true"
         android:text="@string/designed_by" />
 
     <TextView
@@ -62,6 +65,7 @@
     <TextView
         android:id="@+id/fragment_about_map_data"
         style="@style/SecondaryText"
+        android:linksClickable="true"
         android:text="@string/map_data" />
 
 </LinearLayout>
