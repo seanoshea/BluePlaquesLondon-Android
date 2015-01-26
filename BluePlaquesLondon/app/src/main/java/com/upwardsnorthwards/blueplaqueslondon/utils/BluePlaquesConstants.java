@@ -32,6 +32,7 @@ public class BluePlaquesConstants {
 
     public static final String INFO_WINDOW_CLICKED_PARCLEABLE_KEY = "com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants.INFO_WINDOW_CLICKED_PARCLEABLE_KEY";
     public static final String WIKIPEDIA_CLICKED_PARCLEABLE_KEY = "com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants.WIKIPEDIA_CLICKED_PARCLEABLE_KEY";
+    public static final String PANORAMA_CLICKED_PARCLEABLE_KEY = "com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants.PANORAMA_CLICKED_PARCLEABLE_KEY";
 
     public static final double DEFAULT_LATITUDE = 51.50016999993306f;
     public static final double DEFAULT_LONGITUDE = -0.1814680000049975f;
