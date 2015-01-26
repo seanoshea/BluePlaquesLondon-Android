@@ -37,6 +37,8 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -55,11 +57,13 @@ import hotchemi.android.rate.OnClickButtonListener;
 public class MainActivity extends ActionBarActivity {
 
     private ArrayAdapterSearchView searchView;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        progressBar = (ProgressBar) findViewById(R.id.map_progress_bar);
         initialiseAppRating();
     }
 
@@ -79,12 +83,14 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        setProgressBarVisibility(View.GONE);
         BluePlaquesLondonApplication.bus.unregister(this);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         FragmentManager fm = getSupportFragmentManager();
+        setProgressBarVisibility(View.GONE);
         switch (item.getItemId()) {
             case R.id.action_about:
                 AboutFragment aboutFragment = new AboutFragment();
@@ -114,6 +120,12 @@ public class MainActivity extends ActionBarActivity {
         searchView.clearFocus();
     }
 
+    public void setProgressBarVisibility(int visibility) {
+        if (progressBar != null) {
+            progressBar.setVisibility(visibility);
+        }
+    }
+
     private MapFragment getMapFragment() {
         MapFragment mapFragment = null;
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
@@ -131,6 +143,7 @@ public class MainActivity extends ActionBarActivity {
             }
             break;
             default: {
+                setProgressBarVisibility(View.GONE);
                 GooglePlayServicesUtil.showErrorDialogFragment(playServicesAvailable, this, 123);
             }
         }
