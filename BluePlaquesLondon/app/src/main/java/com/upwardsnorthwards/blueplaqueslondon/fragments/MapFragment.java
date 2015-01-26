@@ -39,6 +39,7 @@ import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -71,14 +72,6 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
         super.onResume();
         setProgressBarVisibility(View.VISIBLE);
         setupMap();
-        LatLng lastKnownCoordinate = BluePlaquesSharedPreferences
-                .getLastKnownBPLCoordinate(getActivity());
-        MapsInitializer.initialize(getActivity());
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                lastKnownCoordinate,
-                BluePlaquesSharedPreferences.getMapZoom(getActivity())));
-        BluePlaquesLondonApplication.bus.register(this);
-        setProgressBarVisibility(View.GONE);
     }
 
     @Override
@@ -97,25 +90,21 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
     @Subscribe
     public void onPlacemarkSelected(Placemark placemark) {
         if (placemark.getName() == getString(R.string.closest)) {
-            BluePlaquesLondonApplication app = (BluePlaquesLondonApplication)getActivity().getApplication();
+            BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getActivity().getApplication();
             Location currentLocation = app.getCurrentLocation();
             if (currentLocation != null) {
                 placemark = model.getPlacemarkClosestToPlacemark(currentLocation);
             }
         }
         if (placemark != null) {
-            BluePlaquesLondonApplication app = (BluePlaquesLondonApplication)getActivity().getApplication();
+            BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getActivity().getApplication();
             app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY, BluePlaquesConstants.TABLE_ROW_PRESSED_EVENT, placemark.getName());
             navigateToPlacemark(placemark);
         }
     }
 
-    public void loadMapData() {
-        model.loadMapData(getActivity());
-    }
-
-    private void setupMap() {
-        googleMap = getMap();
+    protected void mapReady(GoogleMap map) {
+        googleMap = map;
         if (googleMap == null) {
             googleMap = ((MapFragment) getFragmentManager().findFragmentById(
                     R.id.map)).getMap();
@@ -130,7 +119,28 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
             googleMap.setOnMarkerClickListener(this);
             googleMap.setOnInfoWindowClickListener(this);
             addPlacemarksToMap();
+            LatLng lastKnownCoordinate = BluePlaquesSharedPreferences
+                    .getLastKnownBPLCoordinate(getActivity());
+            MapsInitializer.initialize(getActivity());
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                    lastKnownCoordinate,
+                    BluePlaquesSharedPreferences.getMapZoom(getActivity())));
+            BluePlaquesLondonApplication.bus.register(this);
+            setProgressBarVisibility(View.GONE);
         }
+    }
+
+    public void loadMapData() {
+        model.loadMapData(getActivity());
+    }
+
+    private void setupMap() {
+        getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                mapReady(googleMap);
+            }
+        });
     }
 
     private void addPlacemarksToMap() {
@@ -231,7 +241,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
     }
 
     private void setProgressBarVisibility(int visibility) {
-        MainActivity activity = (MainActivity)getActivity();
+        MainActivity activity = (MainActivity) getActivity();
         if (activity != null) {
             activity.setProgressBarVisibility(visibility);
         }
