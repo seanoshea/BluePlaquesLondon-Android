@@ -31,6 +31,7 @@ package com.upwardsnorthwards.blueplaqueslondon.fragments;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -45,6 +46,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.otto.Subscribe;
 import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
+import com.upwardsnorthwards.blueplaqueslondon.MainActivity;
 import com.upwardsnorthwards.blueplaqueslondon.MapDetailActivity;
 import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.model.KeyedMarker;
@@ -67,6 +69,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
     @Override
     public void onResume() {
         super.onResume();
+        setProgressBarVisibility(View.VISIBLE);
         setupMap();
         LatLng lastKnownCoordinate = BluePlaquesSharedPreferences
                 .getLastKnownBPLCoordinate(getActivity());
@@ -75,6 +78,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
                 lastKnownCoordinate,
                 BluePlaquesSharedPreferences.getMapZoom(getActivity())));
         BluePlaquesLondonApplication.bus.register(this);
+        setProgressBarVisibility(View.GONE);
     }
 
     @Override
@@ -224,6 +228,13 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment
             }
         }
         return placemarks;
+    }
+
+    private void setProgressBarVisibility(int visibility) {
+        MainActivity activity = (MainActivity)getActivity();
+        if (activity != null) {
+            activity.setProgressBarVisibility(visibility);
+        }
     }
 
     public MapModel getModel() {
