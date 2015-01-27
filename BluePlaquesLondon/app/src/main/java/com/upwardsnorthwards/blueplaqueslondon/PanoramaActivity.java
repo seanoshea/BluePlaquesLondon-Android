@@ -28,9 +28,9 @@
 
 package com.upwardsnorthwards.blueplaqueslondon;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
 import com.google.android.gms.maps.StreetViewPanorama;
@@ -39,7 +39,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 
-public class PanoramaActivity extends FragmentActivity implements OnStreetViewPanoramaReadyCallback {
+public class PanoramaActivity extends Activity implements OnStreetViewPanoramaReadyCallback {
 
     private Placemark placemark;
 
