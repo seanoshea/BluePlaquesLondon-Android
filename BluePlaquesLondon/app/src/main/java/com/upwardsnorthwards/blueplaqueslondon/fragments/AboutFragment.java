@@ -29,7 +29,7 @@
 package com.upwardsnorthwards.blueplaqueslondon.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
+import android.app.DialogFragment;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;

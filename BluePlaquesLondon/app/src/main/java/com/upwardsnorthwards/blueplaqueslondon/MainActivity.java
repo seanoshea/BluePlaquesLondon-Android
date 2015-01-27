@@ -28,11 +28,10 @@
 
 package com.upwardsnorthwards.blueplaqueslondon;
 
+import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -48,8 +47,6 @@ import com.upwardsnorthwards.blueplaqueslondon.fragments.MapFragment;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.SettingsFragment;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
-
-import java.util.List;
 
 import hotchemi.android.rate.AppRate;
 import hotchemi.android.rate.OnClickButtonListener;
@@ -89,7 +86,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        FragmentManager fm = getSupportFragmentManager();
+        FragmentManager fm = getFragmentManager();
         setProgressBarVisibility(View.GONE);
         switch (item.getItemId()) {
             case R.id.action_about:
@@ -127,12 +124,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private MapFragment getMapFragment() {
-        MapFragment mapFragment = null;
-        List<Fragment> fragments = getSupportFragmentManager().getFragments();
-        if (fragments != null && fragments.size() > 0) {
-            mapFragment = (MapFragment) fragments.get(0);
-        }
-        return mapFragment;
+        return (MapFragment)getFragmentManager().findFragmentById(R.id.map);
     }
 
     private void checkForGooglePlayServicesAvailability() {
