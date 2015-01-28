@@ -243,7 +243,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
     private void setProgressBarVisibility(int visibility) {
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null) {
-            activity.setProgressBarVisibility(visibility);
+            activity.updateProgressBarVisibility(visibility);
         }
     }
 
