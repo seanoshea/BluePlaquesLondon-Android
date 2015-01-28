@@ -28,12 +28,16 @@
 
 package com.upwardsnorthwards.blueplaqueslondon;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,6 +57,9 @@ import hotchemi.android.rate.OnClickButtonListener;
 
 public class MainActivity extends ActionBarActivity {
 
+    private static final String TAG = "MainActivity";
+    private static final int GOOGLE_PLAY_SERVICES_REQUEST = 9002;
+
     private ArrayAdapterSearchView searchView;
     private ProgressBar progressBar;
 
@@ -60,7 +67,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        progressBar = (ProgressBar) findViewById(R.id.map_progress_bar);
         initialiseAppRating();
     }
 
@@ -80,14 +86,14 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        setProgressBarVisibility(View.GONE);
+        updateProgressBarVisibility(View.GONE);
         BluePlaquesLondonApplication.bus.unregister(this);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         FragmentManager fm = getFragmentManager();
-        setProgressBarVisibility(View.GONE);
+        updateProgressBarVisibility(View.GONE);
         switch (item.getItemId()) {
             case R.id.action_about:
                 AboutFragment aboutFragment = new AboutFragment();
@@ -106,8 +112,47 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        progressBar = (ProgressBar) findViewById(R.id.map_progress_bar);
         BluePlaquesLondonApplication.bus.register(this);
         checkForGooglePlayServicesAvailability();
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        updateProgressBarVisibility(View.GONE);
+        switch (requestCode) {
+            case BluePlaquesLondonApplication.CONNECTION_FAILURE_RESOLUTION_REQUEST:
+            case BluePlaquesLondonApplication.CONNECTION_FAILURE_NO_RESOLUTION_REQUEST: {
+                switch (resultCode) {
+                    case Activity.RESULT_OK: {
+                        Log.d(TAG, "User downloaded the correct version of Google Play Service after being prompted");
+                    }
+                    break;
+                    default: {
+                        Log.e(TAG, "Tried to request the user to download the correct version of Google Play Services but it failed");
+                        Dialog dialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this, GOOGLE_PLAY_SERVICES_REQUEST);
+                        dialog.setCancelable(false);
+                        dialog.show();
+                    }
+                    break;
+                }
+            }
+            case GOOGLE_PLAY_SERVICES_REQUEST: {
+                switch (resultCode) {
+                    case Activity.RESULT_OK: {
+                        Log.d(TAG, "User downloaded the correct version of Google Play Service after being prompted the second time");
+                    }
+                    break;
+                    default: {
+                        Log.e(TAG, "Tried to request the user to download the correct version of Google Play Services but it failed");
+                    }
+                    break;
+                }
+            }
+            default: {
+
+            }
+            break;
+        }
     }
 
     @Subscribe
@@ -117,26 +162,34 @@ public class MainActivity extends ActionBarActivity {
         searchView.clearFocus();
     }
 
-    public void setProgressBarVisibility(int visibility) {
+    public void updateProgressBarVisibility(int visibility) {
         if (progressBar != null) {
             progressBar.setVisibility(visibility);
         }
     }
 
     private MapFragment getMapFragment() {
-        return (MapFragment)getFragmentManager().findFragmentById(R.id.map);
+        return (MapFragment) getFragmentManager().findFragmentById(R.id.map);
     }
 
     private void checkForGooglePlayServicesAvailability() {
         int playServicesAvailable = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         switch (playServicesAvailable) {
             case ConnectionResult.SUCCESS: {
-
+                Log.d(TAG, "Successfully connected to Google Play Services");
             }
             break;
             default: {
-                setProgressBarVisibility(View.GONE);
-                GooglePlayServicesUtil.showErrorDialogFragment(playServicesAvailable, this, 123);
+                boolean isRecoverable = true;
+                updateProgressBarVisibility(View.GONE);
+                if (GooglePlayServicesUtil.isUserRecoverableError(playServicesAvailable)) {
+                    GooglePlayServicesUtil.showErrorDialogFragment(playServicesAvailable, this, BluePlaquesLondonApplication.CONNECTION_FAILURE_RESOLUTION_REQUEST);
+                } else {
+                    isRecoverable = false;
+                    GooglePlayServicesUtil.showErrorDialogFragment(playServicesAvailable, this, BluePlaquesLondonApplication.CONNECTION_FAILURE_NO_RESOLUTION_REQUEST);
+                }
+                BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
+                app.trackEvent(BluePlaquesConstants.ERROR_CATEGORY, BluePlaquesConstants.GOOGLE_PLAY_SERVICES_PROMPT, isRecoverable ? BluePlaquesConstants.GOOGLE_PLAY_SERVICES_PROMPT_RECOVERABLE : BluePlaquesConstants.GOOGLE_PLAY_SERVICES_PROMPT_UNRECOVERABLE);
             }
         }
     }

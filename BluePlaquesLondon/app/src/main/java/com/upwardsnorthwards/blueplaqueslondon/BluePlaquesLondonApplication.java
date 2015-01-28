@@ -41,6 +41,7 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
@@ -57,7 +58,8 @@ public class BluePlaquesLondonApplication extends Application implements
 
     private final static String TAG = "BluePlaquesLondonApplication";
 
-    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    protected final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    protected final static int CONNECTION_FAILURE_NO_RESOLUTION_REQUEST = 9001;
 
     public enum TrackerName {
         APP_TRACKER,
@@ -95,9 +97,14 @@ public class BluePlaquesLondonApplication extends Application implements
             if (connectionResult.hasResolution()) {
                 connectionResult.startResolutionForResult(null,
                         CONNECTION_FAILURE_RESOLUTION_REQUEST);
+            } else {
+                GooglePlayServicesUtil.showErrorDialogFragment(connectionResult.getErrorCode(),
+                        null, CONNECTION_FAILURE_NO_RESOLUTION_REQUEST);
             }
         } catch (IntentSender.SendIntentException e) {
             Log.e(TAG, "An error occurred when loading the map", e);
+            GooglePlayServicesUtil.showErrorDialogFragment(connectionResult.getErrorCode(),
+                    null, CONNECTION_FAILURE_NO_RESOLUTION_REQUEST);
         }
     }
 
