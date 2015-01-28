@@ -160,12 +160,16 @@ public class MainActivity extends ActionBarActivity {
                 Log.d(TAG, "Successfully connected to Google Play Services");
             } break;
             default: {
+                boolean isRecoverable = true;
                 setProgressBarVisibility(View.GONE);
                 if (GooglePlayServicesUtil.isUserRecoverableError(playServicesAvailable)) {
                     GooglePlayServicesUtil.showErrorDialogFragment(playServicesAvailable, this, BluePlaquesLondonApplication.CONNECTION_FAILURE_RESOLUTION_REQUEST);
                 } else {
+                    isRecoverable = false;
                     GooglePlayServicesUtil.showErrorDialogFragment(playServicesAvailable, this, BluePlaquesLondonApplication.CONNECTION_FAILURE_NO_RESOLUTION_REQUEST);
                 }
+                BluePlaquesLondonApplication app = (BluePlaquesLondonApplication)getApplication();
+                app.trackEvent(BluePlaquesConstants.ERROR_CATEGORY, BluePlaquesConstants.GOOGLE_PLAY_SERVICES_PROMPT, isRecoverable ? BluePlaquesConstants.GOOGLE_PLAY_SERVICES_PROMPT_RECOVERABLE : BluePlaquesConstants.GOOGLE_PLAY_SERVICES_PROMPT_UNRECOVERABLE);
             }
         }
     }
