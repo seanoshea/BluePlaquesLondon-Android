@@ -28,17 +28,74 @@
 
 package com.upwardsnorthwards.blueplaqueslondon.utils;
 
-import android.content.Context;
 import android.test.InstrumentationTestCase;
+
+import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
+
+import java.util.List;
 
 public class TestBluePlaquesKMLParser extends InstrumentationTestCase {
 
-    public void testParse() {
-        Context context = getInstrumentation().getContext();
+    private static final String WANAMAKER = "51.50805700012604-0.09657699988338207";
+    private static final String GAINSBOROUGH = "51.50587100027157-0.1362019998878026";
+    private static final String HOLST = "51.49613193889098-0.2216046653199584";
+    private static final String NICHOLSON = "51.55502299983695-0.1724799999779625";
+    private static final String MCMILLAN = "51.408840999931140.01513800008473787";
+    private static final String TAIT = "51.56953535360053-0.1815846874911598";
+    private static final String HUTCHINSON = "51.54615000003784-0.1591900000075996";
+    private static final String MANN = "51.551910999706-0.2066150000297029";
+    private static final String PEVSNER = "51.56859400014348-0.1821930000271832";
+    private static final String TAYLOR = "51.53885100036625-0.1508040000021182";
+    private static final String WALTON = "51.49705000054198-0.1539939998990136";
+    private static final String POPPER = "51.63527499996276-0.1592689998720098";
+    private static final String HAZLITT = "51.51438100024222-0.1321030000283372";
+    private static final String ADAM = "51.50897606853864-0.1226314713386643";
+    private static final String SHELLEY = "51.51462099986226-0.1370979999471302";
+    private static final String MOORE = "51.51716200008351-0.1571309999538215";
+    private static final String PELHAM = "51.50705700003604-0.1409309999618671";
+    private static final String HANCOCK = "51.49675315496057-0.1808973543618675";
+
+    public void testLoadMapData() {
         BluePlaquesKMLParser parser = new BluePlaquesKMLParser();
-        parser.loadMapData(context);
-        assertTrue(parser.getPlacemarks().size() > 0);
-        assertTrue(parser.getMassagedPlacemarks().size() > 0);
+        parser.loadMapData(getInstrumentation().getContext());
+
+        List<Placemark> placemarks = parser.getPlacemarks();
+        List<Placemark> massagedPlacemarks = parser.getMassagedPlacemarks();
+
+        assertTrue(placemarks.size() == 995);
+        assertTrue(massagedPlacemarks.size() == 914);
+    }
+
+    public void testNames() {
+        BluePlaquesKMLParser parser = new BluePlaquesKMLParser();
+        parser.loadMapData(getInstrumentation().getContext());
+
+        assertTrue(getPlacemark(parser, WANAMAKER).getName().equals("WANAMAKER, Sam"));
+        assertTrue(getPlacemark(parser, GAINSBOROUGH).getName().equals("GAINSBOROUGH, Thomas"));
+        assertTrue(getPlacemark(parser, HOLST).getName().equals("HOLST, Gustav"));
+        assertTrue(getPlacemark(parser, NICHOLSON).getName().equals("NICHOLSON, William"));
+        assertTrue(getPlacemark(parser, MCMILLAN).getName().equals("McMILLAN, Margaret"));
+        assertTrue(getPlacemark(parser, TAIT).getName().equals("TAIT, Thomas Smith"));
+        assertTrue(getPlacemark(parser, HUTCHINSON).getName().equals("HUTCHINSON, Leslie 'Hutch'"));
+        assertTrue(getPlacemark(parser, MANN).getName().equals("MANN, Dame Ida"));
+        assertTrue(getPlacemark(parser, PEVSNER).getName().equals("PEVSNER, Sir Nikolaus"));
+        assertTrue(getPlacemark(parser, TAYLOR).getName().equals("TAYLOR, A.J.P."));
+        assertTrue(getPlacemark(parser, WALTON).getName().equals("WALTON, Sir William"));
+        assertTrue(getPlacemark(parser, POPPER).getName().equals("POPPER, Karl"));
+        assertTrue(getPlacemark(parser, HAZLITT).getName().equals("HAZLITT, William"));
+        assertTrue(getPlacemark(parser, ADAM).getName().equals("ADAM, Robert"));
+        assertTrue(getPlacemark(parser, SHELLEY).getName().equals("SHELLEY, Percy Bysshe"));
+        assertTrue(getPlacemark(parser, MOORE).getName().equals("MOORE, Tom"));
+        assertTrue(getPlacemark(parser, PELHAM).getName().equals("PELHAM, Henry"));
+        assertTrue(getPlacemark(parser, HANCOCK).getName().equals("HANCOCK, Tony"));
+    }
+
+    private Placemark getPlacemark(BluePlaquesKMLParser parser, String key) {
+        List<Integer> positions = parser.getKeyToArrayPositions().get(key);
+        Integer location = positions.get(0);
+        Placemark placemark = parser.getPlacemarks().get(location);
+        placemark.digestFeatureDescription();
+        return placemark;
     }
 
 }
