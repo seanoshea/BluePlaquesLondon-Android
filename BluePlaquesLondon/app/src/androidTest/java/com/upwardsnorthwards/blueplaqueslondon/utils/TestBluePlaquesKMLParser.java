@@ -90,6 +90,55 @@ public class TestBluePlaquesKMLParser extends InstrumentationTestCase {
         assertTrue(getPlacemark(parser, HANCOCK).getName().equals("HANCOCK, Tony"));
     }
 
+    public void testOccupations() {
+        BluePlaquesKMLParser parser = new BluePlaquesKMLParser();
+        parser.loadMapData(getInstrumentation().getContext());
+
+        assertTrue(getPlacemark(parser, WANAMAKER).getOccupation().equals("The man behind Shakespeare's Globe"));
+        assertTrue(getPlacemark(parser, GAINSBOROUGH).getOccupation().equals("Artist, lived here"));
+        assertTrue(getPlacemark(parser, HOLST).getOccupation().equals("Composer, wrote, The Planets, and, taught here"));
+        assertTrue(getPlacemark(parser, NICHOLSON).getOccupation().equals("Painter and Printmaker lived here 1904-1906"));
+        assertTrue(getPlacemark(parser, MCMILLAN).getOccupation().equals("RACHEL McMILLAN 1859-1917 MARGARET McMILLAN 1860-1931 Pioneers of Nursery Education lodged here"));
+        assertTrue(getPlacemark(parser, TAIT).getOccupation().equals("Architect lived here"));
+        assertTrue(getPlacemark(parser, HUTCHINSON).getOccupation().equals("Singer and Pianist lived here 1929-1967"));
+        assertTrue(getPlacemark(parser, MANN).getOccupation().equals("Ophthalmologist lived here 1902-1934"));
+        assertTrue(getPlacemark(parser, PEVSNER).getOccupation().equals("Architectural Historian lived here from 1936 until his death"));
+        assertTrue(getPlacemark(parser, TAYLOR).getOccupation().equals("Historian and Broadcaster lived here"));
+        assertTrue(getPlacemark(parser, WALTON).getOccupation().equals("Composer lived here"));
+        assertTrue(getPlacemark(parser, POPPER).getOccupation().equals("16 Burlington Rise, EN4"));
+        assertTrue(getPlacemark(parser, HAZLITT).getOccupation().equals("6 Frith Street, W1"));
+        assertTrue(getPlacemark(parser, SHELLEY).getOccupation().equals("Poet, lived here, in 1811"));
+        assertTrue(getPlacemark(parser, MOORE).getOccupation().equals("Irish Poet, lived here"));
+        assertTrue(getPlacemark(parser, PELHAM).getOccupation().equals("Prime Minister, lived here."));
+        assertTrue(getPlacemark(parser, HANCOCK).getOccupation().equals("Comedian lived here 1952-1958"));
+    }
+
+    private void testAddress() {
+        BluePlaquesKMLParser parser = new BluePlaquesKMLParser();
+        parser.loadMapData(getInstrumentation().getContext());
+
+        assertTrue(getPlacemark(parser, WANAMAKER).getOccupation().equals("New Globe Buildings, Bankside, SE1"));
+        assertTrue(getPlacemark(parser, POPPER).getOccupation().equals("16 Burlington Rise, EN4"));
+        assertTrue(getPlacemark(parser, HAZLITT).getOccupation().equals("6 Frith Street, W1"));
+        assertTrue(getPlacemark(parser, ADAM).getOccupation().equals("1-3 Robert Street, Adelphi, WC2"));
+    }
+
+    private void testNote() {
+        BluePlaquesKMLParser parser = new BluePlaquesKMLParser();
+        parser.loadMapData(getInstrumentation().getContext());
+
+        assertTrue(getPlacemark(parser, GAINSBOROUGH).getOccupation().equals("Note: Replaces plaque up in 1881 by RSA at No. 80."));
+        assertTrue(getPlacemark(parser, MOORE).getOccupation().equals("Note: This plaque was removed from 28 Bury Street, St James's Westminster in 1962."));
+    }
+
+    private void testCouncilAndYear() {
+        BluePlaquesKMLParser parser = new BluePlaquesKMLParser();
+        parser.loadMapData(getInstrumentation().getContext());
+
+        assertTrue(getPlacemark(parser, SHELLEY).getOccupation().equals("Westminster 1979/2000"));
+        assertTrue(getPlacemark(parser, PELHAM).getOccupation().equals("Westminster 1995"));
+    }
+
     private Placemark getPlacemark(BluePlaquesKMLParser parser, String key) {
         List<Integer> positions = parser.getKeyToArrayPositions().get(key);
         Integer location = positions.get(0);
@@ -97,5 +146,4 @@ public class TestBluePlaquesKMLParser extends InstrumentationTestCase {
         placemark.digestFeatureDescription();
         return placemark;
     }
-
 }
