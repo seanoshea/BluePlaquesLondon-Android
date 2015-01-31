@@ -153,7 +153,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
                     .position(
                             new LatLng(placemark.getLatitude(), placemark
                                     .getLongitude()))
-                    .title(placemark.getTitle())
+                    .title(placemark.getName())
                     .snippet(getSnippetForPlacemark(placemark))
                     .icon(BitmapDescriptorFactory.fromResource(iconResource)));
             KeyedMarker keyedMarker = new KeyedMarker();

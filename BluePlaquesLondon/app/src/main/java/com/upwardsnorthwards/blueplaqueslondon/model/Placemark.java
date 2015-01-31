@@ -137,7 +137,7 @@ public class Placemark implements Parcelable {
             name = name.replaceAll(EmphasisNoteClosingTag, "");
             name = name.substring(0, startOfYears);
         }
-        name = trimWhitespaceFromString(name);
+        name = trimWhitespaceFromString(name).trim();
     }
 
     private void digestOccupation() {

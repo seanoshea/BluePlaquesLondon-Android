@@ -97,8 +97,9 @@ public class BluePlaquesKMLParser {
                     }
                 } else if (eventType == XmlPullParser.TEXT) {
                     if (processingNameTag) {
-                        if (currentPlacemark == null)
+                        if (currentPlacemark == null) {
                             currentPlacemark = new Placemark();
+                        }
                         currentPlacemark.setTitle(xpp.getText());
                     } else if (processingDescriptionTag) {
                         setCurrentPlacemarkIfNecessary();

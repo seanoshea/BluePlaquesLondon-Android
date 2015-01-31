@@ -4,9 +4,6 @@ env:
   matrix:
     - ANDROID_TARGET=android-21  ANDROID_ABI=armeabi-v7a
 
-before_install:
-  - chmod a+x travis/script.sh
-
 android:
   components:
     - build-tools-21.1.2
@@ -15,5 +12,6 @@ android:
     - extra-android-support
     - extra
 
-script: travis/script.sh
+script:
+  - travis/script.sh
 
