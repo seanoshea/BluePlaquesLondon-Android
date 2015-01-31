@@ -4,21 +4,6 @@ env:
   matrix:
     - ANDROID_TARGET=android-21  ANDROID_ABI=armeabi-v7a
 
-env:
-  - TERM=dumb
-
-before_install:
-  - chmod a+x travis/script.sh
-  - echo yes | android update sdk --no-ui --all --filter platform-tools,tools
-  - echo yes | android update sdk --no-ui --all --filter build-tools-21.1.2
-  - echo yes | android update sdk --no-ui --all --filter android-21
-
-  # Create and start emulator
-  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
-  - emulator -avd test -no-skin -no-audio -no-window &
-  - adb wait-for-device
-  - adb shell input keyevent 82 &
-
 android:
   components:
     - build-tools-21.1.2
@@ -28,5 +13,5 @@ android:
     - extra
 
 script:
-  - TERM=dumb travis/script.sh
+  - travis/script.sh
 
