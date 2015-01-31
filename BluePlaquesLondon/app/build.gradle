@@ -26,3 +26,10 @@ dependencies {
     compile 'com.github.hotchemi:android-rate:0.4.2'
     compile 'com.squareup:otto:1.3.6'
 }
+
+buildDashboard {
+    reports.html.destination = "build/"
+}
+
+test.reports.html.enabled = false     // just clean up dashboard from not generated reports
+test.reports.junitXml.enabled = false // just clean up dashboard from not generated reports

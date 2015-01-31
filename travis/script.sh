@@ -1,4 +1,10 @@
 #!/bin/sh
 set -e
 cd BluePlaquesLondon
-./gradlew assembleDebug
+./gradlew :build \
+          :App:testNormalDebug \
+          :App:jacocoReport \
+          :App:coveralls \
+          :App:testIntegrationDebug \
+          :App:connectedAndroidTestIntegrationDebug \
+          -PtravisCi -PdisablePreDex
