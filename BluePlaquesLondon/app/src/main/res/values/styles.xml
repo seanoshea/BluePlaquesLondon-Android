@@ -29,23 +29,16 @@
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
+        <item name="android:windowTitleSize">@dimen/title_bar_height</item>
+        <item name="android:windowTitleBackgroundStyle">@style/TitleBackground</item>
     </style>
 
-    <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme"></style>
 
     <style name="OrangeButton" parent="PrimaryHeader">
         <item name="android:background">@drawable/orange_button</item>
+        <item name="android:padding">@dimen/padding</item>
     </style>
 
     <style name="Text">
@@ -75,6 +68,14 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textColor">@color/dark_grey_color</item>
         <item name="android:textSize">@dimen/font_note_size</item>
+    </style>
+
+    <style name="TitleBackground">
+        <item name="android:background">@android:color/white</item>
+    </style>
+
+    <style name="TitleBarText" parent="PrimaryText">
+        <item name="android:textSize">@dimen/font_title_bar_size</item>
     </style>
 
 </resources>

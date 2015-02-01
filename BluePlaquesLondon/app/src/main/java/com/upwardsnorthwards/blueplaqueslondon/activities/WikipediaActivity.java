@@ -26,11 +26,21 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-package com.upwardsnorthwards.blueplaqueslondon;
+package com.upwardsnorthwards.blueplaqueslondon.activities;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.URLEncoder;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.view.Window;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+
+import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
+import com.upwardsnorthwards.blueplaqueslondon.R;
+import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
+import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -43,18 +53,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.URLEncoder;
 
-import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
-import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
-
-public class WikipediaActivity extends Activity {
+public class WikipediaActivity extends BaseActivity {
 
     private WebView webView;
     private Placemark placemark;
@@ -62,7 +65,9 @@ public class WikipediaActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_wikipedia);
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar);
         webView = (WebView) findViewById(R.id.activity_wikipedia_web_view);
         Intent intent = getIntent();
         if (intent != null) {
@@ -71,6 +76,12 @@ public class WikipediaActivity extends Activity {
         }
         new WikipediaModel().execute(placemark.getName(),
                 getString(R.string.wikipedia_url));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setCustomTitleBarText(placemark.getTitle());
     }
 
     protected void onRetriveWikipediaUrlSuccess(String url) {
