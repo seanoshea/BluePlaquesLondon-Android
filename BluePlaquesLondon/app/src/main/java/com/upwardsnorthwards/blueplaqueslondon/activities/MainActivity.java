@@ -26,7 +26,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-package com.upwardsnorthwards.blueplaqueslondon;
+package com.upwardsnorthwards.blueplaqueslondon.activities;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -46,6 +46,9 @@ import android.widget.ProgressBar;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.squareup.otto.Subscribe;
+import com.upwardsnorthwards.blueplaqueslondon.views.ArrayAdapterSearchView;
+import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
+import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.AboutFragment;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.MapFragment;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.SettingsFragment;

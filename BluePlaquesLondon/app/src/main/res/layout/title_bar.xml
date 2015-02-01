@@ -27,24 +27,6 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bpl="http://schemas.android.com/apk/res-auto">
-
-    <item
-        android:id="@+id/action_about"
-        android:title="@string/action_about"
-        bpl:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        bpl:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_search"
-        android:icon="@android:drawable/ic_menu_search"
-        android:title="@string/app_name"
-        bpl:actionViewClass="com.upwardsnorthwards.blueplaqueslondon.views.ArrayAdapterSearchView"
-        bpl:showAsAction="ifRoom|collapseActionView"/>
-
-</menu>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/title_bar"
+    style="@style/TitleBarText" />

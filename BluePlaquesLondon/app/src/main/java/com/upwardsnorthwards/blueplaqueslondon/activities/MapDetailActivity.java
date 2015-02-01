@@ -26,25 +26,27 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-package com.upwardsnorthwards.blueplaqueslondon;
+package com.upwardsnorthwards.blueplaqueslondon.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
+import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.adapters.MultiplePlacemarksAdapter;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 
 import java.util.List;
 
-public class MapDetailActivity extends Activity implements
+public class MapDetailActivity extends BaseActivity implements
         OnClickListener {
 
     private List<Placemark> placemarks;
@@ -61,7 +63,9 @@ public class MapDetailActivity extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_map_detail);
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar);
     }
 
     @Override
@@ -119,7 +123,7 @@ public class MapDetailActivity extends Activity implements
     private void addTextToTextViews() {
         // take the first one from the list of placemarks and run with it
         currentPlacemark = placemarks.get(0);
-        setTitle(currentPlacemark.getTitle());
+        setCustomTitleBarText(currentPlacemark.getName());
         occupationTextView.setText(currentPlacemark.getOccupation());
         addressTextView.setText(currentPlacemark.getAddress());
         String councilAndYear = currentPlacemark.getCouncilAndYear();

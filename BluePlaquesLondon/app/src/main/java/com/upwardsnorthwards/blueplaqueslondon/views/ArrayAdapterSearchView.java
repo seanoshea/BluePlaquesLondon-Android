@@ -26,7 +26,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-package com.upwardsnorthwards.blueplaqueslondon;
+package com.upwardsnorthwards.blueplaqueslondon.views;
 
 import android.content.Context;
 import android.support.v7.widget.SearchView;
@@ -36,6 +36,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 
+import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
+import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.adapters.SearchAdapter;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 

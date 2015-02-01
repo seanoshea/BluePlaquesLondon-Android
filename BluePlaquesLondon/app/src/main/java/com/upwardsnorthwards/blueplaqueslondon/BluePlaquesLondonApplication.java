@@ -58,8 +58,8 @@ public class BluePlaquesLondonApplication extends Application implements
 
     private final static String TAG = "BluePlaquesLondonApplication";
 
-    protected final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-    protected final static int CONNECTION_FAILURE_NO_RESOLUTION_REQUEST = 9001;
+    public final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    public final static int CONNECTION_FAILURE_NO_RESOLUTION_REQUEST = 9001;
 
     public enum TrackerName {
         APP_TRACKER,
