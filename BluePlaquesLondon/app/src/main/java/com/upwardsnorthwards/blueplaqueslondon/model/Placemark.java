@@ -239,7 +239,7 @@ public class Placemark implements Parcelable {
             if (locationOfFinalDelimiter != -1
                     && locationOfFinalDelimiter == inputWithNoteRemoved
                     .length() - OverlayTitleDelimiter.length()) {
-                inputWithNoteRemoved.substring(locationOfFinalDelimiter);
+                inputWithNoteRemoved = inputWithNoteRemoved.substring(locationOfFinalDelimiter);
             }
         }
         return inputWithNoteRemoved;

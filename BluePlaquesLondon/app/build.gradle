@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'pmd'
 
 android {
     compileSdkVersion 21
@@ -17,6 +18,23 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+task pmd (type: Pmd, dependsOn: assembleDebug) {
+
+    description 'Run pmd'
+    group 'verification'
+
+    source = fileTree('src/main/java')
+
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
+check.doLast {
+    project.tasks.getByName("pmd").execute()
 }
 
 dependencies {

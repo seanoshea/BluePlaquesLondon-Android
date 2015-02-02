@@ -152,7 +152,7 @@ public class MainActivity extends ActionBarActivity {
                 }
             }
             default: {
-
+                Log.w(TAG, "onActivityResult invoked with an unexpected requestCode");
             }
             break;
         }

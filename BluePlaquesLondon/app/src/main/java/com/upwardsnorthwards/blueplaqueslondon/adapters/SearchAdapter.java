@@ -209,6 +209,6 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
     }
 
     private int getOffset() {
-        return (filteredPlacemarks != null && filteredPlacemarks.size() > 1) ? 0 : 1;
+        return filteredPlacemarks != null && filteredPlacemarks.size() > 1 ? 0 : 1;
     }
 }
