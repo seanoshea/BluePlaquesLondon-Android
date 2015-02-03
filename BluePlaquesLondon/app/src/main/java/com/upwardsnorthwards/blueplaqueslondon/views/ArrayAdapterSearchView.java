@@ -46,63 +46,61 @@ import java.util.List;
 
 public class ArrayAdapterSearchView extends SearchView implements SearchView.OnQueryTextListener, android.view.View.OnFocusChangeListener, OnItemClickListener {
 
-    private static final String TAG = "ArrayAdapterSearchView";
-
     private SearchView.SearchAutoComplete searchAutoComplete;
     private SearchAdapter searchAdapter;
     private List<Placemark> placemarks;
 
-    public ArrayAdapterSearchView(Context context) {
+    public ArrayAdapterSearchView(final Context context) {
         super(context);
         initialize(context);
     }
 
-    public ArrayAdapterSearchView(Context context, AttributeSet attrs) {
+    public ArrayAdapterSearchView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         initialize(context);
     }
 
-    public void notifyAdapterOfPlacemarks(List<Placemark> placemarks) {
+    public void notifyAdapterOfPlacemarks(final List<Placemark> placemarks) {
         this.placemarks = placemarks;
         searchAdapter.setPlacemarks(placemarks);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
+    public void setOnItemClickListener(final OnItemClickListener listener) {
         searchAutoComplete.setOnItemClickListener(listener);
     }
 
-    public void setAdapter(ArrayAdapter<?> adapter) {
+    public void setAdapter(final ArrayAdapter<?> adapter) {
         searchAutoComplete.setAdapter(adapter);
     }
 
     @Override
-    public boolean onQueryTextSubmit(String s) {
+    public boolean onQueryTextSubmit(final String s) {
         return false;
     }
 
     @Override
-    public boolean onQueryTextChange(String s) {
+    public boolean onQueryTextChange(final String s) {
         searchAdapter.getFilter().filter(s);
         return false;
     }
 
     @Override
-    public void onFocusChange(View v, boolean hasFocus) {
+    public void onFocusChange(final View v, final boolean hasFocus) {
         if (hasFocus) {
             searchAdapter.notifyDataSetChanged();
         }
     }
 
-    public void onItemClick(AdapterView<?> p, View v, int pos, long id) {
+    public void onItemClick(final AdapterView<?> p, final View v, final int pos, final long id) {
         navigateToPlacemarkAtIndex(pos);
     }
 
-    private void navigateToPlacemarkAtIndex(int index) {
+    private void navigateToPlacemarkAtIndex(final int index) {
         final Placemark placemark = searchAdapter.getFilteredPlacemarkAtPosition(index);
         BluePlaquesLondonApplication.bus.post(placemark);
     }
 
-    private void initialize(Context context) {
+    private void initialize(final Context context) {
         searchAutoComplete = (SearchAutoComplete) findViewById(R.id.search_src_text);
         searchAdapter = new SearchAdapter(context, R.layout.search_item,
                 new ArrayList<Placemark>());
@@ -116,7 +114,7 @@ public class ArrayAdapterSearchView extends SearchView implements SearchView.OnQ
         return placemarks;
     }
 
-    public void setPlacemarks(List<Placemark> placemarks) {
+    public void setPlacemarks(final List<Placemark> placemarks) {
         this.placemarks = placemarks;
     }
 }

@@ -55,7 +55,7 @@ public class Placemark implements Parcelable {
 
     }
 
-    private Placemark(Parcel in) {
+    private Placemark(final Parcel in) {
         super();
         featureDescription = in.readString();
         title = in.readString();
@@ -75,7 +75,7 @@ public class Placemark implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(final Parcel dest, final int flags) {
         dest.writeString(featureDescription);
         dest.writeString(title);
         dest.writeString(name);
@@ -90,17 +90,17 @@ public class Placemark implements Parcelable {
 
     public static final Parcelable.Creator<Placemark> CREATOR = new Parcelable.Creator<Placemark>() {
 
-        public Placemark createFromParcel(Parcel source) {
+        public Placemark createFromParcel(final Parcel source) {
             return new Placemark(source);
         }
 
-        public Placemark[] newArray(int size) {
+        public Placemark[] newArray(final int size) {
             return new Placemark[size];
         }
 
     };
 
-    public static String keyFromLatLng(double latitude, double longitude) {
+    public static String keyFromLatLng(final double latitude, final double longitude) {
         return Double.toString(latitude) + Double.toString(longitude);
     }
 
@@ -224,7 +224,7 @@ public class Placemark implements Parcelable {
         }
     }
 
-    private String removeNoteFromString(String input) {
+    private String removeNoteFromString(final String input) {
         String inputWithNoteRemoved = input;
         if (note != null) {
             inputWithNoteRemoved = trimWhitespaceFromString(inputWithNoteRemoved);
@@ -260,7 +260,7 @@ public class Placemark implements Parcelable {
         return featureDescription;
     }
 
-    public void setFeatureDescription(String featureDescription) {
+    public void setFeatureDescription(final String featureDescription) {
         this.featureDescription = featureDescription;
     }
 
@@ -268,7 +268,7 @@ public class Placemark implements Parcelable {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -276,7 +276,7 @@ public class Placemark implements Parcelable {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(final String title) {
         this.title = title;
     }
 
@@ -284,7 +284,7 @@ public class Placemark implements Parcelable {
         return occupation;
     }
 
-    public void setOccupation(String occupation) {
+    public void setOccupation(final String occupation) {
         this.occupation = occupation;
     }
 
@@ -292,7 +292,7 @@ public class Placemark implements Parcelable {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(final String address) {
         this.address = address;
     }
 
@@ -300,7 +300,7 @@ public class Placemark implements Parcelable {
         return note;
     }
 
-    public void setNote(String note) {
+    public void setNote(final String note) {
         this.note = note;
     }
 
@@ -308,7 +308,7 @@ public class Placemark implements Parcelable {
         return councilAndYear;
     }
 
-    public void setCouncilAndYear(String councilAndYear) {
+    public void setCouncilAndYear(final String councilAndYear) {
         this.councilAndYear = councilAndYear;
     }
 
@@ -316,7 +316,7 @@ public class Placemark implements Parcelable {
         return styleUrl;
     }
 
-    public void setStyleUrl(String styleUrl) {
+    public void setStyleUrl(final String styleUrl) {
         this.styleUrl = styleUrl;
     }
 
@@ -324,7 +324,7 @@ public class Placemark implements Parcelable {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(final double latitude) {
         this.latitude = latitude;
     }
 
@@ -332,7 +332,7 @@ public class Placemark implements Parcelable {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(final double longitude) {
         this.longitude = longitude;
     }
 
@@ -340,7 +340,7 @@ public class Placemark implements Parcelable {
         return placemarkPinType;
     }
 
-    public void setPlacemarkPinType(int placemarkPinType) {
+    public void setPlacemarkPinType(final int placemarkPinType) {
         this.placemarkPinType = placemarkPinType;
     }
 }

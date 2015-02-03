@@ -45,8 +45,8 @@ public class AboutFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+
         final View view = inflater.inflate(R.layout.fragment_about, container);
 
         // allow users click on the links in the text views

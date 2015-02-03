@@ -61,7 +61,7 @@ public class BluePlaquesKMLParser {
     private boolean processingCoordinateTag = false;
     private boolean processingStyleUrlTag = false;
 
-    public void loadMapData(Context context) {
+    public void loadMapData(final Context context) {
         try {
             final XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
@@ -121,7 +121,7 @@ public class BluePlaquesKMLParser {
         conslidateDuplicates();
     }
 
-    private void digestCoordinates(String input) {
+    private void digestCoordinates(final String input) {
         final String[] parts = input.split(",");
         if (parts.length == 3) {
             try {
@@ -165,7 +165,7 @@ public class BluePlaquesKMLParser {
         placemarks.add(currentPlacemark);
     }
 
-    public void setCurrentPlacemark(Placemark currentPlacemark) {
+    public void setCurrentPlacemark(final Placemark currentPlacemark) {
         this.currentPlacemark = currentPlacemark;
     }
 
@@ -173,7 +173,7 @@ public class BluePlaquesKMLParser {
         return placemarks;
     }
 
-    public void setPlacemarks(List<Placemark> placemarks) {
+    public void setPlacemarks(final List<Placemark> placemarks) {
         this.placemarks = placemarks;
     }
 
@@ -182,7 +182,7 @@ public class BluePlaquesKMLParser {
     }
 
     public void setKeyToArrayPositions(
-            Map<String, List<Integer>> keyToArrayPositions) {
+            final Map<String, List<Integer>> keyToArrayPositions) {
         this.keyToArrayPositions = keyToArrayPositions;
     }
 
@@ -194,7 +194,7 @@ public class BluePlaquesKMLParser {
         return massagedPlacemarks;
     }
 
-    public void setMassagedPlacemarks(List<Placemark> massagedPlacemarks) {
+    public void setMassagedPlacemarks(final List<Placemark> massagedPlacemarks) {
         this.massagedPlacemarks = massagedPlacemarks;
     }
 }

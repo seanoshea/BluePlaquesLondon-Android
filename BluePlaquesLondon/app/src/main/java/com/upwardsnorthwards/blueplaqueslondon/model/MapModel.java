@@ -44,11 +44,11 @@ public class MapModel {
         parser = new BluePlaquesKMLParser();
     }
 
-    public void loadMapData(Context context) {
+    public void loadMapData(final Context context) {
         parser.loadMapData(context);
     }
 
-    public ArrayList<Placemark> getPlacemarksAtIndices(List<Integer> indices) {
+    public ArrayList<Placemark> getPlacemarksAtIndices(final List<Integer> indices) {
         final ArrayList<Placemark> placemarksAtIndices = new ArrayList<Placemark>();
         for (final Integer index : indices) {
             placemarksAtIndices.add(parser.getPlacemarks().get(index));
@@ -56,7 +56,7 @@ public class MapModel {
         return placemarksAtIndices;
     }
 
-    public Placemark getPlacemarkClosestToPlacemark(Location location) {
+    public Placemark getPlacemarkClosestToPlacemark(final Location location) {
         Placemark closestPlacemark = null;
         float currentDistance = 0;
         for (final Placemark placemark : getMassagedPlacemarks()) {
@@ -82,7 +82,7 @@ public class MapModel {
         return parser;
     }
 
-    public void setParser(BluePlaquesKMLParser parser) {
+    public void setParser(final BluePlaquesKMLParser parser) {
         this.parser = parser;
     }
 }

@@ -67,14 +67,14 @@ public class MainActivity extends ActionBarActivity {
     private ProgressBar progressBar;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initialiseAppRating();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         final SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -94,7 +94,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         final FragmentManager fm = getFragmentManager();
         updateProgressBarVisibility(View.GONE);
         switch (item.getItemId()) {
@@ -120,7 +120,7 @@ public class MainActivity extends ActionBarActivity {
         checkForGooglePlayServicesAvailability();
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         updateProgressBarVisibility(View.GONE);
         switch (requestCode) {
             case BluePlaquesLondonApplication.CONNECTION_FAILURE_RESOLUTION_REQUEST:
@@ -159,13 +159,13 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Subscribe
-    public void onPlacemarkSelected(Placemark placemark) {
+    public void onPlacemarkSelected(final Placemark placemark) {
         searchView.setQuery("", false);
         searchView.setIconified(true);
         searchView.clearFocus();
     }
 
-    public void updateProgressBarVisibility(int visibility) {
+    public void updateProgressBarVisibility(final int visibility) {
         if (progressBar != null) {
             progressBar.setVisibility(visibility);
         }
@@ -204,7 +204,7 @@ public class MainActivity extends ActionBarActivity {
                 .setRemindInterval(1)
                 .setOnClickButtonListener(new OnClickButtonListener() {
                     @Override
-                    public void onClickButton(int which) {
+                    public void onClickButton(final int which) {
                         final String event = analyticsStringForButtonPress(which);
                         final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
                         app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
@@ -216,7 +216,7 @@ public class MainActivity extends ActionBarActivity {
         AppRate.showRateDialogIfMeetsConditions(this);
     }
 
-    private String analyticsStringForButtonPress(int which) {
+    private String analyticsStringForButtonPress(final int which) {
         String event = "";
         switch (which) {
             case 0: {

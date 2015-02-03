@@ -44,14 +44,13 @@ public class MultiplePlacemarksAdapter extends ArrayAdapter<Placemark> {
 
     private List<Placemark> placemarks;
 
-    public MultiplePlacemarksAdapter(Context context, int resource,
-                                     List<Placemark> objects) {
+    public MultiplePlacemarksAdapter(final Context context, final int resource, final List<Placemark> objects) {
         super(context, resource, objects);
         placemarks = objects;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, final View convertView, final ViewGroup parent) {
         View v = convertView;
         if (v == null) {
             final LayoutInflater vi = (LayoutInflater) parent.getContext()

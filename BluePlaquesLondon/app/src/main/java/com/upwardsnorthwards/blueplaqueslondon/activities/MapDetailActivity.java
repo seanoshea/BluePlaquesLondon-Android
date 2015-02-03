@@ -61,7 +61,7 @@ public class MapDetailActivity extends BaseActivity implements
     private Button moreButton;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_map_detail);
@@ -76,7 +76,7 @@ public class MapDetailActivity extends BaseActivity implements
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
         if (v.equals(streetViewButton)) {
             streetViewButtonClicked();
         } else if (v.equals(wikipediaArticleButton)) {
@@ -86,7 +86,7 @@ public class MapDetailActivity extends BaseActivity implements
         }
     }
 
-    protected void switchToPlacemark(Placemark placemark) {
+    protected void switchToPlacemark(final Placemark placemark) {
         placemarks.remove(placemark);
         placemarks.add(0, placemark);
         addTextToTextViews();
@@ -152,7 +152,7 @@ public class MapDetailActivity extends BaseActivity implements
                 new DialogInterface.OnClickListener() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(final DialogInterface dialog, final int which) {
                         dialog.dismiss();
                     }
                 });
@@ -160,7 +160,7 @@ public class MapDetailActivity extends BaseActivity implements
         builder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
 
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(final DialogInterface dialog, final int which) {
                 switchToPlacemark(arrayAdapter.getItem(which));
             }
         });

@@ -35,7 +35,7 @@ import com.upwardsnorthwards.blueplaqueslondon.R;
 
 public class BaseActivity extends Activity {
 
-    protected void setCustomTitleBarText(String text) {
+    protected void setCustomTitleBarText(final String text) {
         final TextView titleBar = (TextView)findViewById(R.id.title_bar);
         if (titleBar != null) {
             titleBar.setText(text);

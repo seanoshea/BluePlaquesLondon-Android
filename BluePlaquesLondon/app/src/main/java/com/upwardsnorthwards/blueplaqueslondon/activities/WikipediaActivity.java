@@ -63,7 +63,7 @@ public class WikipediaActivity extends BaseActivity {
     private Placemark placemark;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_wikipedia);
@@ -84,16 +84,16 @@ public class WikipediaActivity extends BaseActivity {
         setCustomTitleBarText(placemark.getTitle());
     }
 
-    protected void onRetriveWikipediaUrlSuccess(String url) {
+    protected void onRetriveWikipediaUrlSuccess(final String url) {
         final Activity activity = this;
         webView.setWebChromeClient(new WebChromeClient() {
-            public void onProgressChanged(WebView view, int progress) {
+            public void onProgressChanged(final WebView view, final int progress) {
                 activity.setProgress(progress * 1000);
             }
         });
         webView.setWebViewClient(new WebViewClient() {
-            public void onReceivedError(WebView view, int errorCode,
-                                        String description, String failingUrl) {
+            public void onReceivedError(final WebView view, final int errorCode,
+                                        final String description, final String failingUrl) {
                 onRetriveWikipediaUrlFailure();
             }
         });
@@ -113,7 +113,7 @@ public class WikipediaActivity extends BaseActivity {
         private String responseUrl;
 
         @Override
-        protected String doInBackground(String... params) {
+        protected String doInBackground(final String... params) {
             final String name = params[0];
             responseUrl = params[1];
             final HttpClient httpclient = new DefaultHttpClient();
@@ -144,7 +144,7 @@ public class WikipediaActivity extends BaseActivity {
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(final String result) {
             super.onPostExecute(result);
             try {
                 if (result.length() > 0) {

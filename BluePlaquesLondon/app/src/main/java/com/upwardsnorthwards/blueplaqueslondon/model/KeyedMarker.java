@@ -39,7 +39,7 @@ public class KeyedMarker {
         return key;
     }
 
-    public void setKey(String key) {
+    public void setKey(final String key) {
         this.key = key;
     }
 
@@ -47,7 +47,7 @@ public class KeyedMarker {
         return marker;
     }
 
-    public void setMarker(Marker marker) {
+    public void setMarker(final Marker marker) {
         this.marker = marker;
     }
 

@@ -47,7 +47,7 @@ public class PanoramaActivity extends Activity implements OnStreetViewPanoramaRe
     private Placemark placemark;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -64,7 +64,7 @@ public class PanoramaActivity extends Activity implements OnStreetViewPanoramaRe
     }
 
     @Override
-    public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
+    public void onStreetViewPanoramaReady(final StreetViewPanorama streetViewPanorama) {
         streetViewPanorama.setPosition(new LatLng(placemark.getLatitude(), placemark.getLongitude()));
     }
 }
