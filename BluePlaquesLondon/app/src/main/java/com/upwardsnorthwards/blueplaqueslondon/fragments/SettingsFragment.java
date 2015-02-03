@@ -54,7 +54,7 @@ public class SettingsFragment extends DialogFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_settings, container);
+        final View view = inflater.inflate(R.layout.fragment_settings, container);
         getDialog().setTitle(getString(R.string.action_settings));
         return view;
     }
@@ -62,7 +62,7 @@ public class SettingsFragment extends DialogFragment implements
     @Override
     public void onStart() {
         super.onStart();
-        Dialog dialog = getDialog();
+        final Dialog dialog = getDialog();
         if (dialog != null) {
             dialog.setCanceledOnTouchOutside(true);
         }

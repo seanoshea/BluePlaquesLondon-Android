@@ -63,14 +63,14 @@ public class BluePlaquesKMLParser {
 
     public void loadMapData(Context context) {
         try {
-            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+            final XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
-            XmlPullParser xpp = factory.newPullParser();
+            final XmlPullParser xpp = factory.newPullParser();
             xpp.setInput(context.getAssets().open("blueplaques.kml"), "UTF-8");
             int eventType = xpp.getEventType();
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 if (eventType == XmlPullParser.START_TAG) {
-                    String qName = xpp.getName();
+                    final String qName = xpp.getName();
                     if (qName.equalsIgnoreCase(PLACEMARK_KEY)) {
                         currentPlacemark = new Placemark();
                     } else if (qName.equalsIgnoreCase(NAME_KEY)) {
@@ -83,7 +83,7 @@ public class BluePlaquesKMLParser {
                         processingStyleUrlTag = true;
                     }
                 } else if (eventType == XmlPullParser.END_TAG) {
-                    String qName = xpp.getName();
+                    final String qName = xpp.getName();
                     if (qName.equalsIgnoreCase(PLACEMARK_KEY)) {
                         addCurrentPlacemark();
                     } else if (qName.equalsIgnoreCase(NAME_KEY)) {
@@ -122,7 +122,7 @@ public class BluePlaquesKMLParser {
     }
 
     private void digestCoordinates(String input) {
-        String[] parts = input.split(",");
+        final String[] parts = input.split(",");
         if (parts.length == 3) {
             try {
                 currentPlacemark.setLatitude(Double.parseDouble(parts[1]));
@@ -135,16 +135,16 @@ public class BluePlaquesKMLParser {
 
     private void conslidateDuplicates() {
         int index = 0;
-        for (Placemark placemark : placemarks) {
-            String key = placemark.key();
+        for (final Placemark placemark : placemarks) {
+            final String key = placemark.key();
             if (!keyToArrayPositions.containsKey(key)) {
-                List<Integer> positions = new ArrayList<Integer>();
+                final List<Integer> positions = new ArrayList<Integer>();
                 positions.add(index);
                 keyToArrayPositions.put(key, positions);
                 massagedPlacemarks.add(placemark);
             } else {
-                List<Integer> existingPlacemarks = keyToArrayPositions.get(key);
-                Placemark existingPlacemark = placemarks.get(existingPlacemarks
+                final List<Integer> existingPlacemarks = keyToArrayPositions.get(key);
+                final Placemark existingPlacemark = placemarks.get(existingPlacemarks
                         .get(0));
                 if (!placemark.getTitle().equals(existingPlacemark.getTitle())) {
                     existingPlacemarks.add(index);

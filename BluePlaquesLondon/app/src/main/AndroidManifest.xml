@@ -49,7 +49,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyD67y7YNXP7aUCE3H6ZyV1U0e-3G5Z3riA" />
+            android:value="AIzaSyC8ior752t3RUPcj4z7ecENIw60vML2OUk" />
         <meta-data
             android:name="com.google.android.gms.analytics.globalConfigResource"
             android:resource="@xml/app_tracker" />

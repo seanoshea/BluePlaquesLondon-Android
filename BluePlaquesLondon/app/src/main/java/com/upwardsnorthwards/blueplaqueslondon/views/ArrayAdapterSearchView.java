@@ -98,7 +98,7 @@ public class ArrayAdapterSearchView extends SearchView implements SearchView.OnQ
     }
 
     private void navigateToPlacemarkAtIndex(int index) {
-        Placemark placemark = searchAdapter.getFilteredPlacemarkAtPosition(index);
+        final Placemark placemark = searchAdapter.getFilteredPlacemarkAtPosition(index);
         BluePlaquesLondonApplication.bus.post(placemark);
     }
 

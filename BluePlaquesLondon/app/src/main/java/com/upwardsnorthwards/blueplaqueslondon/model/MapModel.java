@@ -49,8 +49,8 @@ public class MapModel {
     }
 
     public ArrayList<Placemark> getPlacemarksAtIndices(List<Integer> indices) {
-        ArrayList<Placemark> placemarksAtIndices = new ArrayList<Placemark>();
-        for (Integer index : indices) {
+        final ArrayList<Placemark> placemarksAtIndices = new ArrayList<Placemark>();
+        for (final Integer index : indices) {
             placemarksAtIndices.add(parser.getPlacemarks().get(index));
         }
         return placemarksAtIndices;
@@ -59,10 +59,10 @@ public class MapModel {
     public Placemark getPlacemarkClosestToPlacemark(Location location) {
         Placemark closestPlacemark = null;
         float currentDistance = 0;
-        for (Placemark placemark : getMassagedPlacemarks()) {
-            float [] results = new float[1];
+        for (final Placemark placemark : getMassagedPlacemarks()) {
+            final float [] results = new float[1];
             Location.distanceBetween(location.getLatitude(), location.getLongitude(), placemark.getLatitude(), placemark.getLongitude(), results);
-            float distance = results[0];
+            final float distance = results[0];
             if (closestPlacemark == null) {
                 currentDistance = distance;
                 closestPlacemark = placemark;

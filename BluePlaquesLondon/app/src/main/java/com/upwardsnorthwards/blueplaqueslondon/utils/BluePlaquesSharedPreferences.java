@@ -69,41 +69,41 @@ public class BluePlaquesSharedPreferences {
     }
 
     public static float getMapZoom(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences(
+        final SharedPreferences preferences = context.getSharedPreferences(
                 PREFERENCES_KEY, Context.MODE_PRIVATE);
         return preferences.getFloat(MAP_ZOOM, MAP_ZOOM_DEFAULT);
     }
 
     public static void saveMapZoom(Context context, GoogleMap map, float zoom) {
         if (zoom <= map.getMaxZoomLevel() && zoom >= map.getMinZoomLevel()) {
-            SharedPreferences preferences = context.getSharedPreferences(
+            final SharedPreferences preferences = context.getSharedPreferences(
                     PREFERENCES_KEY, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
+            final SharedPreferences.Editor editor = preferences.edit();
             editor.putFloat(MAP_ZOOM, zoom);
             editor.commit();
         }
     }
 
     public static boolean getAnalyticsEnabled(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences(
+        final SharedPreferences preferences = context.getSharedPreferences(
                 PREFERENCES_KEY, Context.MODE_PRIVATE);
         return preferences.getBoolean(ANALYTICS_ENABLED,
                 ANALYTICS_ENABLED_DEFAULT);
     }
 
     public static void saveAnalyticsEnabled(Context context, boolean enabled) {
-        SharedPreferences preferences = context.getSharedPreferences(
+        final SharedPreferences preferences = context.getSharedPreferences(
                 PREFERENCES_KEY, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
+        final SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(ANALYTICS_ENABLED, enabled);
         editor.commit();
     }
 
     private static void saveCoordinate(Context context, LatLng latLng,
                                        String latitudeKey, String longitudeKey) {
-        SharedPreferences preferences = context.getSharedPreferences(
+        final SharedPreferences preferences = context.getSharedPreferences(
                 PREFERENCES_KEY, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
+        final SharedPreferences.Editor editor = preferences.edit();
         editor.putFloat(latitudeKey, (float) latLng.latitude);
         editor.putFloat(longitudeKey, (float) latLng.longitude);
         editor.commit();
@@ -111,11 +111,11 @@ public class BluePlaquesSharedPreferences {
 
     private static LatLng getSavedCoordinate(Context context,
                                              String latitudeKey, String longitudeKey) {
-        SharedPreferences preferences = context.getSharedPreferences(
+        final SharedPreferences preferences = context.getSharedPreferences(
                 PREFERENCES_KEY, Context.MODE_PRIVATE);
-        float latitude = preferences.getFloat(latitudeKey,
+        final float latitude = preferences.getFloat(latitudeKey,
                 (float) BluePlaquesConstants.DEFAULT_LATITUDE);
-        float longitude = preferences.getFloat(longitudeKey,
+        final float longitude = preferences.getFloat(longitudeKey,
                 (float) BluePlaquesConstants.DEFAULT_LONGITUDE);
         return new LatLng(latitude, longitude);
     }

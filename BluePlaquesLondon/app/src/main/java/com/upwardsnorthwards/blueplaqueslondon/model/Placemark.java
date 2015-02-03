@@ -122,7 +122,7 @@ public class Placemark implements Parcelable {
 
     private void digestTitle() {
         title = featureDescription;
-        int index = featureDescription.indexOf(OverlayTitleDelimiter);
+        final int index = featureDescription.indexOf(OverlayTitleDelimiter);
         if (index != -1) {
             title = featureDescription.substring(0, index);
         }
@@ -131,7 +131,7 @@ public class Placemark implements Parcelable {
 
     private void digestName() {
         name = title;
-        int startOfYears = name.indexOf(NameDelimiter);
+        final int startOfYears = name.indexOf(NameDelimiter);
         if (startOfYears != -1) {
             name = name.replaceAll(EmphasisNoteOpeningTag, "");
             name = name.replaceAll(EmphasisNoteClosingTag, "");
@@ -142,20 +142,20 @@ public class Placemark implements Parcelable {
 
     private void digestOccupation() {
         occupation = featureDescription;
-        int index = featureDescription.indexOf(OverlayTitleDelimiter);
+        final int index = featureDescription.indexOf(OverlayTitleDelimiter);
         if (index != -1) {
             occupation = occupation.substring(index);
-            int start = occupation.indexOf(OverlayTitleDelimiter);
+            final int start = occupation.indexOf(OverlayTitleDelimiter);
             if (start == 0) {
-                int delimiterLength = OverlayTitleDelimiter.length();
-                int end = occupation.indexOf(OverlayTitleDelimiter, start
+                final int delimiterLength = OverlayTitleDelimiter.length();
+                final int end = occupation.indexOf(OverlayTitleDelimiter, start
                         + delimiterLength);
                 occupation = trimWhitespaceFromString(occupation.substring(
                         start + delimiterLength, end));
                 occupation = trimWhitespaceFromString(occupation);
                 if (occupation.length() == 9
                         && occupation.matches("[0-9]{4}-[0-9]{4}")) {
-                    String[] components = featureDescription
+                    final String[] components = featureDescription
                             .split(OverlayTitleDelimiter);
                     if (components.length > 3) {
                         occupation = components[2];
@@ -167,7 +167,7 @@ public class Placemark implements Parcelable {
     }
 
     private void digestAddress() {
-        String[] components = featureDescription.split(OverlayTitleDelimiter);
+        final String[] components = featureDescription.split(OverlayTitleDelimiter);
         if (components.length != 0) {
             switch (components.length) {
                 case 2:
@@ -193,7 +193,7 @@ public class Placemark implements Parcelable {
     }
 
     private void digestNote() {
-        int startOfEmphasis = featureDescription
+        final int startOfEmphasis = featureDescription
                 .indexOf(EmphasisNoteOpeningTag);
         if (startOfEmphasis != -1) {
             int endOfEmphasisIndex = featureDescription
@@ -201,7 +201,7 @@ public class Placemark implements Parcelable {
             if (endOfEmphasisIndex == -1) {
                 // some notes don't have the correct closing tag ... search for
                 // the starting tag again
-                int locationOfLastEmphasis = featureDescription
+                final int locationOfLastEmphasis = featureDescription
                         .lastIndexOf(EmphasisNoteOpeningTag);
                 if (locationOfLastEmphasis != startOfEmphasis) {
                     endOfEmphasisIndex = featureDescription.length()
@@ -217,8 +217,8 @@ public class Placemark implements Parcelable {
     }
 
     private void digestCouncilAndYear() {
-        String withoutNote = removeNoteFromString(featureDescription);
-        String[] components = withoutNote.split(OverlayTitleDelimiter);
+        final String withoutNote = removeNoteFromString(featureDescription);
+        final String[] components = withoutNote.split(OverlayTitleDelimiter);
         if (components.length > 2) {
             councilAndYear = trimWhitespaceFromString(components[components.length - 1]);
         }
@@ -234,7 +234,7 @@ public class Placemark implements Parcelable {
             inputWithNoteRemoved = inputWithNoteRemoved.replaceAll(
                     EmphasisNoteClosingTag, "");
             // check for a trailing delimiter
-            int locationOfFinalDelimiter = inputWithNoteRemoved
+            final int locationOfFinalDelimiter = inputWithNoteRemoved
                     .lastIndexOf(OverlayTitleDelimiter);
             if (locationOfFinalDelimiter != -1
                     && locationOfFinalDelimiter == inputWithNoteRemoved
@@ -253,9 +253,7 @@ public class Placemark implements Parcelable {
 
     @Override
     public String toString() {
-        String description = key() + " " + title + " " + name + " occupation "
-                + occupation + " " + note + " " + councilAndYear;
-        return description;
+        return key() + " " + title + " " + name + occupation + " " + note + " " + councilAndYear;
     }
 
     public String getFeatureDescription() {
