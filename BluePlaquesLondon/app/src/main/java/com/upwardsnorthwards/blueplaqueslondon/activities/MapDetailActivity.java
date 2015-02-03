@@ -61,7 +61,7 @@ public class MapDetailActivity extends BaseActivity implements
     private Button moreButton;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_map_detail);
@@ -76,7 +76,7 @@ public class MapDetailActivity extends BaseActivity implements
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
         if (v.equals(streetViewButton)) {
             streetViewButtonClicked();
         } else if (v.equals(wikipediaArticleButton)) {
@@ -86,14 +86,14 @@ public class MapDetailActivity extends BaseActivity implements
         }
     }
 
-    protected void switchToPlacemark(Placemark placemark) {
+    protected void switchToPlacemark(final Placemark placemark) {
         placemarks.remove(placemark);
         placemarks.add(0, placemark);
         addTextToTextViews();
     }
 
     private void getPlacemarksFromIntent() {
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         if (intent != null) {
             placemarks = intent
                     .getParcelableArrayListExtra(BluePlaquesConstants.INFO_WINDOW_CLICKED_PARCLEABLE_KEY);
@@ -126,14 +126,14 @@ public class MapDetailActivity extends BaseActivity implements
         setCustomTitleBarText(currentPlacemark.getName());
         occupationTextView.setText(currentPlacemark.getOccupation());
         addressTextView.setText(currentPlacemark.getAddress());
-        String councilAndYear = currentPlacemark.getCouncilAndYear();
+        final String councilAndYear = currentPlacemark.getCouncilAndYear();
         if (councilAndYear != null) {
             councilAndYearTextView.setText(councilAndYear);
             councilAndYearTextView.setVisibility(View.VISIBLE);
         } else {
             councilAndYearTextView.setVisibility(View.GONE);
         }
-        String note = currentPlacemark.getNote();
+        final String note = currentPlacemark.getNote();
         if (note != null) {
             noteTextView.setText(note);
             noteTextView.setVisibility(View.VISIBLE);
@@ -143,7 +143,7 @@ public class MapDetailActivity extends BaseActivity implements
     }
 
     private void moreButtonClicked() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(R.drawable.ic_launcher);
         builder.setTitle(getString(R.string.multiple_placemarks_select_one));
         final MultiplePlacemarksAdapter arrayAdapter = new MultiplePlacemarksAdapter(
@@ -152,7 +152,7 @@ public class MapDetailActivity extends BaseActivity implements
                 new DialogInterface.OnClickListener() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(final DialogInterface dialog, final int which) {
                         dialog.dismiss();
                     }
                 });
@@ -160,36 +160,36 @@ public class MapDetailActivity extends BaseActivity implements
         builder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
 
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(final DialogInterface dialog, final int which) {
                 switchToPlacemark(arrayAdapter.getItem(which));
             }
         });
         builder.show();
-        BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
+        final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
         app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
                 BluePlaquesConstants.DETAILS_BUTTON_PRESSED_EVENT, placemarks
                         .get(0).getTitle());
     }
 
     private void wikipediaArticleButtonClicked() {
-        Placemark placemark = placemarks.get(0);
-        BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
+        final Placemark placemark = placemarks.get(0);
+        final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
         app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
                 BluePlaquesConstants.WIKIPEDIA_BUTTON_PRESSED_EVENT,
                 placemark.getTitle());
-        Intent intent = new Intent(this, WikipediaActivity.class);
+        final Intent intent = new Intent(this, WikipediaActivity.class);
         intent.putExtra(BluePlaquesConstants.WIKIPEDIA_CLICKED_PARCLEABLE_KEY,
                 placemark);
         startActivity(intent);
     }
 
     private void streetViewButtonClicked() {
-        Placemark placemark = placemarks.get(0);
-        BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
+        final Placemark placemark = placemarks.get(0);
+        final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
         app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
                 BluePlaquesConstants.STREETVIEW_BUTTON_PRESSED_EVENT,
                 placemark.getTitle());
-        Intent intent = new Intent(this, PanoramaActivity.class);
+        final Intent intent = new Intent(this, PanoramaActivity.class);
         intent.putExtra(BluePlaquesConstants.PANORAMA_CLICKED_PARCLEABLE_KEY,
                 placemark);
         startActivity(intent);

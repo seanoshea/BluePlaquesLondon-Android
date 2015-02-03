@@ -47,9 +47,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.otto.Subscribe;
 import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
+import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.activities.MainActivity;
 import com.upwardsnorthwards.blueplaqueslondon.activities.MapDetailActivity;
-import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.model.KeyedMarker;
 import com.upwardsnorthwards.blueplaqueslondon.model.MapModel;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
@@ -68,6 +68,13 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
     private List<KeyedMarker> markers = new ArrayList<KeyedMarker>();
 
     @Override
+    public void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        model = new MapModel();
+        loadMapData();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         setProgressBarVisibility(View.VISIBLE);
@@ -80,30 +87,23 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
         BluePlaquesLondonApplication.bus.unregister(this);
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        model = new MapModel();
-        loadMapData();
-    }
-
     @Subscribe
     public void onPlacemarkSelected(Placemark placemark) {
         if (placemark.getName() == getString(R.string.closest)) {
-            BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getActivity().getApplication();
-            Location currentLocation = app.getCurrentLocation();
+            final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getActivity().getApplication();
+            final Location currentLocation = app.getCurrentLocation();
             if (currentLocation != null) {
                 placemark = model.getPlacemarkClosestToPlacemark(currentLocation);
             }
         }
         if (placemark != null) {
-            BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getActivity().getApplication();
+            final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getActivity().getApplication();
             app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY, BluePlaquesConstants.TABLE_ROW_PRESSED_EVENT, placemark.getName());
             navigateToPlacemark(placemark);
         }
     }
 
-    protected void mapReady(GoogleMap map) {
+    protected void mapReady(final GoogleMap map) {
         googleMap = map;
         if (googleMap == null) {
             googleMap = ((MapFragment) getFragmentManager().findFragmentById(
@@ -119,7 +119,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
             googleMap.setOnMarkerClickListener(this);
             googleMap.setOnInfoWindowClickListener(this);
             addPlacemarksToMap();
-            LatLng lastKnownCoordinate = BluePlaquesSharedPreferences
+            final LatLng lastKnownCoordinate = BluePlaquesSharedPreferences
                     .getLastKnownBPLCoordinate(getActivity());
             MapsInitializer.initialize(getActivity());
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
@@ -137,26 +137,26 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
     private void setupMap() {
         getMapAsync(new OnMapReadyCallback() {
             @Override
-            public void onMapReady(GoogleMap googleMap) {
+            public void onMapReady(final GoogleMap googleMap) {
                 mapReady(googleMap);
             }
         });
     }
 
     private void addPlacemarksToMap() {
-        for (Placemark placemark : model.getMassagedPlacemarks()) {
+        for (final Placemark placemark : model.getMassagedPlacemarks()) {
             int iconResource = R.drawable.blue;
             if (!placemark.getStyleUrl().equalsIgnoreCase("#myDefaultStyles")) {
                 iconResource = R.drawable.green;
             }
-            Marker marker = googleMap.addMarker(new MarkerOptions()
+            final Marker marker = googleMap.addMarker(new MarkerOptions()
                     .position(
                             new LatLng(placemark.getLatitude(), placemark
                                     .getLongitude()))
                     .title(placemark.getName())
                     .snippet(getSnippetForPlacemark(placemark))
                     .icon(BitmapDescriptorFactory.fromResource(iconResource)));
-            KeyedMarker keyedMarker = new KeyedMarker();
+            final KeyedMarker keyedMarker = new KeyedMarker();
             keyedMarker.setKey(placemark.key());
             keyedMarker.setMarker(marker);
             markers.add(keyedMarker);
@@ -164,7 +164,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
     }
 
     @Override
-    public void onCameraChange(CameraPosition position) {
+    public void onCameraChange(final CameraPosition position) {
         BluePlaquesSharedPreferences.saveLastKnownCoordinate(getActivity(),
                 position.target);
         BluePlaquesSharedPreferences.saveMapZoom(getActivity(), googleMap,
@@ -172,11 +172,11 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
     }
 
     @Override
-    public boolean onMarkerClick(Marker marker) {
-        LatLng latLng = marker.getPosition();
+    public boolean onMarkerClick(final Marker marker) {
+        final LatLng latLng = marker.getPosition();
         BluePlaquesSharedPreferences.saveLastKnownBPLCoordinate(getActivity(),
                 latLng);
-        BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getActivity()
+        final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getActivity()
                 .getApplication();
         app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
                 BluePlaquesConstants.MARKER_PRESSED_EVENT, marker.getTitle());
@@ -184,12 +184,12 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
     }
 
     @Override
-    public void onInfoWindowClick(Marker marker) {
-        Intent intent = new Intent(getActivity(), MapDetailActivity.class);
+    public void onInfoWindowClick(final Marker marker) {
+        final Intent intent = new Intent(getActivity(), MapDetailActivity.class);
         intent.putParcelableArrayListExtra(
                 BluePlaquesConstants.INFO_WINDOW_CLICKED_PARCLEABLE_KEY,
                 getListOfPlacemarksForMarker(marker));
-        BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getActivity()
+        final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getActivity()
                 .getApplication();
         app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
                 BluePlaquesConstants.MARKER_INFO_WINDOW_PRESSED_EVENT,
@@ -197,15 +197,15 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
         startActivity(intent);
     }
 
-    public void navigateToPlacemark(Placemark placemark) {
+    public void navigateToPlacemark(final Placemark placemark) {
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
                         placemark.getLatitude(), placemark.getLongitude()),
                 BluePlaquesSharedPreferences.getMapZoom(getActivity())));
-        LatLng latLng = new LatLng(placemark.getLatitude(),
+        final LatLng latLng = new LatLng(placemark.getLatitude(),
                 placemark.getLongitude());
         BluePlaquesSharedPreferences.saveLastKnownBPLCoordinate(getActivity(),
                 latLng);
-        for (KeyedMarker keyedMarker : markers) {
+        for (final KeyedMarker keyedMarker : markers) {
             if (placemark.key().equals(keyedMarker.getKey())) {
                 keyedMarker.getMarker().showInfoWindow();
                 break;
@@ -213,9 +213,9 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
         }
     }
 
-    private String getSnippetForPlacemark(Placemark placemark) {
-        String snippet;
-        List<Integer> numberOfPlacemarksAssociatedWithPlacemark = model
+    private String getSnippetForPlacemark(final Placemark placemark) {
+        final String snippet;
+        final List<Integer> numberOfPlacemarksAssociatedWithPlacemark = model
                 .getParser().getKeyToArrayPositions().get(placemark.key());
         if (numberOfPlacemarksAssociatedWithPlacemark.size() == 1) {
             snippet = placemark.getOccupation();
@@ -225,11 +225,11 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
         return snippet;
     }
 
-    private ArrayList<Placemark> getListOfPlacemarksForMarker(Marker marker) {
+    private ArrayList<Placemark> getListOfPlacemarksForMarker(final Marker marker) {
         ArrayList<Placemark> placemarks = new ArrayList<Placemark>();
-        for (KeyedMarker keyedMarker : markers) {
+        for (final KeyedMarker keyedMarker : markers) {
             if (keyedMarker.getMarker().equals(marker)) {
-                List<Integer> numberOfPlacemarksAssociatedWithPlacemark = model
+                final List<Integer> numberOfPlacemarksAssociatedWithPlacemark = model
                         .getParser().getKeyToArrayPositions()
                         .get(keyedMarker.getKey());
                 placemarks = model
@@ -240,8 +240,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
         return placemarks;
     }
 
-    private void setProgressBarVisibility(int visibility) {
-        MainActivity activity = (MainActivity) getActivity();
+    private void setProgressBarVisibility(final int visibility) {
+        final MainActivity activity = (MainActivity) getActivity();
         if (activity != null) {
             activity.updateProgressBarVisibility(visibility);
         }
@@ -251,7 +251,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
         return model;
     }
 
-    public void setModel(MapModel model) {
+    public void setModel(final MapModel model) {
         this.model = model;
     }
 }

@@ -44,25 +44,25 @@ public class MapModel {
         parser = new BluePlaquesKMLParser();
     }
 
-    public void loadMapData(Context context) {
+    public void loadMapData(final Context context) {
         parser.loadMapData(context);
     }
 
-    public ArrayList<Placemark> getPlacemarksAtIndices(List<Integer> indices) {
-        ArrayList<Placemark> placemarksAtIndices = new ArrayList<Placemark>();
-        for (Integer index : indices) {
+    public ArrayList<Placemark> getPlacemarksAtIndices(final List<Integer> indices) {
+        final ArrayList<Placemark> placemarksAtIndices = new ArrayList<Placemark>();
+        for (final Integer index : indices) {
             placemarksAtIndices.add(parser.getPlacemarks().get(index));
         }
         return placemarksAtIndices;
     }
 
-    public Placemark getPlacemarkClosestToPlacemark(Location location) {
+    public Placemark getPlacemarkClosestToPlacemark(final Location location) {
         Placemark closestPlacemark = null;
         float currentDistance = 0;
-        for (Placemark placemark : getMassagedPlacemarks()) {
-            float [] results = new float[1];
+        final float [] results = new float[1];
+        for (final Placemark placemark : getMassagedPlacemarks()) {
             Location.distanceBetween(location.getLatitude(), location.getLongitude(), placemark.getLatitude(), placemark.getLongitude(), results);
-            float distance = results[0];
+            final float distance = results[0];
             if (closestPlacemark == null) {
                 currentDistance = distance;
                 closestPlacemark = placemark;
@@ -82,7 +82,7 @@ public class MapModel {
         return parser;
     }
 
-    public void setParser(BluePlaquesKMLParser parser) {
+    public void setParser(final BluePlaquesKMLParser parser) {
         this.parser = parser;
     }
 }

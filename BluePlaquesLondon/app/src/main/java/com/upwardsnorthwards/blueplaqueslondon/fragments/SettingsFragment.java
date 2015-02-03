@@ -52,9 +52,8 @@ public class SettingsFragment extends DialogFragment implements
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_settings, container);
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.fragment_settings, container);
         getDialog().setTitle(getString(R.string.action_settings));
         return view;
     }
@@ -62,7 +61,7 @@ public class SettingsFragment extends DialogFragment implements
     @Override
     public void onStart() {
         super.onStart();
-        Dialog dialog = getDialog();
+        final Dialog dialog = getDialog();
         if (dialog != null) {
             dialog.setCanceledOnTouchOutside(true);
         }
@@ -79,7 +78,7 @@ public class SettingsFragment extends DialogFragment implements
     }
 
     @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+    public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
         GoogleAnalytics.getInstance(getActivity()).setAppOptOut(!isChecked);
         BluePlaquesSharedPreferences.saveAnalyticsEnabled(getActivity(),
                 isChecked);

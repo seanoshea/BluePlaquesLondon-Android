@@ -55,7 +55,7 @@ public class Placemark implements Parcelable {
 
     }
 
-    private Placemark(Parcel in) {
+    private Placemark(final Parcel in) {
         super();
         featureDescription = in.readString();
         title = in.readString();
@@ -75,7 +75,7 @@ public class Placemark implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(final Parcel dest, final int flags) {
         dest.writeString(featureDescription);
         dest.writeString(title);
         dest.writeString(name);
@@ -90,17 +90,17 @@ public class Placemark implements Parcelable {
 
     public static final Parcelable.Creator<Placemark> CREATOR = new Parcelable.Creator<Placemark>() {
 
-        public Placemark createFromParcel(Parcel source) {
+        public Placemark createFromParcel(final Parcel source) {
             return new Placemark(source);
         }
 
-        public Placemark[] newArray(int size) {
+        public Placemark[] newArray(final int size) {
             return new Placemark[size];
         }
 
     };
 
-    public static String keyFromLatLng(double latitude, double longitude) {
+    public static String keyFromLatLng(final double latitude, final double longitude) {
         return Double.toString(latitude) + Double.toString(longitude);
     }
 
@@ -122,7 +122,7 @@ public class Placemark implements Parcelable {
 
     private void digestTitle() {
         title = featureDescription;
-        int index = featureDescription.indexOf(OverlayTitleDelimiter);
+        final int index = featureDescription.indexOf(OverlayTitleDelimiter);
         if (index != -1) {
             title = featureDescription.substring(0, index);
         }
@@ -131,7 +131,7 @@ public class Placemark implements Parcelable {
 
     private void digestName() {
         name = title;
-        int startOfYears = name.indexOf(NameDelimiter);
+        final int startOfYears = name.indexOf(NameDelimiter);
         if (startOfYears != -1) {
             name = name.replaceAll(EmphasisNoteOpeningTag, "");
             name = name.replaceAll(EmphasisNoteClosingTag, "");
@@ -142,20 +142,20 @@ public class Placemark implements Parcelable {
 
     private void digestOccupation() {
         occupation = featureDescription;
-        int index = featureDescription.indexOf(OverlayTitleDelimiter);
+        final int index = featureDescription.indexOf(OverlayTitleDelimiter);
         if (index != -1) {
             occupation = occupation.substring(index);
-            int start = occupation.indexOf(OverlayTitleDelimiter);
+            final int start = occupation.indexOf(OverlayTitleDelimiter);
             if (start == 0) {
-                int delimiterLength = OverlayTitleDelimiter.length();
-                int end = occupation.indexOf(OverlayTitleDelimiter, start
+                final int delimiterLength = OverlayTitleDelimiter.length();
+                final int end = occupation.indexOf(OverlayTitleDelimiter, start
                         + delimiterLength);
                 occupation = trimWhitespaceFromString(occupation.substring(
                         start + delimiterLength, end));
                 occupation = trimWhitespaceFromString(occupation);
                 if (occupation.length() == 9
                         && occupation.matches("[0-9]{4}-[0-9]{4}")) {
-                    String[] components = featureDescription
+                    final String[] components = featureDescription
                             .split(OverlayTitleDelimiter);
                     if (components.length > 3) {
                         occupation = components[2];
@@ -167,7 +167,7 @@ public class Placemark implements Parcelable {
     }
 
     private void digestAddress() {
-        String[] components = featureDescription.split(OverlayTitleDelimiter);
+        final String[] components = featureDescription.split(OverlayTitleDelimiter);
         if (components.length != 0) {
             switch (components.length) {
                 case 2:
@@ -193,7 +193,7 @@ public class Placemark implements Parcelable {
     }
 
     private void digestNote() {
-        int startOfEmphasis = featureDescription
+        final int startOfEmphasis = featureDescription
                 .indexOf(EmphasisNoteOpeningTag);
         if (startOfEmphasis != -1) {
             int endOfEmphasisIndex = featureDescription
@@ -201,7 +201,7 @@ public class Placemark implements Parcelable {
             if (endOfEmphasisIndex == -1) {
                 // some notes don't have the correct closing tag ... search for
                 // the starting tag again
-                int locationOfLastEmphasis = featureDescription
+                final int locationOfLastEmphasis = featureDescription
                         .lastIndexOf(EmphasisNoteOpeningTag);
                 if (locationOfLastEmphasis != startOfEmphasis) {
                     endOfEmphasisIndex = featureDescription.length()
@@ -217,14 +217,14 @@ public class Placemark implements Parcelable {
     }
 
     private void digestCouncilAndYear() {
-        String withoutNote = removeNoteFromString(featureDescription);
-        String[] components = withoutNote.split(OverlayTitleDelimiter);
+        final String withoutNote = removeNoteFromString(featureDescription);
+        final String[] components = withoutNote.split(OverlayTitleDelimiter);
         if (components.length > 2) {
             councilAndYear = trimWhitespaceFromString(components[components.length - 1]);
         }
     }
 
-    private String removeNoteFromString(String input) {
+    private String removeNoteFromString(final String input) {
         String inputWithNoteRemoved = input;
         if (note != null) {
             inputWithNoteRemoved = trimWhitespaceFromString(inputWithNoteRemoved);
@@ -234,12 +234,12 @@ public class Placemark implements Parcelable {
             inputWithNoteRemoved = inputWithNoteRemoved.replaceAll(
                     EmphasisNoteClosingTag, "");
             // check for a trailing delimiter
-            int locationOfFinalDelimiter = inputWithNoteRemoved
+            final int locationOfFinalDelimiter = inputWithNoteRemoved
                     .lastIndexOf(OverlayTitleDelimiter);
             if (locationOfFinalDelimiter != -1
                     && locationOfFinalDelimiter == inputWithNoteRemoved
                     .length() - OverlayTitleDelimiter.length()) {
-                inputWithNoteRemoved.substring(locationOfFinalDelimiter);
+                inputWithNoteRemoved = inputWithNoteRemoved.substring(locationOfFinalDelimiter);
             }
         }
         return inputWithNoteRemoved;
@@ -253,16 +253,14 @@ public class Placemark implements Parcelable {
 
     @Override
     public String toString() {
-        String description = key() + " " + title + " " + name + " occupation "
-                + occupation + " " + note + " " + councilAndYear;
-        return description;
+        return key() + " " + title + " " + name + occupation + " " + note + " " + councilAndYear;
     }
 
     public String getFeatureDescription() {
         return featureDescription;
     }
 
-    public void setFeatureDescription(String featureDescription) {
+    public void setFeatureDescription(final String featureDescription) {
         this.featureDescription = featureDescription;
     }
 
@@ -270,7 +268,7 @@ public class Placemark implements Parcelable {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -278,7 +276,7 @@ public class Placemark implements Parcelable {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(final String title) {
         this.title = title;
     }
 
@@ -286,7 +284,7 @@ public class Placemark implements Parcelable {
         return occupation;
     }
 
-    public void setOccupation(String occupation) {
+    public void setOccupation(final String occupation) {
         this.occupation = occupation;
     }
 
@@ -294,7 +292,7 @@ public class Placemark implements Parcelable {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(final String address) {
         this.address = address;
     }
 
@@ -302,7 +300,7 @@ public class Placemark implements Parcelable {
         return note;
     }
 
-    public void setNote(String note) {
+    public void setNote(final String note) {
         this.note = note;
     }
 
@@ -310,7 +308,7 @@ public class Placemark implements Parcelable {
         return councilAndYear;
     }
 
-    public void setCouncilAndYear(String councilAndYear) {
+    public void setCouncilAndYear(final String councilAndYear) {
         this.councilAndYear = councilAndYear;
     }
 
@@ -318,7 +316,7 @@ public class Placemark implements Parcelable {
         return styleUrl;
     }
 
-    public void setStyleUrl(String styleUrl) {
+    public void setStyleUrl(final String styleUrl) {
         this.styleUrl = styleUrl;
     }
 
@@ -326,7 +324,7 @@ public class Placemark implements Parcelable {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(final double latitude) {
         this.latitude = latitude;
     }
 
@@ -334,7 +332,7 @@ public class Placemark implements Parcelable {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(final double longitude) {
         this.longitude = longitude;
     }
 
@@ -342,7 +340,7 @@ public class Placemark implements Parcelable {
         return placemarkPinType;
     }
 
-    public void setPlacemarkPinType(int placemarkPinType) {
+    public void setPlacemarkPinType(final int placemarkPinType) {
         this.placemarkPinType = placemarkPinType;
     }
 }

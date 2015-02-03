@@ -63,13 +63,13 @@ public class WikipediaActivity extends BaseActivity {
     private Placemark placemark;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_wikipedia);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar);
         webView = (WebView) findViewById(R.id.activity_wikipedia_web_view);
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         if (intent != null) {
             placemark = (Placemark) intent
                     .getParcelableExtra(BluePlaquesConstants.WIKIPEDIA_CLICKED_PARCLEABLE_KEY);
@@ -84,16 +84,16 @@ public class WikipediaActivity extends BaseActivity {
         setCustomTitleBarText(placemark.getTitle());
     }
 
-    protected void onRetriveWikipediaUrlSuccess(String url) {
+    protected void onRetriveWikipediaUrlSuccess(final String url) {
         final Activity activity = this;
         webView.setWebChromeClient(new WebChromeClient() {
-            public void onProgressChanged(WebView view, int progress) {
+            public void onProgressChanged(final WebView view, final int progress) {
                 activity.setProgress(progress * 1000);
             }
         });
         webView.setWebViewClient(new WebViewClient() {
-            public void onReceivedError(WebView view, int errorCode,
-                                        String description, String failingUrl) {
+            public void onReceivedError(final WebView view, final int errorCode,
+                                        final String description, final String failingUrl) {
                 onRetriveWikipediaUrlFailure();
             }
         });
@@ -101,7 +101,7 @@ public class WikipediaActivity extends BaseActivity {
     }
 
     protected void onRetriveWikipediaUrlFailure() {
-        BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
+        final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
         app.trackEvent(BluePlaquesConstants.ERROR_CATEGORY,
                 BluePlaquesConstants.WIKIPEDIA_PAGE_LOAD_ERROR_EVENT,
                 placemark.getName());
@@ -113,21 +113,20 @@ public class WikipediaActivity extends BaseActivity {
         private String responseUrl;
 
         @Override
-        protected String doInBackground(String... params) {
-            String name = params[0];
+        protected String doInBackground(final String... params) {
+            final String name = params[0];
             responseUrl = params[1];
-
-            HttpClient httpclient = new DefaultHttpClient();
+            final HttpClient httpclient = new DefaultHttpClient();
             HttpResponse response;
             String responseString = null;
             try {
-                String url = String.format(WIKIPEDIA_SEARCH_URL_FORMAT,
+                final String url = String.format(WIKIPEDIA_SEARCH_URL_FORMAT,
                         URLEncoder.encode(name, "UTF-8"));
-                HttpGet get = new HttpGet(url);
+                final HttpGet get = new HttpGet(url);
                 response = httpclient.execute(get);
-                StatusLine statusLine = response.getStatusLine();
+                final StatusLine statusLine = response.getStatusLine();
                 if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    final ByteArrayOutputStream out = new ByteArrayOutputStream();
                     response.getEntity().writeTo(out);
                     out.close();
                     responseString = out.toString();
@@ -145,18 +144,18 @@ public class WikipediaActivity extends BaseActivity {
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(final String result) {
             super.onPostExecute(result);
             try {
                 if (result.length() > 0) {
-                    JSONObject jObject = new JSONObject(result);
-                    JSONObject query = jObject.getJSONObject("query");
-                    JSONArray search = query.getJSONArray("search");
+                    final JSONObject jObject = new JSONObject(result);
+                    final JSONObject query = jObject.getJSONObject("query");
+                    final JSONArray search = query.getJSONArray("search");
                     if (search.length() > 0) {
                         // take the first result ...
-                        JSONObject wikipediaArticle = (JSONObject) search
+                        final JSONObject wikipediaArticle = (JSONObject) search
                                 .get(0);
-                        String title = wikipediaArticle.getString("title");
+                        final String title = wikipediaArticle.getString("title");
                         onRetriveWikipediaUrlSuccess(String.format(responseUrl,
                                 title.replace(" ", "_")));
                     } else {

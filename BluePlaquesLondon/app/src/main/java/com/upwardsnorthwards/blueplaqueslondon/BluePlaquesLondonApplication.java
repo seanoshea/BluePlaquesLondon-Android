@@ -91,7 +91,7 @@ public class BluePlaquesLondonApplication extends Application implements
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
+    public void onConnectionFailed(final ConnectionResult connectionResult) {
         Log.e(TAG, "onConnectionFailed " + connectionResult);
         try {
             if (connectionResult.hasResolution()) {
@@ -109,10 +109,10 @@ public class BluePlaquesLondonApplication extends Application implements
     }
 
     @Override
-    public void onConnected(Bundle connectionHint) {
+    public void onConnected(final Bundle connectionHint) {
         currentLocation = LocationServices.FusedLocationApi.getLastLocation(
                 locationClient);
-        LocationRequest locationRequest = new LocationRequest();
+        final LocationRequest locationRequest = new LocationRequest();
         locationRequest.setInterval(10000);
         locationRequest.setFastestInterval(5000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -121,32 +121,32 @@ public class BluePlaquesLondonApplication extends Application implements
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
+    public void onConnectionSuspended(final int i) {
         Log.w(TAG, "onConnectionSuspended " + i);
     }
 
     @Override
-    public void onLocationChanged(Location location) {
+    public void onLocationChanged(final Location location) {
         currentLocation = location;
     }
 
-    public void trackEvent(String category, String action, String label) {
-        Tracker tracker = getTracker(TrackerName.APP_TRACKER);
+    public void trackEvent(final String category, final String action, final String label) {
+        final Tracker tracker = getTracker(TrackerName.APP_TRACKER);
         tracker.send(new HitBuilders.EventBuilder().setCategory(category)
                 .setAction(action).setLabel(label).build());
     }
 
-    private synchronized Tracker getTracker(TrackerName trackerId) {
+    private synchronized Tracker getTracker(final TrackerName trackerId) {
         if (!trackers.containsKey(trackerId)) {
-            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            Tracker t = analytics.newTracker(R.xml.app_tracker);
+            final GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+            final Tracker t = analytics.newTracker(R.xml.app_tracker);
             trackers.put(trackerId, t);
         }
         return trackers.get(trackerId);
     }
 
     private void trackApplicationLoadedEvent() {
-        PackageInfo pInfo;
+        final PackageInfo pInfo;
         try {
             pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             trackEvent(
@@ -162,7 +162,7 @@ public class BluePlaquesLondonApplication extends Application implements
         return currentLocation;
     }
 
-    public void setCurrentLocation(Location currentLocation) {
+    public void setCurrentLocation(final Location currentLocation) {
         this.currentLocation = currentLocation;
     }
 }

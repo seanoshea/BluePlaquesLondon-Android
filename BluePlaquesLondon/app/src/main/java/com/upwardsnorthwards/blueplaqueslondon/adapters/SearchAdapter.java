@@ -56,15 +56,15 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
 
     private String closestPlacemarkTitle;
 
-    public SearchAdapter(Context context, int resource, List<Placemark> objects) {
+    public SearchAdapter(final Context context, final int resource, final List<Placemark> objects) {
         super(context, resource, objects);
         closestPlacemarkTitle = context.getString(R.string.closest);
         placemarks = objects;
     }
 
-    public Placemark getFilteredPlacemarkAtPosition(int index) {
+    public Placemark getFilteredPlacemarkAtPosition(final int index) {
         Placemark placemark = getClosestPlacemark();
-        List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
+        final List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
         if (relevantPlacemarks.size() + getOffset() >= index) {
             placemark = relevantPlacemarks.get(index);
         }
@@ -80,9 +80,9 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
     }
 
     @Override
-    public Placemark getItem(int position) {
+    public Placemark getItem(final int position) {
         Placemark placemark = null;
-        List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
+        final List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
         if (relevantPlacemarks != null && position < relevantPlacemarks.size()) {
             placemark = relevantPlacemarks.get(position);
         }
@@ -90,19 +90,19 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, final View convertView, final ViewGroup parent) {
         View v = convertView;
         if (v == null) {
-            LayoutInflater vi = (LayoutInflater) parent.getContext()
+            final LayoutInflater vi = (LayoutInflater) parent.getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = vi.inflate(R.layout.search_item, parent, false);
-            ViewHolder viewHolder = new ViewHolder();
+            final ViewHolder viewHolder = new ViewHolder();
             viewHolder.title = (TextView) v.findViewById(R.id.search_title);
             viewHolder.subtitle = (TextView) v
                     .findViewById(R.id.search_subtitle);
             v.setTag(viewHolder);
         }
-        List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
+        final List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
         if (relevantPlacemarks != null && position < getCount()) {
             final Placemark placemark;
             final ViewHolder holder = (ViewHolder) v.getTag();
@@ -128,16 +128,16 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
     @Override
     public int getCount() {
         int size = getOffset();
-        List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
+        final List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
         if (relevantPlacemarks != null) {
             size += relevantPlacemarks.size();
         }
         return size;
     }
 
-    private List<Placemark> filterPlacemarksWithText(String filterText) {
-        List<Placemark> localPlacemarks = new ArrayList<Placemark>();
-        for (Placemark placemark : placemarks) {
+    private List<Placemark> filterPlacemarksWithText(final String filterText) {
+        final List<Placemark> localPlacemarks = new ArrayList<Placemark>();
+        for (final Placemark placemark : placemarks) {
             if (placemark.getName().toLowerCase()
                     .contains(filterText.toLowerCase())) {
                 localPlacemarks.add(placemark);
@@ -146,7 +146,7 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
         // alphabetically sort 'em
         Collections.sort(localPlacemarks, new Comparator<Placemark>() {
             @Override
-            public int compare(Placemark lhs, Placemark rhs) {
+            public int compare(final Placemark lhs, final Placemark rhs) {
                 return lhs.getName().compareTo(rhs.getName());
             }
         });
@@ -172,12 +172,12 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
         return placemarks;
     }
 
-    public void setPlacemarks(List<Placemark> placemarks) {
+    public void setPlacemarks(final List<Placemark> placemarks) {
         this.placemarks = placemarks;
     }
 
     protected Placemark getClosestPlacemark() {
-        Placemark placemark = new Placemark();
+        final Placemark placemark = new Placemark();
         placemark.setName(closestPlacemarkTitle);
         return placemark;
     }
@@ -185,10 +185,10 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
     private class PlacemarksFilter extends Filter {
 
         @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            FilterResults filterResults = new FilterResults();
+        protected FilterResults performFiltering(final CharSequence constraint) {
+            final FilterResults filterResults = new FilterResults();
             if (constraint != null && constraint.length() > 0) {
-                List<Placemark> filteredPlacemarks = filterPlacemarksWithText(constraint.toString());
+                final List<Placemark> filteredPlacemarks = filterPlacemarksWithText(constraint.toString());
                 // always have the closest placemark as an option, regardless of the filtering result
                 filteredPlacemarks.add(0, getClosestPlacemark());
                 filterResults.values = filteredPlacemarks;
@@ -198,7 +198,7 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
         }
 
         @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
+        protected void publishResults(final CharSequence constraint, final FilterResults results) {
             if (results != null && results.count > 0) {
                 filteredPlacemarks = (List<Placemark>) results.values;
                 notifyDataSetChanged();
@@ -209,6 +209,6 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
     }
 
     private int getOffset() {
-        return (filteredPlacemarks != null && filteredPlacemarks.size() > 1) ? 0 : 1;
+        return filteredPlacemarks != null && filteredPlacemarks.size() > 1 ? 0 : 1;
     }
 }

@@ -47,16 +47,16 @@ public class PanoramaActivity extends Activity implements OnStreetViewPanoramaRe
     private Placemark placemark;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_panorama);
-        StreetViewPanoramaFragment streetViewPanoramaFragment =
+        final StreetViewPanoramaFragment streetViewPanoramaFragment =
                 (StreetViewPanoramaFragment) getFragmentManager()
                         .findFragmentById(R.id.street_view_panorama);
         streetViewPanoramaFragment.getStreetViewPanoramaAsync(this);
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         if (intent != null) {
             placemark = (Placemark) intent
                     .getParcelableExtra(BluePlaquesConstants.PANORAMA_CLICKED_PARCLEABLE_KEY);
@@ -64,7 +64,7 @@ public class PanoramaActivity extends Activity implements OnStreetViewPanoramaRe
     }
 
     @Override
-    public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
+    public void onStreetViewPanoramaReady(final StreetViewPanorama streetViewPanorama) {
         streetViewPanorama.setPosition(new LatLng(placemark.getLatitude(), placemark.getLongitude()));
     }
 }

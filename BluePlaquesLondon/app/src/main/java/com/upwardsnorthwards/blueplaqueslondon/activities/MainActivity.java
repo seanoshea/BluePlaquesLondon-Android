@@ -67,18 +67,18 @@ public class MainActivity extends ActionBarActivity {
     private ProgressBar progressBar;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initialiseAppRating();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-        SearchManager searchManager =
+        final SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
         searchView = (ArrayAdapterSearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
@@ -94,16 +94,16 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        FragmentManager fm = getFragmentManager();
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        final FragmentManager fm = getFragmentManager();
         updateProgressBarVisibility(View.GONE);
         switch (item.getItemId()) {
             case R.id.action_about:
-                AboutFragment aboutFragment = new AboutFragment();
+                final AboutFragment aboutFragment = new AboutFragment();
                 aboutFragment.show(fm, "fragment_about");
                 break;
             case R.id.action_settings:
-                SettingsFragment settingsFragment = new SettingsFragment();
+                final SettingsFragment settingsFragment = new SettingsFragment();
                 settingsFragment.show(fm, "fragment_settings");
                 break;
             default:
@@ -120,7 +120,7 @@ public class MainActivity extends ActionBarActivity {
         checkForGooglePlayServicesAvailability();
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         updateProgressBarVisibility(View.GONE);
         switch (requestCode) {
             case BluePlaquesLondonApplication.CONNECTION_FAILURE_RESOLUTION_REQUEST:
@@ -132,7 +132,7 @@ public class MainActivity extends ActionBarActivity {
                     break;
                     default: {
                         Log.e(TAG, "Tried to request the user to download the correct version of Google Play Services but it failed");
-                        Dialog dialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this, GOOGLE_PLAY_SERVICES_REQUEST);
+                        final Dialog dialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this, GOOGLE_PLAY_SERVICES_REQUEST);
                         dialog.setCancelable(false);
                         dialog.show();
                     }
@@ -152,20 +152,20 @@ public class MainActivity extends ActionBarActivity {
                 }
             }
             default: {
-
+                Log.w(TAG, "onActivityResult invoked with an unexpected requestCode");
             }
             break;
         }
     }
 
     @Subscribe
-    public void onPlacemarkSelected(Placemark placemark) {
+    public void onPlacemarkSelected(final Placemark placemark) {
         searchView.setQuery("", false);
         searchView.setIconified(true);
         searchView.clearFocus();
     }
 
-    public void updateProgressBarVisibility(int visibility) {
+    public void updateProgressBarVisibility(final int visibility) {
         if (progressBar != null) {
             progressBar.setVisibility(visibility);
         }
@@ -176,7 +176,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void checkForGooglePlayServicesAvailability() {
-        int playServicesAvailable = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        final int playServicesAvailable = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         switch (playServicesAvailable) {
             case ConnectionResult.SUCCESS: {
                 Log.d(TAG, "Successfully connected to Google Play Services");
@@ -191,7 +191,7 @@ public class MainActivity extends ActionBarActivity {
                     isRecoverable = false;
                     GooglePlayServicesUtil.showErrorDialogFragment(playServicesAvailable, this, BluePlaquesLondonApplication.CONNECTION_FAILURE_NO_RESOLUTION_REQUEST);
                 }
-                BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
+                final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
                 app.trackEvent(BluePlaquesConstants.ERROR_CATEGORY, BluePlaquesConstants.GOOGLE_PLAY_SERVICES_PROMPT, isRecoverable ? BluePlaquesConstants.GOOGLE_PLAY_SERVICES_PROMPT_RECOVERABLE : BluePlaquesConstants.GOOGLE_PLAY_SERVICES_PROMPT_UNRECOVERABLE);
             }
         }
@@ -204,9 +204,9 @@ public class MainActivity extends ActionBarActivity {
                 .setRemindInterval(1)
                 .setOnClickButtonListener(new OnClickButtonListener() {
                     @Override
-                    public void onClickButton(int which) {
-                        String event = analyticsStringForButtonPress(which);
-                        BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
+                    public void onClickButton(final int which) {
+                        final String event = analyticsStringForButtonPress(which);
+                        final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
                         app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
                                 BluePlaquesConstants.RATE_APP_BUTTON_PRESSED_EVENT,
                                 event);
@@ -216,7 +216,7 @@ public class MainActivity extends ActionBarActivity {
         AppRate.showRateDialogIfMeetsConditions(this);
     }
 
-    private String analyticsStringForButtonPress(int which) {
+    private String analyticsStringForButtonPress(final int which) {
         String event = "";
         switch (which) {
             case 0: {
