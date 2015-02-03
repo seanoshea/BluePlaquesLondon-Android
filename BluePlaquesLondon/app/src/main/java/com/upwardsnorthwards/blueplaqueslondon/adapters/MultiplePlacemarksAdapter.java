@@ -28,8 +28,6 @@
 
 package com.upwardsnorthwards.blueplaqueslondon.adapters;
 
-import java.util.List;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +37,8 @@ import android.widget.TextView;
 
 import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
+
+import java.util.List;
 
 public class MultiplePlacemarksAdapter extends ArrayAdapter<Placemark> {
 
@@ -54,10 +54,10 @@ public class MultiplePlacemarksAdapter extends ArrayAdapter<Placemark> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
         if (v == null) {
-            LayoutInflater vi = (LayoutInflater) parent.getContext()
+            final LayoutInflater vi = (LayoutInflater) parent.getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = vi.inflate(R.layout.multiple_placemarks_item, parent, false);
-            ViewHolder viewHolder = new ViewHolder();
+            final ViewHolder viewHolder = new ViewHolder();
             viewHolder.title = (TextView) v
                     .findViewById(R.id.multiple_placemarks_title);
             v.setTag(viewHolder);

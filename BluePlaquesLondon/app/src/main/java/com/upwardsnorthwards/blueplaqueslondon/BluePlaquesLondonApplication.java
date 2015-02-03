@@ -112,7 +112,7 @@ public class BluePlaquesLondonApplication extends Application implements
     public void onConnected(Bundle connectionHint) {
         currentLocation = LocationServices.FusedLocationApi.getLastLocation(
                 locationClient);
-        LocationRequest locationRequest = new LocationRequest();
+        final LocationRequest locationRequest = new LocationRequest();
         locationRequest.setInterval(10000);
         locationRequest.setFastestInterval(5000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -131,22 +131,22 @@ public class BluePlaquesLondonApplication extends Application implements
     }
 
     public void trackEvent(String category, String action, String label) {
-        Tracker tracker = getTracker(TrackerName.APP_TRACKER);
+        final Tracker tracker = getTracker(TrackerName.APP_TRACKER);
         tracker.send(new HitBuilders.EventBuilder().setCategory(category)
                 .setAction(action).setLabel(label).build());
     }
 
     private synchronized Tracker getTracker(TrackerName trackerId) {
         if (!trackers.containsKey(trackerId)) {
-            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            Tracker t = analytics.newTracker(R.xml.app_tracker);
+            final GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+            final Tracker t = analytics.newTracker(R.xml.app_tracker);
             trackers.put(trackerId, t);
         }
         return trackers.get(trackerId);
     }
 
     private void trackApplicationLoadedEvent() {
-        PackageInfo pInfo;
+        final PackageInfo pInfo;
         try {
             pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             trackEvent(

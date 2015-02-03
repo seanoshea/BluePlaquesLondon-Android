@@ -52,11 +52,11 @@ public class PanoramaActivity extends Activity implements OnStreetViewPanoramaRe
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_panorama);
-        StreetViewPanoramaFragment streetViewPanoramaFragment =
+        final StreetViewPanoramaFragment streetViewPanoramaFragment =
                 (StreetViewPanoramaFragment) getFragmentManager()
                         .findFragmentById(R.id.street_view_panorama);
         streetViewPanoramaFragment.getStreetViewPanoramaAsync(this);
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         if (intent != null) {
             placemark = (Placemark) intent
                     .getParcelableExtra(BluePlaquesConstants.PANORAMA_CLICKED_PARCLEABLE_KEY);

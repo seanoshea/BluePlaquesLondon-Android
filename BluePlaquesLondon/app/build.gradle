@@ -25,6 +25,7 @@ task pmd (type: Pmd, dependsOn: assembleDebug) {
     description 'Run pmd'
     group 'verification'
 
+    ruleSets = ["java-basic", "java-braces", "java-strings", "java-optimizations", "java-unusedcode"]
     source = fileTree('src/main/java')
 
     reports {

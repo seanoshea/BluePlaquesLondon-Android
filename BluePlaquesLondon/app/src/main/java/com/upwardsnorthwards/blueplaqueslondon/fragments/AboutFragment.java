@@ -47,12 +47,12 @@ public class AboutFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_about, container);
+        final View view = inflater.inflate(R.layout.fragment_about, container);
 
         // allow users click on the links in the text views
-        TextView developedByTextView = (TextView) view.findViewById(R.id.fragment_about_developed_by);
-        TextView designedByTextView = (TextView) view.findViewById(R.id.fragment_about_designed_by);
-        TextView mapDataTextView = (TextView) view.findViewById(R.id.fragment_about_map_data);
+        final TextView developedByTextView = (TextView) view.findViewById(R.id.fragment_about_developed_by);
+        final TextView designedByTextView = (TextView) view.findViewById(R.id.fragment_about_designed_by);
+        final TextView mapDataTextView = (TextView) view.findViewById(R.id.fragment_about_map_data);
 
         developedByTextView.setText(Html.fromHtml(getResources().getString(R.string.developed_by)));
         designedByTextView.setText(Html.fromHtml(getResources().getString(R.string.designed_by)));

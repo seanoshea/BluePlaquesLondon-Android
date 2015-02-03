@@ -64,7 +64,7 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
 
     public Placemark getFilteredPlacemarkAtPosition(int index) {
         Placemark placemark = getClosestPlacemark();
-        List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
+        final List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
         if (relevantPlacemarks.size() + getOffset() >= index) {
             placemark = relevantPlacemarks.get(index);
         }
@@ -82,7 +82,7 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
     @Override
     public Placemark getItem(int position) {
         Placemark placemark = null;
-        List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
+        final List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
         if (relevantPlacemarks != null && position < relevantPlacemarks.size()) {
             placemark = relevantPlacemarks.get(position);
         }
@@ -93,16 +93,16 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
         if (v == null) {
-            LayoutInflater vi = (LayoutInflater) parent.getContext()
+            final LayoutInflater vi = (LayoutInflater) parent.getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = vi.inflate(R.layout.search_item, parent, false);
-            ViewHolder viewHolder = new ViewHolder();
+            final ViewHolder viewHolder = new ViewHolder();
             viewHolder.title = (TextView) v.findViewById(R.id.search_title);
             viewHolder.subtitle = (TextView) v
                     .findViewById(R.id.search_subtitle);
             v.setTag(viewHolder);
         }
-        List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
+        final List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
         if (relevantPlacemarks != null && position < getCount()) {
             final Placemark placemark;
             final ViewHolder holder = (ViewHolder) v.getTag();
@@ -128,7 +128,7 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
     @Override
     public int getCount() {
         int size = getOffset();
-        List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
+        final List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
         if (relevantPlacemarks != null) {
             size += relevantPlacemarks.size();
         }
@@ -136,8 +136,8 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
     }
 
     private List<Placemark> filterPlacemarksWithText(String filterText) {
-        List<Placemark> localPlacemarks = new ArrayList<Placemark>();
-        for (Placemark placemark : placemarks) {
+        final List<Placemark> localPlacemarks = new ArrayList<Placemark>();
+        for (final Placemark placemark : placemarks) {
             if (placemark.getName().toLowerCase()
                     .contains(filterText.toLowerCase())) {
                 localPlacemarks.add(placemark);
@@ -177,7 +177,7 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
     }
 
     protected Placemark getClosestPlacemark() {
-        Placemark placemark = new Placemark();
+        final Placemark placemark = new Placemark();
         placemark.setName(closestPlacemarkTitle);
         return placemark;
     }
@@ -186,9 +186,9 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            FilterResults filterResults = new FilterResults();
+            final FilterResults filterResults = new FilterResults();
             if (constraint != null && constraint.length() > 0) {
-                List<Placemark> filteredPlacemarks = filterPlacemarksWithText(constraint.toString());
+                final List<Placemark> filteredPlacemarks = filterPlacemarksWithText(constraint.toString());
                 // always have the closest placemark as an option, regardless of the filtering result
                 filteredPlacemarks.add(0, getClosestPlacemark());
                 filterResults.values = filteredPlacemarks;
