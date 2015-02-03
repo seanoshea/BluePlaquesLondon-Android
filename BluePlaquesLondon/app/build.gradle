@@ -25,12 +25,18 @@ task pmd (type: Pmd, dependsOn: assembleDebug) {
     description 'Run pmd'
     group 'verification'
 
-    ruleSets = ["java-basic", "java-braces", "java-strings", "java-optimizations", "java-unusedcode"]
+    ruleSets = ["java-basic", "java-braces", "java-strings", "java-optimizations", "java-unusedcode", "java-android", "java-design", "java-security"]
     source = fileTree('src/main/java')
 
     reports {
         xml.enabled = false
         html.enabled = true
+        xml {
+            destination "$project.buildDir/reports/pmd/pmd.xml"
+        }
+        html {
+            destination "$project.buildDir/reports/pmd/pmd.html"
+        }
     }
 }
 

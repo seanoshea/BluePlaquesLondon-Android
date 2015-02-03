@@ -59,8 +59,8 @@ public class MapModel {
     public Placemark getPlacemarkClosestToPlacemark(final Location location) {
         Placemark closestPlacemark = null;
         float currentDistance = 0;
+        final float [] results = new float[1];
         for (final Placemark placemark : getMassagedPlacemarks()) {
-            final float [] results = new float[1];
             Location.distanceBetween(location.getLatitude(), location.getLongitude(), placemark.getLatitude(), placemark.getLongitude(), results);
             final float distance = results[0];
             if (closestPlacemark == null) {

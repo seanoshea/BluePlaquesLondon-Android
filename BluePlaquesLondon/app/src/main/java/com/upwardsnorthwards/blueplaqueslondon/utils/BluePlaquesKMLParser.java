@@ -50,23 +50,25 @@ public class BluePlaquesKMLParser {
     private Map<String, List<Integer>> keyToArrayPositions = new HashMap<String, List<Integer>>();
     private Placemark currentPlacemark;
 
+    private static final String FILE_NAME = "blueplaques.kml";
+    private static final String FILE_ENCODING = "UTF-8";
     private static final String COORDINATES_KEY = "coordinates";
     private static final String DESCRIPTION_KEY = "description";
     private static final String NAME_KEY = "name";
     private static final String PLACEMARK_KEY = "placemark";
     private static final String STYLE_URL_KEY = "styleUrl";
 
-    private boolean processingNameTag = false;
-    private boolean processingDescriptionTag = false;
-    private boolean processingCoordinateTag = false;
-    private boolean processingStyleUrlTag = false;
+    private boolean processingNameTag;
+    private boolean processingDescriptionTag;
+    private boolean processingCoordinateTag;
+    private boolean processingStyleUrlTag;
 
     public void loadMapData(final Context context) {
         try {
             final XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
             final XmlPullParser xpp = factory.newPullParser();
-            xpp.setInput(context.getAssets().open("blueplaques.kml"), "UTF-8");
+            xpp.setInput(context.getAssets().open(FILE_NAME), FILE_ENCODING);
             int eventType = xpp.getEventType();
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 if (eventType == XmlPullParser.START_TAG) {
