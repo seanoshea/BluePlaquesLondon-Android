@@ -30,7 +30,6 @@ package com.upwardsnorthwards.blueplaqueslondon.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.Html;
 
 public class Placemark implements Parcelable {
 
@@ -114,10 +113,25 @@ public class Placemark implements Parcelable {
             digestTitle();
             digestName();
             digestOccupation();
-            digestAddress();
-            digestNote();
-            digestCouncilAndYear();
         }
+    }
+
+    public String getTrimmedTitle() {
+        return trimWhitespaceFromString(title);
+    }
+
+    public String getTrimmedName() {
+        return trimWhitespaceFromString(name);
+    }
+
+    public String getTrimmedOccupation() {
+        return trimWhitespaceFromString(occupation);
+    }
+
+    public void digestAnciliaryInformation() {
+        digestAddress();
+        digestNote();
+        digestCouncilAndYear();
     }
 
     private void digestTitle() {
@@ -126,7 +140,6 @@ public class Placemark implements Parcelable {
         if (index != -1) {
             title = featureDescription.substring(0, index);
         }
-        title = trimWhitespaceFromString(title);
     }
 
     private void digestName() {
@@ -137,7 +150,7 @@ public class Placemark implements Parcelable {
             name = name.replaceAll(EmphasisNoteClosingTag, "");
             name = name.substring(0, startOfYears);
         }
-        name = trimWhitespaceFromString(name).trim();
+        name = name.trim();
     }
 
     private void digestOccupation() {
@@ -163,7 +176,6 @@ public class Placemark implements Parcelable {
                 }
             }
         }
-        occupation = trimWhitespaceFromString(occupation);
     }
 
     private void digestAddress() {
@@ -247,7 +259,8 @@ public class Placemark implements Parcelable {
 
     private String trimWhitespaceFromString(String string) {
         string = string.replaceAll("\t", "").replaceAll("^\\s*", "");
-        string = Html.fromHtml(string).toString();
+        // TODO: Need to use a faster fromHTML implementation.
+//        string = Html.fromHtml(string).toString();
         return string;
     }
 

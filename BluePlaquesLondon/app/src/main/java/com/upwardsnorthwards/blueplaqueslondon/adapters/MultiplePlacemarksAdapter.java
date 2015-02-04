@@ -65,7 +65,7 @@ public class MultiplePlacemarksAdapter extends ArrayAdapter<Placemark> {
             final Placemark placemark = placemarks.get(position);
             final ViewHolder holder = (ViewHolder) v.getTag();
             holder.placemark = placemark;
-            holder.title.setText(placemark.getTitle());
+            holder.title.setText(placemark.getTrimmedTitle());
         }
         return v;
     }

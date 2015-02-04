@@ -123,6 +123,7 @@ public class MapDetailActivity extends BaseActivity implements
     private void addTextToTextViews() {
         // take the first one from the list of placemarks and run with it
         currentPlacemark = placemarks.get(0);
+        currentPlacemark.digestAnciliaryInformation();
         setCustomTitleBarText(currentPlacemark.getName());
         occupationTextView.setText(currentPlacemark.getOccupation());
         addressTextView.setText(currentPlacemark.getAddress());
@@ -168,7 +169,7 @@ public class MapDetailActivity extends BaseActivity implements
         final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
         app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
                 BluePlaquesConstants.DETAILS_BUTTON_PRESSED_EVENT, placemarks
-                        .get(0).getTitle());
+                        .get(0).getTrimmedName());
     }
 
     private void wikipediaArticleButtonClicked() {
@@ -176,7 +177,7 @@ public class MapDetailActivity extends BaseActivity implements
         final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
         app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
                 BluePlaquesConstants.WIKIPEDIA_BUTTON_PRESSED_EVENT,
-                placemark.getTitle());
+                placemark.getTrimmedName());
         final Intent intent = new Intent(this, WikipediaActivity.class);
         intent.putExtra(BluePlaquesConstants.WIKIPEDIA_CLICKED_PARCLEABLE_KEY,
                 placemark);
@@ -188,7 +189,7 @@ public class MapDetailActivity extends BaseActivity implements
         final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
         app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
                 BluePlaquesConstants.STREETVIEW_BUTTON_PRESSED_EVENT,
-                placemark.getTitle());
+                placemark.getTrimmedName());
         final Intent intent = new Intent(this, PanoramaActivity.class);
         intent.putExtra(BluePlaquesConstants.PANORAMA_CLICKED_PARCLEABLE_KEY,
                 placemark);

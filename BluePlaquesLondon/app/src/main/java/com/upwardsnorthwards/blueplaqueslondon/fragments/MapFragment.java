@@ -126,8 +126,14 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
     }
 
     private void checkForModel() {
-        model = new MapModel();
-        model.loadMapData(getActivity());
+        if (model == null) {
+            long startTime = System.nanoTime();
+            model = new MapModel();
+            model.loadMapData(getActivity());
+            long endTime = System.nanoTime();
+            long duration = (endTime - startTime) / 1000000;
+            Log.v(TAG, "checkForModel TIME " + duration);
+        }
     }
 
     private void setupMap() {
@@ -174,7 +180,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
                                 new LatLng(placemark.getLatitude(), placemark
                                         .getLongitude()))
                         .title(placemark.getName())
-                        .snippet(getSnippetForPlacemark(placemark))
+                        .snippet(getSnippetForPlacemark(placemark, false))
                         .icon(BitmapDescriptorFactory.fromResource(iconResource)));
                 final KeyedMarker keyedMarker = new KeyedMarker();
                 keyedMarker.setKey(placemark.key());
@@ -195,6 +201,11 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
     @Override
     public boolean onMarkerClick(final Marker marker) {
         final LatLng latLng = marker.getPosition();
+        final String key = Placemark.keyFromLatLng(latLng.latitude, latLng.longitude);
+        final Integer location = model.getParser().getKeyToArrayPositions().get(key).get(0);
+        final Placemark placemark = model.getParser().getPlacemarks().get(location);
+        marker.setTitle(placemark.getTrimmedName());
+        marker.setSnippet(getSnippetForPlacemark(placemark, true));
         BluePlaquesSharedPreferences.saveLastKnownBPLCoordinate(getActivity(),
                 latLng);
         final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getActivity()
@@ -234,12 +245,16 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
         }
     }
 
-    private String getSnippetForPlacemark(final Placemark placemark) {
+    private String getSnippetForPlacemark(final Placemark placemark, final boolean trimmed) {
         final String snippet;
         final List<Integer> numberOfPlacemarksAssociatedWithPlacemark = model
                 .getParser().getKeyToArrayPositions().get(placemark.key());
         if (numberOfPlacemarksAssociatedWithPlacemark.size() == 1) {
-            snippet = placemark.getOccupation();
+            if (trimmed) {
+                snippet = placemark.getTrimmedOccupation();
+            } else {
+                snippet = placemark.getOccupation();
+            }
         } else {
             snippet = getString(R.string.multiple_placemarks);
         }
