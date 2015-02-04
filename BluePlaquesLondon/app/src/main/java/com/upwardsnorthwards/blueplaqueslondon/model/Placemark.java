@@ -114,10 +114,25 @@ public class Placemark implements Parcelable {
             digestTitle();
             digestName();
             digestOccupation();
-            digestAddress();
-            digestNote();
-            digestCouncilAndYear();
         }
+    }
+
+    public String getTrimmedTitle() {
+        return trimWhitespaceAndHTMLDecode(title);
+    }
+
+    public String getTrimmedName() {
+        return trimWhitespaceAndHTMLDecode(name);
+    }
+
+    public String getTrimmedOccupation() {
+        return trimWhitespaceFromString(occupation);
+    }
+
+    public void digestAnciliaryInformation() {
+        digestAddress();
+        digestNote();
+        digestCouncilAndYear();
     }
 
     private void digestTitle() {
@@ -126,7 +141,6 @@ public class Placemark implements Parcelable {
         if (index != -1) {
             title = featureDescription.substring(0, index);
         }
-        title = trimWhitespaceFromString(title);
     }
 
     private void digestName() {
@@ -137,7 +151,7 @@ public class Placemark implements Parcelable {
             name = name.replaceAll(EmphasisNoteClosingTag, "");
             name = name.substring(0, startOfYears);
         }
-        name = trimWhitespaceFromString(name).trim();
+        name = name.trim();
     }
 
     private void digestOccupation() {
@@ -163,7 +177,6 @@ public class Placemark implements Parcelable {
                 }
             }
         }
-        occupation = trimWhitespaceFromString(occupation);
     }
 
     private void digestAddress() {
@@ -172,20 +185,20 @@ public class Placemark implements Parcelable {
             switch (components.length) {
                 case 2:
                 case 3: {
-                    address = trimWhitespaceFromString(components[1]);
+                    address = trimWhitespaceAndHTMLDecode(components[1]);
                 }
                 break;
                 case 4:
                 case 5: {
-                    address = trimWhitespaceFromString(components[2]);
+                    address = trimWhitespaceAndHTMLDecode(components[2]);
                 }
                 break;
                 case 6: {
-                    address = trimWhitespaceFromString(components[3]);
+                    address = trimWhitespaceAndHTMLDecode(components[3]);
                 }
                 break;
                 case 7: {
-                    address = trimWhitespaceFromString(components[4]);
+                    address = trimWhitespaceAndHTMLDecode(components[4]);
                 }
                 break;
             }
@@ -212,7 +225,7 @@ public class Placemark implements Parcelable {
             }
             note = featureDescription.substring(startOfEmphasis
                     + EmphasisNoteOpeningTag.length(), endOfEmphasisIndex);
-            note = trimWhitespaceFromString(note);
+            note = trimWhitespaceAndHTMLDecode(note);
         }
     }
 
@@ -220,7 +233,7 @@ public class Placemark implements Parcelable {
         final String withoutNote = removeNoteFromString(featureDescription);
         final String[] components = withoutNote.split(OverlayTitleDelimiter);
         if (components.length > 2) {
-            councilAndYear = trimWhitespaceFromString(components[components.length - 1]);
+            councilAndYear = trimWhitespaceAndHTMLDecode(components[components.length - 1]);
         }
     }
 
@@ -245,10 +258,13 @@ public class Placemark implements Parcelable {
         return inputWithNoteRemoved;
     }
 
-    private String trimWhitespaceFromString(String string) {
-        string = string.replaceAll("\t", "").replaceAll("^\\s*", "");
-        string = Html.fromHtml(string).toString();
-        return string;
+    private static String trimWhitespaceFromString(String string) {
+        return string.replaceAll("\t", "").replaceAll("^\\s*", "");
+    }
+
+    private String trimWhitespaceAndHTMLDecode(String string) {
+        // TODO: Need to use a faster fromHTML implementation.
+        return Html.fromHtml(Placemark.trimWhitespaceFromString(string)).toString();
     }
 
     @Override

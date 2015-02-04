@@ -81,7 +81,7 @@ public class WikipediaActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setCustomTitleBarText(placemark.getTitle());
+        setCustomTitleBarText(placemark.getTrimmedName());
     }
 
     protected void onRetriveWikipediaUrlSuccess(final String url) {
