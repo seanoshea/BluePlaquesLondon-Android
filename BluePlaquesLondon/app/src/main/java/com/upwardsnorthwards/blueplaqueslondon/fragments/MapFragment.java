@@ -30,6 +30,7 @@ package com.upwardsnorthwards.blueplaqueslondon.fragments;
 
 import android.content.Intent;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -69,6 +70,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
     private GoogleMap googleMap;
     private MapModel model;
     private List<KeyedMarker> markers = new ArrayList<KeyedMarker>();
+    private AsyncTask<Void, Void, Void> task;
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -80,13 +82,15 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
     public void onResume() {
         super.onResume();
         checkForModel();
-        setProgressBarVisibility(View.VISIBLE);
-        setupMap();
+        BluePlaquesLondonApplication.bus.register(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        if (task != null) {
+            task.cancel(true);
+        }
         BluePlaquesLondonApplication.bus.unregister(this);
     }
 
@@ -127,12 +131,11 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 
     private void checkForModel() {
         if (model == null) {
-            long startTime = System.nanoTime();
+            setProgressBarVisibility(View.VISIBLE);
             model = new MapModel();
-            model.loadMapData(getActivity());
-            long endTime = System.nanoTime();
-            long duration = (endTime - startTime) / 1000000;
-            Log.v(TAG, "checkForModel ZZZ " + duration);
+            task = new ParsePlaquesTask().execute();
+        } else if (googleMap == null || model.getMassagedPlacemarks() == null || model.getMassagedPlacemarks().size() <= 0) {
+            setProgressBarVisibility(View.VISIBLE);
         }
     }
 
@@ -159,7 +162,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                 lastKnownCoordinate,
                 BluePlaquesSharedPreferences.getMapZoom(getActivity())));
-        BluePlaquesLondonApplication.bus.register(this);
         setProgressBarVisibility(View.GONE);
     }
 
@@ -283,11 +285,31 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
         }
     }
 
+    protected void onPlaquesParsed() {
+        task = null;
+        setupMap();
+    }
+
     public MapModel getModel() {
         return model;
     }
 
     public void setModel(final MapModel model) {
         this.model = model;
+    }
+
+    private class ParsePlaquesTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(final Void... params) {
+            model.loadMapData(getActivity());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(final Void result) {
+            super.onPostExecute(result);
+            onPlaquesParsed();
+        }
     }
 }
