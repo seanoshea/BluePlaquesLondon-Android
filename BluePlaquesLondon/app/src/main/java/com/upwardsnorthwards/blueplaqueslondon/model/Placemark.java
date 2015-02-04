@@ -30,6 +30,7 @@ package com.upwardsnorthwards.blueplaqueslondon.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.Html;
 
 public class Placemark implements Parcelable {
 
@@ -117,11 +118,11 @@ public class Placemark implements Parcelable {
     }
 
     public String getTrimmedTitle() {
-        return trimWhitespaceFromString(title);
+        return trimWhitespaceAndHTMLDecode(title);
     }
 
     public String getTrimmedName() {
-        return trimWhitespaceFromString(name);
+        return trimWhitespaceAndHTMLDecode(name);
     }
 
     public String getTrimmedOccupation() {
@@ -184,20 +185,20 @@ public class Placemark implements Parcelable {
             switch (components.length) {
                 case 2:
                 case 3: {
-                    address = trimWhitespaceFromString(components[1]);
+                    address = trimWhitespaceAndHTMLDecode(components[1]);
                 }
                 break;
                 case 4:
                 case 5: {
-                    address = trimWhitespaceFromString(components[2]);
+                    address = trimWhitespaceAndHTMLDecode(components[2]);
                 }
                 break;
                 case 6: {
-                    address = trimWhitespaceFromString(components[3]);
+                    address = trimWhitespaceAndHTMLDecode(components[3]);
                 }
                 break;
                 case 7: {
-                    address = trimWhitespaceFromString(components[4]);
+                    address = trimWhitespaceAndHTMLDecode(components[4]);
                 }
                 break;
             }
@@ -224,7 +225,7 @@ public class Placemark implements Parcelable {
             }
             note = featureDescription.substring(startOfEmphasis
                     + EmphasisNoteOpeningTag.length(), endOfEmphasisIndex);
-            note = trimWhitespaceFromString(note);
+            note = trimWhitespaceAndHTMLDecode(note);
         }
     }
 
@@ -232,7 +233,7 @@ public class Placemark implements Parcelable {
         final String withoutNote = removeNoteFromString(featureDescription);
         final String[] components = withoutNote.split(OverlayTitleDelimiter);
         if (components.length > 2) {
-            councilAndYear = trimWhitespaceFromString(components[components.length - 1]);
+            councilAndYear = trimWhitespaceAndHTMLDecode(components[components.length - 1]);
         }
     }
 
@@ -257,11 +258,13 @@ public class Placemark implements Parcelable {
         return inputWithNoteRemoved;
     }
 
-    private String trimWhitespaceFromString(String string) {
-        string = string.replaceAll("\t", "").replaceAll("^\\s*", "");
+    private static String trimWhitespaceFromString(String string) {
+        return string.replaceAll("\t", "").replaceAll("^\\s*", "");
+    }
+
+    private String trimWhitespaceAndHTMLDecode(String string) {
         // TODO: Need to use a faster fromHTML implementation.
-//        string = Html.fromHtml(string).toString();
-        return string;
+        return Html.fromHtml(Placemark.trimWhitespaceFromString(string)).toString();
     }
 
     @Override

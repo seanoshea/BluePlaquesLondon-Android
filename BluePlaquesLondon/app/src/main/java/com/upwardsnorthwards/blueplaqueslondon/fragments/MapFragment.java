@@ -132,7 +132,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
             model.loadMapData(getActivity());
             long endTime = System.nanoTime();
             long duration = (endTime - startTime) / 1000000;
-            Log.v(TAG, "checkForModel TIME " + duration);
+            Log.v(TAG, "checkForModel ZZZ " + duration);
         }
     }
 
