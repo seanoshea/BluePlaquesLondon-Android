@@ -44,7 +44,7 @@ import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArrayAdapterSearchView extends SearchView implements SearchView.OnQueryTextListener, android.view.View.OnFocusChangeListener, OnItemClickListener {
+public class ArrayAdapterSearchView extends SearchView implements SearchView.OnQueryTextListener, View.OnFocusChangeListener, OnItemClickListener {
 
     private SearchView.SearchAutoComplete searchAutoComplete;
     private SearchAdapter searchAdapter;
