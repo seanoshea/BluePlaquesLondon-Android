@@ -110,6 +110,7 @@ public class WikipediaActivity extends BaseActivity {
     public class WikipediaModel extends AsyncTask<String, String, String> {
 
         private static final String WIKIPEDIA_SEARCH_URL_FORMAT = "http://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=%s&srprop=timestamp&format=json";
+        private static final String WIKIPEDIA_MODEL_ENCODING = "UTF-8";
         private String responseUrl;
 
         @Override
@@ -117,19 +118,18 @@ public class WikipediaActivity extends BaseActivity {
             final String name = params[0];
             responseUrl = params[1];
             final HttpClient httpclient = new DefaultHttpClient();
-            HttpResponse response;
             String responseString = null;
             try {
                 final String url = String.format(WIKIPEDIA_SEARCH_URL_FORMAT,
-                        URLEncoder.encode(name, "UTF-8"));
+                        URLEncoder.encode(name, WIKIPEDIA_MODEL_ENCODING));
                 final HttpGet get = new HttpGet(url);
-                response = httpclient.execute(get);
+                final HttpResponse response = httpclient.execute(get);
                 final StatusLine statusLine = response.getStatusLine();
                 if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
                     final ByteArrayOutputStream out = new ByteArrayOutputStream();
                     response.getEntity().writeTo(out);
                     out.close();
-                    responseString = out.toString();
+                    responseString = out.toString(WIKIPEDIA_MODEL_ENCODING);
                 } else {
                     // Closes the connection.
                     response.getEntity().getContent().close();

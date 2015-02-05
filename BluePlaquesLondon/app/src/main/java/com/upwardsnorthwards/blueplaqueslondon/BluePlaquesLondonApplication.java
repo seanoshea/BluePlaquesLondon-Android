@@ -68,7 +68,7 @@ public class BluePlaquesLondonApplication extends Application implements
     private HashMap<TrackerName, Tracker> trackers = new HashMap<TrackerName, Tracker>();
     private GoogleApiClient locationClient;
     private Location currentLocation;
-    public static Bus bus = new Bus(ThreadEnforcer.MAIN);
+    public static final Bus bus = new Bus(ThreadEnforcer.MAIN);
 
     @Override
     public void onCreate() {

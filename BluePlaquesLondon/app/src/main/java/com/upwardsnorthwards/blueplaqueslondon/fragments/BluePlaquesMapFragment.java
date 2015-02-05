@@ -61,7 +61,7 @@ import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesSharedPreference
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapFragment extends com.google.android.gms.maps.MapFragment
+public class BluePlaquesMapFragment extends com.google.android.gms.maps.MapFragment
         implements OnCameraChangeListener, OnMarkerClickListener,
         OnInfoWindowClickListener {
 
@@ -113,7 +113,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
     protected void mapReady(final GoogleMap map) {
         googleMap = map;
         if (googleMap == null) {
-            googleMap = ((MapFragment) getFragmentManager().findFragmentById(
+            googleMap = ((BluePlaquesMapFragment) getFragmentManager().findFragmentById(
                     R.id.map)).getMap();
         }
         if (googleMap != null) {

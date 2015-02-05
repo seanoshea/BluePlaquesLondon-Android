@@ -27,23 +27,36 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
 
-    <fragment
-        android:id="@+id/map"
-        android:name="com.upwardsnorthwards.blueplaqueslondon.fragments.BluePlaquesMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Android Application Rules"
+    xmlns="http://pmd.sf.net/ruleset/1.0.0"
+    xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd"
+    xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd">
 
-    <ProgressBar
-        android:id="@+id/map_progress_bar"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:visibility="gone" />
+    <description>Custom ruleset for Android application</description>
 
-</RelativeLayout>
+    <exclude-pattern>.*/R.java</exclude-pattern>
+    <exclude-pattern>.*/gen/.*</exclude-pattern>
+
+    <rule ref="rulesets/java/android.xml">
+        <!-- Config.LOGD deprecated in API level 4 !-->
+        <exclude name="ProtectLogD" />
+        <!-- Config.LOGV deprecated in API level 4 !-->
+        <exclude name="ProtectLogV" />
+    </rule>
+    <rule ref="rulesets/java/clone.xml" />
+    <rule ref="rulesets/java/finalizers.xml" />
+    <rule ref="rulesets/java/imports.xml" />
+    <rule ref="rulesets/java/logging-java.xml" />
+    <rule ref="rulesets/java/braces.xml" />
+    <rule ref="rulesets/java/strings.xml" />
+    <rule ref="rulesets/java/basic.xml" />
+    <rule ref="rulesets/java/naming.xml">
+        <exclude name="AbstractNaming" />
+        <exclude name="LongVariable" />
+        <exclude name="LongMethodName" />
+        <exclude name="ShortMethodName" />
+        <exclude name="ShortVariable" />
+        <exclude name="VariableNamingConventions" />
+    </rule>
+</ruleset>

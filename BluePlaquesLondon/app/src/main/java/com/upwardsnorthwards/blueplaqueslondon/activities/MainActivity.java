@@ -46,11 +46,11 @@ import android.widget.ProgressBar;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.squareup.otto.Subscribe;
+import com.upwardsnorthwards.blueplaqueslondon.fragments.BluePlaquesMapFragment;
 import com.upwardsnorthwards.blueplaqueslondon.views.ArrayAdapterSearchView;
 import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
 import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.AboutFragment;
-import com.upwardsnorthwards.blueplaqueslondon.fragments.MapFragment;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.SettingsFragment;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
@@ -171,8 +171,8 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    private MapFragment getMapFragment() {
-        return (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+    private BluePlaquesMapFragment getMapFragment() {
+        return (BluePlaquesMapFragment) getFragmentManager().findFragmentById(R.id.map);
     }
 
     private void checkForGooglePlayServicesAvailability() {
