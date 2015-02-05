@@ -1,10 +1,16 @@
 apply plugin: 'com.android.application'
 apply plugin: 'pmd'
+apply plugin: 'findbugs'
 
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
-
+    lintOptions {
+        abortOnError true
+        lintConfig file("${project.rootDir}/config/lint/lint.xml")
+        htmlReport true
+        htmlOutput file("$project.buildDir/reports/lint/lint.html")
+    }
     defaultConfig {
         applicationId "com.upwardsnorthwards.blueplaqueslondon"
         minSdkVersion 15
@@ -21,12 +27,13 @@ android {
 }
 
 task pmd (type: Pmd, dependsOn: assembleDebug) {
+    ruleSetFiles = files("${project.rootDir}/config/pmd/pmd-ruleset.xml")
+    ignoreFailures = false
+    ruleSets = []
 
-    description 'Run pmd'
-    group 'verification'
-
-    ruleSets = ["java-basic", "java-braces", "java-strings", "java-optimizations", "java-unusedcode", "java-android", "java-design", "java-security"]
-    source = fileTree('src/main/java')
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
 
     reports {
         xml.enabled = false
@@ -40,8 +47,34 @@ task pmd (type: Pmd, dependsOn: assembleDebug) {
     }
 }
 
+task findbugs(type: FindBugs) {
+    ignoreFailures = false
+    effort = "max"
+    reportLevel = "high"
+    excludeFilter = new File("${project.rootDir}/config/findbugs/findbugs-filter.xml")
+    classes = files("${project.rootDir}/app/build/intermediates/classes")
+
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    reports {
+        xml.enabled = false
+        html.enabled = true
+        xml {
+            destination "$project.buildDir/reports/findbugs/findbugs.xml"
+        }
+        html {
+            destination "$project.buildDir/reports/findbugs/findbugs.html"
+        }
+    }
+
+    classpath = files()
+}
+
 check.doLast {
     project.tasks.getByName("pmd").execute()
+    project.tasks.getByName("findbugs").execute()
 }
 
 dependencies {

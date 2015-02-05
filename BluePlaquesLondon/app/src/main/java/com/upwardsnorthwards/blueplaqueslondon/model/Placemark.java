@@ -126,7 +126,7 @@ public class Placemark implements Parcelable {
     }
 
     public String getTrimmedOccupation() {
-        return trimWhitespaceFromString(occupation);
+        return trimWhitespaceAndHTMLDecode(occupation);
     }
 
     public void digestAnciliaryInformation() {

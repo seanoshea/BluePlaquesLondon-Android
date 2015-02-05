@@ -198,6 +198,7 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         protected void publishResults(final CharSequence constraint, final FilterResults results) {
             if (results != null && results.count > 0) {
                 filteredPlacemarks = (List<Placemark>) results.values;

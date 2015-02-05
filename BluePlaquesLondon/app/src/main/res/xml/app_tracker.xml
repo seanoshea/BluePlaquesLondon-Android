@@ -43,7 +43,7 @@
     <screenName name="com.upwardsnorthwards.blueplaqueslondon.fragments.AboutFragment">
         About Screen
     </screenName>
-    <screenName name="com.upwardsnorthwards.blueplaqueslondon.fragments.MapFragment">
+    <screenName name="com.upwardsnorthwards.blueplaqueslondon.fragments.BluePlaquesMapFragment">
         Maps Screen
     </screenName>
     <screenName name="com.upwardsnorthwards.blueplaqueslondon.fragments.SettingsFragment">
