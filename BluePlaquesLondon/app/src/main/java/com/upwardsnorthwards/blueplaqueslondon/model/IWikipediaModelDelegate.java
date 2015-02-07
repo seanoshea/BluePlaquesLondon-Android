@@ -28,6 +28,9 @@
 
 package com.upwardsnorthwards.blueplaqueslondon.model;
 
+/**
+ * Interface for the <code>WikipediaModel</code>
+ */
 public interface IWikipediaModelDelegate {
 
     /**

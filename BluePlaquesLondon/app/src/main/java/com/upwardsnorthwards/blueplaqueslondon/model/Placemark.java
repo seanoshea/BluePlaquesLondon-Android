@@ -32,6 +32,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.Html;
 
+/**
+ * Includes all information needed to display one placemark. Main domain object for the application.
+ * Each entry in the kml file is represented by one of these objects.
+ */
 public class Placemark implements Parcelable {
 
     private static String OverlayTitleDelimiter = "<br>";
@@ -117,18 +121,38 @@ public class Placemark implements Parcelable {
         }
     }
 
+    /**
+     * Used when displaying the title of a placemark to a user. Fully html decodes the title.
+     *
+     * @return
+     */
     public String getTrimmedTitle() {
         return trimWhitespaceAndHTMLDecode(title);
     }
 
+    /**
+     * Used when displaying the name of a placemark to a user. Fully html decodes the name.
+     *
+     * @return
+     */
     public String getTrimmedName() {
         return trimWhitespaceAndHTMLDecode(name);
     }
 
+    /**
+     * Used when displaying the occupation of a placemark to a user. Fully html decodes the occupation.
+     *
+     * @return
+     */
     public String getTrimmedOccupation() {
         return trimWhitespaceAndHTMLDecode(occupation);
     }
 
+    /**
+     * Not all information for the placemark is absolutely necessary when the .kml file is parsed. This method should
+     * be invoked whenever the user requests more information about the plaque as it parses out additional information
+     * such as the address, notes associated with the plaque and the council and year associated with the plaque.
+     */
     public void digestAnciliaryInformation() {
         digestAddress();
         digestNote();

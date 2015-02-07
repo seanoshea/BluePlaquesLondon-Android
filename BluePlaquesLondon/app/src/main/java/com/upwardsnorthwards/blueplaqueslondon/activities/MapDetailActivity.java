@@ -46,8 +46,11 @@ import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 
 import java.util.List;
 
-public class MapDetailActivity extends BaseActivity implements
-        OnClickListener {
+/**
+ * Activity shown when the user focuses in on one particular plaque. Shows details such as
+ * wikipedia information & street view options.
+ */
+public class MapDetailActivity extends BaseActivity implements OnClickListener {
 
     private List<Placemark> placemarks;
     private Placemark currentPlacemark;
@@ -86,6 +89,11 @@ public class MapDetailActivity extends BaseActivity implements
         }
     }
 
+    /**
+     * Executed when the user switches between two placemarks which relate to the same plaque.
+     *
+     * @param placemark the placemark the user is switching to.
+     */
     protected void switchToPlacemark(final Placemark placemark) {
         placemarks.remove(placemark);
         placemarks.add(0, placemark);

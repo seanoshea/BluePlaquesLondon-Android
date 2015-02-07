@@ -46,6 +46,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Used to display the list of placemarks displayed when the user is searching for a particular placemark.
+ */
 public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable {
 
     private static final String TAG = "SearchAdapter";

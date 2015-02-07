@@ -29,16 +29,30 @@
 package com.upwardsnorthwards.blueplaqueslondon.activities;
 
 import android.app.Activity;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.upwardsnorthwards.blueplaqueslondon.R;
 
+/**
+ * Simple 'base'-style class which exposes the ability to set the text on the custom title bar.
+ */
 public class BaseActivity extends Activity {
 
+    private static final String TAG = "BaseActivity";
+
+    /**
+     * The application uses a custom title bar. This method allows client code to set the title
+     * easily. Will do nothing if it cannot find the title_bar
+     *
+     * @param text the text to set on the title bar.
+     */
     protected void setCustomTitleBarText(final String text) {
-        final TextView titleBar = (TextView)findViewById(R.id.title_bar);
+        final TextView titleBar = (TextView) findViewById(R.id.title_bar);
         if (titleBar != null) {
             titleBar.setText(text);
+        } else {
+            Log.v(TAG, "Tried to set the title bar text to " + text + " but could not find title_bar in the view hierarchy");
         }
     }
 }

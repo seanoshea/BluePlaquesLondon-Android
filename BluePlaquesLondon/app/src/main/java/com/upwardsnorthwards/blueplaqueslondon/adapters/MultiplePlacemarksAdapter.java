@@ -40,6 +40,10 @@ import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 
 import java.util.List;
 
+/**
+ * Used when there are more than 1 placemark associated with a lat/long key.
+ * This can happen when two noteable people have lived at the same address.
+ */
 public class MultiplePlacemarksAdapter extends ArrayAdapter<Placemark> {
 
     private List<Placemark> placemarks;

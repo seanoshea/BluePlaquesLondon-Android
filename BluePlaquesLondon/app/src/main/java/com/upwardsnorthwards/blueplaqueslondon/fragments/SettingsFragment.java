@@ -42,10 +42,10 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesSharedPreferences;
 
-public class SettingsFragment extends DialogFragment implements
-        OnCheckedChangeListener {
-
-    private CheckBox checkBox;
+/**
+ * Allows the user to enable/disable Google Analytics tracking
+ */
+public class SettingsFragment extends DialogFragment implements OnCheckedChangeListener {
 
     public SettingsFragment() {
 
@@ -70,8 +70,7 @@ public class SettingsFragment extends DialogFragment implements
     @Override
     public void onResume() {
         super.onResume();
-        checkBox = (CheckBox) getView().findViewById(
-                R.id.fragment_settings_analytics_checkbox);
+        final CheckBox checkBox = (CheckBox) getView().findViewById(R.id.fragment_settings_analytics_checkbox);
         checkBox.setOnCheckedChangeListener(this);
         checkBox.setChecked(BluePlaquesSharedPreferences
                 .getAnalyticsEnabled(getActivity()));

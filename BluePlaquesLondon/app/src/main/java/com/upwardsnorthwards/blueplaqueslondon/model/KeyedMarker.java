@@ -30,6 +30,10 @@ package com.upwardsnorthwards.blueplaqueslondon.model;
 
 import com.google.android.gms.maps.model.Marker;
 
+/**
+ * Utility class which maintains a mapping between a Google Map Marker and a key associated with the marker.
+ * Allows for quick lookup of markers when the user searches for them.
+ */
 public class KeyedMarker {
 
     private String key;

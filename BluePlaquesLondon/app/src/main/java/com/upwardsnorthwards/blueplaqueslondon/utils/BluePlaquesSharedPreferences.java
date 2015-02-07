@@ -34,6 +34,10 @@ import android.content.SharedPreferences;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
+/**
+ * Includes getters and setters for some of the preferences associated with the app. Uses
+ * SharedPreferences as a data store.
+ */
 public class BluePlaquesSharedPreferences {
 
     private static final String PREFERENCES_KEY = "PREFERENCES_KEY";
