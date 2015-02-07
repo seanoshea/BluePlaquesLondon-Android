@@ -94,9 +94,9 @@ public class TestBluePlaquesKMLParser extends InstrumentationTestCase {
         BluePlaquesKMLParser parser = new BluePlaquesKMLParser();
         parser.loadMapData(getInstrumentation().getContext());
 
-        assertTrue(getPlacemark(parser, WANAMAKER).getTrimmedOccupation().equals("The man behind Shakespeare&apos;s Globe"));
+        assertTrue(getPlacemark(parser, WANAMAKER).getTrimmedOccupation().equals("The man behind Shakespeare's Globe"));
         assertTrue(getPlacemark(parser, GAINSBOROUGH).getTrimmedOccupation().equals("Artist, lived here"));
-        assertTrue(getPlacemark(parser, HOLST).getTrimmedOccupation().equals("Composer, wrote, <em>The Planets</em>, and, taught here"));
+        assertTrue(getPlacemark(parser, HOLST).getTrimmedOccupation().equals("Composer, wrote, The Planets, and, taught here"));
         assertTrue(getPlacemark(parser, NICHOLSON).getTrimmedOccupation().equals("Painter and Printmaker lived here 1904-1906"));
         assertTrue(getPlacemark(parser, MCMILLAN).getTrimmedOccupation().equals("RACHEL McMILLAN 1859-1917 MARGARET McMILLAN 1860-1931 Pioneers of Nursery Education lodged here"));
         assertTrue(getPlacemark(parser, TAIT).getTrimmedOccupation().equals("Architect lived here"));
