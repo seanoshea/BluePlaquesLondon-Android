@@ -16,3 +16,5 @@ The original idea behind an application for showing historical blue plaques arou
 ### Build Status
 ![Build Status](https://travis-ci.org/seanoshea/BluePlaquesLondon-Android.svg?branch=master)
 
+### Beta Builds
+If you're interested in access to beta-builds of the application, there's a Google Group available [here](http://groups.google.com/forum/#!groupsettings/blue-plaques-london-android-beta-testers/information)
