@@ -52,6 +52,9 @@ import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 
 import java.util.HashMap;
 
+/**
+ * Application class. Initialises Google Play Services and location services.
+ */
 public class BluePlaquesLondonApplication extends Application implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {

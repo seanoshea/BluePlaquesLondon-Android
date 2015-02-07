@@ -39,6 +39,9 @@ import android.widget.TextView;
 
 import com.upwardsnorthwards.blueplaqueslondon.R;
 
+/**
+ * Shows some information about how the application was developed and some of the contributors to the app.
+ */
 public class AboutFragment extends DialogFragment {
 
     public AboutFragment() {

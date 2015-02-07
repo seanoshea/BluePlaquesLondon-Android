@@ -58,11 +58,13 @@ import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 import hotchemi.android.rate.AppRate;
 import hotchemi.android.rate.OnClickButtonListener;
 
+/**
+ * Landing activity for the application. Includes a reference to the <code>BluePlaquesMapFragment</code>
+ */
 public class MainActivity extends ActionBarActivity {
 
     private static final String TAG = "MainActivity";
     private static final int GOOGLE_PLAY_SERVICES_REQUEST = 9002;
-
     private ArrayAdapterSearchView searchView;
     private ProgressBar progressBar;
 
@@ -165,6 +167,12 @@ public class MainActivity extends ActionBarActivity {
         searchView.clearFocus();
     }
 
+    /**
+     * Toggles the visibility of the progress bar which is shown while we wait for the map to load
+     * and for the application to fully parse all the blue plaques.
+     *
+     * @param visibility either View.GONE or View.VISIBLE.
+     */
     public void updateProgressBarVisibility(final int visibility) {
         if (progressBar != null) {
             progressBar.setVisibility(visibility);
@@ -175,6 +183,11 @@ public class MainActivity extends ActionBarActivity {
         return (BluePlaquesMapFragment) getFragmentManager().findFragmentById(R.id.map);
     }
 
+    /**
+     * Before showing the map, we need to make sure that the user has the correct version of Google Play Services installed.
+     * If they do, the user is shown the map and they can continue to use the application. Otherwise, they are prompted to
+     * update their version of Google Play Services on the Play Store.
+     */
     private void checkForGooglePlayServicesAvailability() {
         final int playServicesAvailable = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         switch (playServicesAvailable) {
@@ -197,6 +210,10 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    /**
+     * Users are prompted to rate the application after a certain time period of usage.
+     * This method controls what criteria must be met to show the dialog.
+     */
     private void initialiseAppRating() {
         AppRate.with(this)
                 .setInstallDays(10)
@@ -216,6 +233,12 @@ public class MainActivity extends ActionBarActivity {
         AppRate.showRateDialogIfMeetsConditions(this);
     }
 
+    /**
+     * Figures out which button was pressed when the user was prompted to rate the app.
+     *
+     * @param which the index of the button pressed.
+     * @return String identifier which maps to the `which` parameter.
+     */
     private String analyticsStringForButtonPress(final int which) {
         String event = "";
         switch (which) {

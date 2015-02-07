@@ -45,6 +45,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
 
+/**
+ * Used by the <code>WikipediaActivity</code> to reteieve the URL associated with a placemark.
+ */
 public class WikipediaModel extends AsyncTask<String, String, String> {
 
     private static final String WIKIPEDIA_SEARCH_URL_FORMAT = "http://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=%s&srprop=timestamp&format=json";

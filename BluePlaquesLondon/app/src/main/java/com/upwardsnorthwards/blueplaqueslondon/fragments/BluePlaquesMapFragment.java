@@ -61,9 +61,10 @@ import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesSharedPreference
 import java.util.ArrayList;
 import java.util.List;
 
-public class BluePlaquesMapFragment extends com.google.android.gms.maps.MapFragment
-        implements OnCameraChangeListener, OnMarkerClickListener,
-        OnInfoWindowClickListener {
+/**
+ * Main fragment in the application. Shows the plaques on a <code>com.google.android.gms.maps.MapFragment</code>
+ */
+public class BluePlaquesMapFragment extends com.google.android.gms.maps.MapFragment implements OnCameraChangeListener, OnMarkerClickListener, OnInfoWindowClickListener {
 
     private static final String TAG = "MapFragment";
 
@@ -298,6 +299,9 @@ public class BluePlaquesMapFragment extends com.google.android.gms.maps.MapFragm
         this.model = model;
     }
 
+    /**
+     * Asynchronously loads the plaques from the .xml file into an array of consumable Placemark objects.
+     */
     private class ParsePlaquesTask extends AsyncTask<Void, Void, Void> {
 
         @Override

@@ -44,6 +44,9 @@ import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Used in conjunction with the search adapter to show the user a list of placemarks to search for.
+ */
 public class ArrayAdapterSearchView extends SearchView implements SearchView.OnQueryTextListener, View.OnFocusChangeListener, OnItemClickListener {
 
     private SearchView.SearchAutoComplete searchAutoComplete;

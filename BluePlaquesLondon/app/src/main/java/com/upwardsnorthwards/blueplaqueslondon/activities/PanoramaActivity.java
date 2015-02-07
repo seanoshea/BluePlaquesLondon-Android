@@ -42,8 +42,16 @@ import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 
+/**
+ * Activity shown when the user presses on the Street View button. Show a street-view screen to the user
+ * based on the placemark which is retrieved from the intent.
+ */
 public class PanoramaActivity extends Activity implements OnStreetViewPanoramaReadyCallback {
 
+    /**
+     * Placemark associated with this street view. Once the panorama is ready for viewing,
+     * the paranorma is automatically centered on the lat/long associated with this placemark.
+     */
     private Placemark placemark;
 
     @Override
