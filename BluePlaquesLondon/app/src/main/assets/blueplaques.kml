@@ -8831,6 +8831,29 @@
 				</Point>
 			</Placemark>
 			<Placemark>
+				<name>THACKERAY, William Makepeace</name>
+				<description><![CDATA[THACKERAY, William Makepeace (1811-1863)<br>
+				Novelist Lived Here<br>
+				16 Young Street, Kensington, London, W8 5EH<br>
+				Kensington and Chelsea 1905<br>
+				LCC Plaque]]>
+				</description>
+				<LookAt>
+					<longitude>-0.1898721796503811</longitude>
+					<latitude>51.50126798487067</latitude>
+					<altitude>0</altitude>
+					<heading>2.636436657304095e-005</heading>
+					<tilt>0</tilt>
+					<range>319.052404344277</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_blu-circle641</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>-0.1898721796503811,51.50126798487068,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
 				<name>THOMPSON, Sir Benjamin, Count Rumford</name>
 				<description><![CDATA[THOMPSON, Sir Benjamin, Count Rumford (1753-1814)<br>
 				Inventor and Adventurer, lived here.<br>
@@ -14443,8 +14466,8 @@
 				22 Ebury Street, SW1<br>
 				Westminster 1996]]></description>
 				<LookAt>
-					<longitude>-0.1525750000306942</longitude>
-					<latitude>51.49125899956534</latitude>
+					<longitude>-0.147963</longitude>
+					<latitude>51.495513</latitude>
 					<altitude>0</altitude>
 					<heading>-1.127804811580204e-012</heading>
 					<tilt>0</tilt>
@@ -14452,7 +14475,7 @@
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
-					<coordinates>-0.1525750000306942,51.49125899956534,0</coordinates>
+					<coordinates>-0.147963,51.495513,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
