@@ -46,14 +46,16 @@ import android.widget.ProgressBar;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.squareup.otto.Subscribe;
-import com.upwardsnorthwards.blueplaqueslondon.fragments.BluePlaquesMapFragment;
-import com.upwardsnorthwards.blueplaqueslondon.views.ArrayAdapterSearchView;
 import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
 import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.AboutFragment;
+import com.upwardsnorthwards.blueplaqueslondon.fragments.BluePlaquesMapFragment;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.SettingsFragment;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
+import com.upwardsnorthwards.blueplaqueslondon.utils.InternetConnectivityHelper;
+import com.upwardsnorthwards.blueplaqueslondon.utils.InternetConnectivityHelperDelegate;
+import com.upwardsnorthwards.blueplaqueslondon.views.ArrayAdapterSearchView;
 
 import hotchemi.android.rate.AppRate;
 import hotchemi.android.rate.OnClickButtonListener;
@@ -61,12 +63,13 @@ import hotchemi.android.rate.OnClickButtonListener;
 /**
  * Landing activity for the application. Includes a reference to the <code>BluePlaquesMapFragment</code>
  */
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements InternetConnectivityHelperDelegate {
 
     private static final String TAG = "MainActivity";
     private static final int GOOGLE_PLAY_SERVICES_REQUEST = 9002;
     private ArrayAdapterSearchView searchView;
     private ProgressBar progressBar;
+    private InternetConnectivityHelper internetConnectivityHelper;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -86,13 +89,6 @@ public class MainActivity extends ActionBarActivity {
                 searchManager.getSearchableInfo(getComponentName()));
         searchView.notifyAdapterOfPlacemarks(getMapFragment().getModel().getMassagedPlacemarks());
         return true;
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        updateProgressBarVisibility(View.GONE);
-        BluePlaquesLondonApplication.bus.unregister(this);
     }
 
     @Override
@@ -117,9 +113,21 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        registerForInternetConnectivity();
         progressBar = (ProgressBar) findViewById(R.id.map_progress_bar);
         BluePlaquesLondonApplication.bus.register(this);
         checkForGooglePlayServicesAvailability();
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (internetConnectivityHelper != null) {
+            internetConnectivityHelper.onPause();
+        }
+        updateProgressBarVisibility(View.GONE);
+        BluePlaquesLondonApplication.bus.unregister(this);
     }
 
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
@@ -256,5 +264,34 @@ public class MainActivity extends ActionBarActivity {
             break;
         }
         return event;
+    }
+
+    private void registerForInternetConnectivity() {
+        internetConnectivityHelper = new InternetConnectivityHelper(this);
+        internetConnectivityHelper.setDelegate(this);
+        internetConnectivityHelper.onResume();
+    }
+
+    @Override
+    public void internetConnectivityUpdated(boolean hasInternetConnectivity) {
+        BluePlaquesMapFragment mapFragment = getMapFragment();
+        if (mapFragment != null) {
+            mapFragment.internetConnectivityUpdated(hasInternetConnectivity);
+        } else {
+            Log.v(TAG, "Tried to communicate the current internet connectivity state to the map fragment, but it was null");
+        }
+        if (!hasInternetConnectivity) {
+            internetConnectivityHelper.showConnectivityToast();
+        }
+    }
+
+    @Override
+    public void lostInternetConnectivity() {
+
+    }
+
+    @Override
+    public void regainedInternetConnectivity() {
+
     }
 }

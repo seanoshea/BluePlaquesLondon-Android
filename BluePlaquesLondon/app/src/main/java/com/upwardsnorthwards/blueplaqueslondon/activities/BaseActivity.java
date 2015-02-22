@@ -33,13 +33,34 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.upwardsnorthwards.blueplaqueslondon.R;
+import com.upwardsnorthwards.blueplaqueslondon.utils.InternetConnectivityHelper;
+import com.upwardsnorthwards.blueplaqueslondon.utils.InternetConnectivityHelperDelegate;
 
 /**
  * Simple 'base'-style class which exposes the ability to set the text on the custom title bar.
  */
-public class BaseActivity extends Activity {
+public class BaseActivity extends Activity implements InternetConnectivityHelperDelegate {
 
     private static final String TAG = "BaseActivity";
+
+    /**
+     * Offers callbacks to client code to announce whether the device has internet connectivity or not.
+     */
+    private InternetConnectivityHelper internetConnectivityHelper;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerForInternetConnectivity();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (internetConnectivityHelper != null) {
+            internetConnectivityHelper.onPause();
+        }
+    }
 
     /**
      * The application uses a custom title bar. This method allows client code to set the title
@@ -54,5 +75,28 @@ public class BaseActivity extends Activity {
         } else {
             Log.v(TAG, "Tried to set the title bar text to " + text + " but could not find title_bar in the view hierarchy");
         }
+    }
+
+    private void registerForInternetConnectivity() {
+        internetConnectivityHelper = new InternetConnectivityHelper(this);
+        internetConnectivityHelper.setDelegate(this);
+        internetConnectivityHelper.onResume();
+    }
+
+    @Override
+    public void internetConnectivityUpdated(boolean hasInternetConnectivity) {
+        if (!hasInternetConnectivity) {
+            internetConnectivityHelper.showConnectivityToast();
+        }
+    }
+
+    @Override
+    public void lostInternetConnectivity() {
+
+    }
+
+    @Override
+    public void regainedInternetConnectivity() {
+
     }
 }

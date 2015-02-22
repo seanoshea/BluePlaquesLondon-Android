@@ -55,5 +55,6 @@
     <string name="analytics">Analytics</string>
     <string name="analytics_title">Allow analytics to be collected</string>
     <string name="analytics_note">Blue Plaques London does not collect any personal information.</string>
+    <string name="internet_connectivity_message">Please check your internet connection.</string>
 
 </resources>
