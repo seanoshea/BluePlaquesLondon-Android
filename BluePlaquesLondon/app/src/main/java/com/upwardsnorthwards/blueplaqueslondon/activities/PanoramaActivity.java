@@ -28,7 +28,6 @@
 
 package com.upwardsnorthwards.blueplaqueslondon.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
@@ -46,7 +45,7 @@ import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
  * Activity shown when the user presses on the Street View button. Show a street-view screen to the user
  * based on the placemark which is retrieved from the intent.
  */
-public class PanoramaActivity extends Activity implements OnStreetViewPanoramaReadyCallback {
+public class PanoramaActivity extends BaseActivity implements OnStreetViewPanoramaReadyCallback {
 
     /**
      * Placemark associated with this street view. Once the panorama is ready for viewing,

@@ -40,6 +40,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -64,7 +65,7 @@ import java.util.List;
 /**
  * Main fragment in the application. Shows the plaques on a <code>com.google.android.gms.maps.MapFragment</code>
  */
-public class BluePlaquesMapFragment extends com.google.android.gms.maps.MapFragment implements OnCameraChangeListener, OnMarkerClickListener, OnInfoWindowClickListener {
+public class BluePlaquesMapFragment extends MapFragment implements OnCameraChangeListener, OnMarkerClickListener, OnInfoWindowClickListener {
 
     private static final String TAG = "MapFragment";
 
@@ -109,6 +110,10 @@ public class BluePlaquesMapFragment extends com.google.android.gms.maps.MapFragm
             app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY, BluePlaquesConstants.TABLE_ROW_PRESSED_EVENT, placemark.getName());
             navigateToPlacemark(placemark);
         }
+    }
+
+    public void internetConnectivityUpdated(boolean hasInternetConnectivity) {
+        setupMap();
     }
 
     protected void mapReady(final GoogleMap map) {
