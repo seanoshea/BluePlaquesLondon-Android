@@ -4290,11 +4290,11 @@
 				<name>WHITAKER, Joseph</name>
 				<description><![CDATA[WHITAKER, Joseph (1820-1895)<br>
 				Publisher, Founder of Whitaker&apos;s Almanack, lived and died here.<br>
-				White Lodge, 68 Silver Street, Enfield, EN1<br>
+				White Lodge, 68 Silver Street, Enfield, EN1 3EW<br>
 				Enfield 1998]]></description>
 				<LookAt>
-					<longitude>-0.08471599971558419</longitude>
-					<latitude>51.61644799986267</latitude>
+					<longitude>-0.080812</longitude>
+					<latitude>51.654128</latitude>
 					<altitude>0</altitude>
 					<heading>9.779745955956509e-012</heading>
 					<tilt>0</tilt>
@@ -4302,7 +4302,7 @@
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
-					<coordinates>-0.08471599971558419,51.61644799986267,0</coordinates>
+					<coordinates>-0.080812,51.654128,0</coordinates>
 				</Point>
 			</Placemark>
 		</Folder>
