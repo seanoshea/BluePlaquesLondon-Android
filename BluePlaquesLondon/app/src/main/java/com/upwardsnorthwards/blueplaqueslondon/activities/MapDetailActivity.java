@@ -133,7 +133,7 @@ public class MapDetailActivity extends BaseActivity implements OnClickListener {
         currentPlacemark = placemarks.get(0);
         currentPlacemark.digestAnciliaryInformation();
         setCustomTitleBarText(currentPlacemark.getName());
-        occupationTextView.setText(currentPlacemark.getOccupation());
+        occupationTextView.setText(currentPlacemark.getTrimmedOccupation());
         addressTextView.setText(currentPlacemark.getAddress());
         final String councilAndYear = currentPlacemark.getCouncilAndYear();
         if (councilAndYear != null) {

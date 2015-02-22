@@ -247,7 +247,10 @@ public class BluePlaquesMapFragment extends MapFragment implements OnCameraChang
                 latLng);
         for (final KeyedMarker keyedMarker : markers) {
             if (placemark.key().equals(keyedMarker.getKey())) {
-                keyedMarker.getMarker().showInfoWindow();
+                Marker marker = keyedMarker.getMarker();
+                marker.setTitle(placemark.getTrimmedName());
+                marker.setSnippet(getSnippetForPlacemark(placemark, true));
+                marker.showInfoWindow();
                 break;
             }
         }
