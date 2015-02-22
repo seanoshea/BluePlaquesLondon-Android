@@ -52,6 +52,16 @@ public class WikipediaActivity extends BaseActivity implements IWikipediaModelDe
     private Placemark placemark;
     private WikipediaModel wikipediaModel;
 
+    /**
+     * Used to see whether the web view has loaded ok or not
+     */
+    private enum WikipediaActivityWebViewLoadedState {
+        WikipediaActivityWebViewLoadedStateOK,
+        WikipediaActivityWebViewLoadedStateError,
+    }
+
+    private WikipediaActivityWebViewLoadedState state;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,9 +80,7 @@ public class WikipediaActivity extends BaseActivity implements IWikipediaModelDe
     protected void onResume() {
         super.onResume();
         setCustomTitleBarText(placemark.getTrimmedName());
-        wikipediaModel = new WikipediaModel();
-        wikipediaModel.setDelegate(this);
-        wikipediaModel.execute(placemark.getName(), getString(R.string.wikipedia_url));
+        initiateWebViewRequest();
     }
 
     @Override
@@ -107,10 +115,19 @@ public class WikipediaActivity extends BaseActivity implements IWikipediaModelDe
     }
 
     public void onRetriveWikipediaUrlFailure() {
+        state = WikipediaActivityWebViewLoadedState.WikipediaActivityWebViewLoadedStateError;
         final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
         app.trackEvent(BluePlaquesConstants.ERROR_CATEGORY,
                 BluePlaquesConstants.WIKIPEDIA_PAGE_LOAD_ERROR_EVENT,
                 placemark.getName());
+    }
+
+    @Override
+    public void regainedInternetConnectivity() {
+        super.regainedInternetConnectivity();
+        if (state == WikipediaActivityWebViewLoadedState.WikipediaActivityWebViewLoadedStateError) {
+            initiateWebViewRequest();
+        }
     }
 
     private void configureWebView() {
@@ -127,5 +144,12 @@ public class WikipediaActivity extends BaseActivity implements IWikipediaModelDe
         });
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
+    }
+
+    private void initiateWebViewRequest() {
+        wikipediaModel = new WikipediaModel();
+        state = WikipediaActivityWebViewLoadedState.WikipediaActivityWebViewLoadedStateOK;
+        wikipediaModel.setDelegate(this);
+        wikipediaModel.execute(placemark.getName(), getString(R.string.wikipedia_url));
     }
 }

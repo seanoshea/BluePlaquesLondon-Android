@@ -46,12 +46,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MapDetailActivity.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/activities/MapDetailActivity.java">
+      <file leaf-file-name="WikipediaActivity.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/activities/WikipediaActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.10274" vertical-offset="1947" max-vertical-offset="2385">
-              <caret line="52" column="13" selection-start-line="52" selection-start-column="13" selection-end-line="52" selection-end-column="13" />
-              <folding />
+            <state vertical-scroll-proportion="0.34931508" vertical-offset="717" max-vertical-offset="1785">
+              <caret line="100" column="64" selection-start-line="100" selection-start-column="64" selection-end-line="100" selection-end-column="64" />
+              <folding>
+                <element signature="e#4390#4576#0" expanded="true" />
+                <element signature="e#4565#4566#0" expanded="true" />
+                <element signature="e#4612#4879#0" expanded="true" />
+                <element signature="e#4868#4869#0" expanded="true" />
+                <element signature="e#5671#6094#0" expanded="true" />
+                <element signature="e#6083#6084#0" expanded="true" />
+                <element signature="e#6485#6518#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -1080,7 +1088,6 @@
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/release/res/values/google_maps_api.xml" />
         <option value="$PROJECT_DIR$/app/src/debug/res/values/google_maps_api.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/activities/WikipediaActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/activities/MapDetailActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/adapters/MultiplePlacemarksAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/adapters/SearchAdapter.java" />
@@ -1105,6 +1112,7 @@
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/utils/InternetConnectivityHelper.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/activities/BaseActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/activities/WikipediaActivity.java" />
       </list>
     </option>
   </component>
@@ -1249,6 +1257,70 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BluePlaquesLondon-Android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BluePlaquesLondon" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="blueplaqueslondon" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BluePlaquesLondon-Android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BluePlaquesLondon" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="blueplaqueslondon" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="activities" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1507,7 +1579,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1440" height="801" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1528,7 +1600,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24964234" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24964234" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3211679" sideWeight="0.85479254" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Memory Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32554746" sideWeight="0.52932763" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1876,22 +1948,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-21/java/lang/Override.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.51369864" vertical-offset="0" max-vertical-offset="438">
-          <caret line="32" column="18" selection-start-line="32" selection-start-column="18" selection-end-line="32" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/activities/PanoramaActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.23287672" vertical-offset="252" max-vertical-offset="690">
-          <caret line="47" column="40" selection-start-line="47" selection-start-column="40" selection-end-line="47" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/fragments/BluePlaquesMapFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.63408524" vertical-offset="707" max-vertical-offset="4020">
@@ -1931,18 +1987,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/utils/InternetConnectivityHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5045662" vertical-offset="1444" max-vertical-offset="2400">
-          <caret line="116" column="9" selection-start-line="116" selection-start-column="9" selection-end-line="116" selection-end-column="9" />
-          <folding>
-            <element signature="e#0#6567#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-            <element signature="e#4815#4872#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/activities/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.4" vertical-offset="3565" max-vertical-offset="4035">
@@ -1953,29 +1997,62 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/activities/BaseActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/activities/PanoramaActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4178082" vertical-offset="657" max-vertical-offset="1140">
-          <caret line="88" column="13" selection-start-line="88" selection-start-column="13" selection-end-line="88" selection-end-column="13" />
+        <state vertical-scroll-proportion="-0.23287672" vertical-offset="252" max-vertical-offset="690">
+          <caret line="47" column="40" selection-start-line="47" selection-start-column="40" selection-end-line="47" selection-end-column="40" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/activities/WikipediaActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31506848" vertical-offset="912" max-vertical-offset="1350">
-          <caret line="117" column="21" selection-start-line="117" selection-start-column="21" selection-end-line="117" selection-end-column="21" />
-          <folding>
-            <element signature="e#5575#5576#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/activities/MapDetailActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.10274" vertical-offset="1947" max-vertical-offset="2385">
+        <state vertical-scroll-proportion="-3.5547945" vertical-offset="1707" max-vertical-offset="2385">
           <caret line="52" column="13" selection-start-line="52" selection-start-column="13" selection-end-line="52" selection-end-column="13" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-21/java/lang/Override.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.51369864" vertical-offset="0" max-vertical-offset="438">
+          <caret line="32" column="18" selection-start-line="32" selection-start-column="18" selection-end-line="32" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/activities/BaseActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.28082192" vertical-offset="117" max-vertical-offset="1140">
+          <caret line="48" column="30" selection-start-line="48" selection-start-column="30" selection-end-line="48" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/utils/InternetConnectivityHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5045662" vertical-offset="649" max-vertical-offset="2400">
+          <caret line="58" column="0" selection-start-line="58" selection-start-column="0" selection-end-line="64" selection-end-column="5" />
+          <folding>
+            <element signature="e#0#6567#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/activities/WikipediaActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.34931508" vertical-offset="717" max-vertical-offset="1785">
+          <caret line="100" column="64" selection-start-line="100" selection-start-column="64" selection-end-line="100" selection-end-column="64" />
+          <folding>
+            <element signature="e#4390#4576#0" expanded="true" />
+            <element signature="e#4565#4566#0" expanded="true" />
+            <element signature="e#4612#4879#0" expanded="true" />
+            <element signature="e#4868#4869#0" expanded="true" />
+            <element signature="e#5671#6094#0" expanded="true" />
+            <element signature="e#6083#6084#0" expanded="true" />
+            <element signature="e#6485#6518#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
