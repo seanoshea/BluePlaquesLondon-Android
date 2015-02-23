@@ -15,7 +15,7 @@ android {
         applicationId "com.upwardsnorthwards.blueplaqueslondon"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 3
+        versionCode 4
         versionName "1.2"
     }
     buildTypes {
