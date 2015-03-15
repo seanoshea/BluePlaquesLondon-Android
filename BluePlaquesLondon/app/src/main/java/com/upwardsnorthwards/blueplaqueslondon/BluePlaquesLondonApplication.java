@@ -67,6 +67,7 @@ public class BluePlaquesLondonApplication extends Application implements
     public enum TrackerName {
         APP_TRACKER,
     }
+    private final static String TRACKER_ID = "UA-46153093-3";
 
     private HashMap<TrackerName, Tracker> trackers = new HashMap<TrackerName, Tracker>();
     private GoogleApiClient locationClient;
@@ -142,7 +143,12 @@ public class BluePlaquesLondonApplication extends Application implements
     private synchronized Tracker getTracker(final TrackerName trackerId) {
         if (!trackers.containsKey(trackerId)) {
             final GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            final Tracker t = analytics.newTracker(R.xml.app_tracker);
+            // ideally, this would be loaded from the configuration file, but it's causing ANRs with the 6.5.87 version of Play Services
+            // https://github.com/seanoshea/BluePlaquesLondon-Android/issues/62 has the details.
+            final Tracker t = analytics.newTracker(TRACKER_ID);
+            t.setSessionTimeout(300);
+            t.enableExceptionReporting(true);
+            t.enableAutoActivityTracking(true);
             trackers.put(trackerId, t);
         }
         return trackers.get(trackerId);
