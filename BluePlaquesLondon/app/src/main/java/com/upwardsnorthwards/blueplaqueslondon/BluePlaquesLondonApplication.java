@@ -29,6 +29,7 @@
 package com.upwardsnorthwards.blueplaqueslondon;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.IntentSender;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -46,6 +47,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
@@ -68,6 +71,7 @@ public class BluePlaquesLondonApplication extends Application implements
         APP_TRACKER,
     }
     private final static String TRACKER_ID = "UA-46153093-3";
+    private RefWatcher refWatcher;
 
     private HashMap<TrackerName, Tracker> trackers = new HashMap<TrackerName, Tracker>();
     private GoogleApiClient locationClient;
@@ -91,6 +95,7 @@ public class BluePlaquesLondonApplication extends Application implements
             currentLocation
                     .setLongitude(BluePlaquesConstants.DEFAULT_LONGITUDE);
         }
+        refWatcher = LeakCanary.install(this);
         trackApplicationLoadedEvent();
     }
 
@@ -132,6 +137,11 @@ public class BluePlaquesLondonApplication extends Application implements
     @Override
     public void onLocationChanged(final Location location) {
         currentLocation = location;
+    }
+
+    public static RefWatcher getRefWatcher(Context context) {
+        BluePlaquesLondonApplication application = (BluePlaquesLondonApplication) context.getApplicationContext();
+        return application.refWatcher;
     }
 
     public void trackEvent(final String category, final String action, final String label) {
