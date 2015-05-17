@@ -1421,6 +1421,25 @@
 				</Point>
 			</Placemark>
 			<Placemark>
+				<name>EDWARDS, Amelia</name>
+				<description><![CDATA[EDWARDS, Amelia (1831-1892)<br>
+				Egyptologist and Writer lived here<br>
+				19 Wharton St, London WC1X 9PT<br>
+				Camden 2015]]></description>
+				<LookAt>
+					<longitude>-0.1134913318718689</longitude>
+					<latitude>51.52830549201657</latitude>
+					<altitude>0</altitude>
+					<heading>0.0001901797143751228</heading>
+					<tilt>0</tilt>
+					<range>785.8305270671158</range>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.1137353585016421,51.52839904948819,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
 				<name>EDWARDS, John Passmore</name>
 				<description><![CDATA[EDWARDS, John Passmore (1823-1911)<br>
 				Journalist, editor and builder of free public libraries, lived here.<br>
@@ -10431,8 +10450,8 @@
 					Milbourne House, Barnes Green, SW13<br>
 					Richmond Upon Thames 1978]]></description>
 				<LookAt>
-					<longitude>-0.2467860000429454</longitude>
-					<latitude>51.47372699973445</latitude>
+					<longitude>-0.247706</longitude>
+					<latitude>51.472735</latitude>
 					<altitude>0</altitude>
 					<heading>2.627958153642679e-012</heading>
 					<tilt>0</tilt>
@@ -10440,7 +10459,7 @@
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
-					<coordinates>-0.2467860000429454,51.47372699973445,0</coordinates>
+					<coordinates>-0.247706,51.472735,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
@@ -12735,6 +12754,44 @@
 		<Folder>
 			<name>Westminster</name>
 			<Placemark>
+				<name>MILL, James</name>
+				<description><![CDATA[MILL, James (1773-1836)<br>
+				Philosophers lived here 1814-1831<br>
+				40 Queen Anne&apos;s Gate, Westminste SW1H 9AP<br>
+				Westminster]]></description>
+				<LookAt>
+					<longitude>-0.1342963999214952</longitude>
+					<latitude>51.50031770038856</latitude>
+					<altitude>0</altitude>
+					<heading>6.373712310852331e-011</heading>
+					<tilt>0</tilt>
+					<range>1000.000125435249</range>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.1343296,51.500318,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>MILL, John Stuart</name>
+				<description><![CDATA[MILL, John Stuart (1806-1873)<br>
+				Philosophers lived here 1814-1831<br>
+				40 Queen Anne&apos;s Gate, Westminste SW1H 9AP<br>
+				Westminster]]></description>
+				<LookAt>
+					<longitude>-0.1342963999214952</longitude>
+					<latitude>51.50031770038856</latitude>
+					<altitude>0</altitude>
+					<heading>6.373712310852331e-011</heading>
+					<tilt>0</tilt>
+					<range>1000.000125435249</range>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.1343296,51.500318,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
 				<name>BOWEN, Elizabeth</name>
 				<description><![CDATA[BOWEN, Elizabeth (1899-1973)<br>
 				Writer lived here 1935-1952<br>
@@ -12789,6 +12846,25 @@
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
 					<coordinates>-0.157539999883588,51.5230849999283,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>CUMMING, Sir Mansfield</name>
+				<description><![CDATA[CUMMING, Sir Mansfield (1859-1923)<br>
+				First Chief of the Secret Service lived and worked here 1911-1922<br>
+				2 Whitehall Court, London SW1A 2EJ<br>
+				Westminster 2015]]></description>
+				<LookAt>
+					<longitude>-0.124186292562829</longitude>
+					<latitude>51.5057259355645</latitude>
+					<altitude>0</altitude>
+					<heading>1.261030869231652e-006</heading>
+					<tilt>0</tilt>
+					<range>794.809211679531</range>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.12422,51.505736,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
