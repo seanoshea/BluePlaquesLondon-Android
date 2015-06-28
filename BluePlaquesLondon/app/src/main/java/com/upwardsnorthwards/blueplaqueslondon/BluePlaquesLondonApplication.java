@@ -107,13 +107,10 @@ public class BluePlaquesLondonApplication extends Application implements
                 connectionResult.startResolutionForResult(null,
                         CONNECTION_FAILURE_RESOLUTION_REQUEST);
             } else {
-                GooglePlayServicesUtil.showErrorDialogFragment(connectionResult.getErrorCode(),
-                        null, CONNECTION_FAILURE_NO_RESOLUTION_REQUEST);
+                Log.e(TAG, "The connection result did not have a resolution");
             }
         } catch (IntentSender.SendIntentException e) {
-            Log.e(TAG, "An error occurred when loading the map", e);
-            GooglePlayServicesUtil.showErrorDialogFragment(connectionResult.getErrorCode(),
-                    null, CONNECTION_FAILURE_NO_RESOLUTION_REQUEST);
+            Log.e(TAG, "An error occurred when trying to resolve the Google Maps issue", e);
         }
     }
 
