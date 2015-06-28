@@ -39,6 +39,8 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
+import com.squareup.leakcanary.RefWatcher;
+import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
 import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesSharedPreferences;
 
@@ -48,7 +50,6 @@ import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesSharedPreference
 public class SettingsFragment extends DialogFragment implements OnCheckedChangeListener {
 
     public SettingsFragment() {
-
     }
 
     @Override
@@ -74,6 +75,13 @@ public class SettingsFragment extends DialogFragment implements OnCheckedChangeL
         checkBox.setOnCheckedChangeListener(this);
         checkBox.setChecked(BluePlaquesSharedPreferences
                 .getAnalyticsEnabled(getActivity()));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = BluePlaquesLondonApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 
     @Override

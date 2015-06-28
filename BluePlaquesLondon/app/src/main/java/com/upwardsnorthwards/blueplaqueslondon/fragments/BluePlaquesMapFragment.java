@@ -48,6 +48,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.leakcanary.RefWatcher;
 import com.squareup.otto.Subscribe;
 import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
 import com.upwardsnorthwards.blueplaqueslondon.R;
@@ -94,6 +95,13 @@ public class BluePlaquesMapFragment extends MapFragment implements OnCameraChang
             task.cancel(true);
         }
         BluePlaquesLondonApplication.bus.unregister(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = BluePlaquesLondonApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 
     @Subscribe
