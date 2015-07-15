@@ -1421,25 +1421,6 @@
 				</Point>
 			</Placemark>
 			<Placemark>
-				<name>EDWARDS, Amelia</name>
-				<description><![CDATA[EDWARDS, Amelia (1831-1892)<br>
-				Egyptologist and Writer lived here<br>
-				19 Wharton St, London WC1X 9PT<br>
-				Camden 2015]]></description>
-				<LookAt>
-					<longitude>-0.1134913318718689</longitude>
-					<latitude>51.52830549201657</latitude>
-					<altitude>0</altitude>
-					<heading>0.0001901797143751228</heading>
-					<tilt>0</tilt>
-					<range>785.8305270671158</range>
-				</LookAt>
-				<styleUrl>#myDefaultStyles</styleUrl>
-				<Point>
-					<coordinates>-0.1137353585016421,51.52839904948819,0</coordinates>
-				</Point>
-			</Placemark>
-			<Placemark>
 				<name>EDWARDS, John Passmore</name>
 				<description><![CDATA[EDWARDS, John Passmore (1823-1911)<br>
 				Journalist, editor and builder of free public libraries, lived here.<br>
@@ -1474,7 +1455,7 @@
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
-					<coordinates>-0.129016,51.51519137,0</coordinates>
+					<coordinates>-0.129016,51.51.519137,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
@@ -3932,6 +3913,27 @@
 					<coordinates>-0.1694253722868322,51.55647151094304,0</coordinates>
 				</Point>
 			</Placemark>
+			<Placemark>
+				<name>HORSLEY, Sir Victor</name>
+				<description><![CDATA[HORSLEY, Sir Victor (1857-1916)<br>
+				Pioneer of Neurosurgery and Social Reformer lived here<br>
+				129 Gower Street, Fitzrovia, London, WC1E 7HU<br>
+				Camden 2015]]>
+				</description>
+				<LookAt>
+					<longitude>-0.1338925385595124</longitude>
+					<latitude>51.52366781155216</latitude>
+					<altitude>0</altitude>
+					<heading>-1.181868854539169e-005</heading>
+					<tilt>0</tilt>
+					<range>425.2535268470344</range>
+					<altitudeMode>relativeToGround</altitudeMode>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.1340899905595228,51.52362930499012,0</coordinates>
+				</Point>
+			</Placemark>
 		</Folder>
 		<Folder>
 			<name>City of London</name>
@@ -4657,6 +4659,48 @@
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
 					<coordinates>-0.00161525327970935,51.47335600009239,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>HEERLEIN LINDLEY, Sir William</name>
+				<description><![CDATA[HEERLEIN LINDLEY, Sir William (1853-1917)<br>
+				WILLIAM LINDLEY, 1808-1900, Sir WILLIAM HEERLEIN LINDLEY, 1853-1917, Civil Engineers, lived here<br>
+				75 Shooters Hill, Blackheath, SE3 7BG<br>
+				Greenwich 2015<br>
+				Shared plaque with William Lindley]]></description>
+				<LookAt>
+					<longitude>0.02343191709651915</longitude>
+					<latitude>51.47438149570628</latitude>
+					<altitude>0</altitude>
+					<heading>-3.116364947337524e-006</heading>
+					<tilt>0</tilt>
+					<range>491.6824921957566</range>
+					<altitudeMode>relativeToSeaFloor</altitudeMode>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>0.02343191709651915,51.47438149570627,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>LINDLEY, William</name>
+				<description><![CDATA[LINDLEY, William (1808-1900)<br>
+				WILLIAM LINDLEY, 1808-1900, Sir WILLIAM HEERLEIN LINDLEY, 1853-1917, Civil Engineers, lived here<br>
+				74 Shooters Hill, Blackheath, SE3 7BG<br>
+				Greenwich 2015<br>
+				Shared plaque with Sir William Heerlein Lindley]]></description>
+				<LookAt>
+					<longitude>0.02343191709651915</longitude>
+					<latitude>51.47438149570628</latitude>
+					<altitude>0</altitude>
+					<heading>-3.116364947337524e-006</heading>
+					<tilt>0</tilt>
+					<range>491.6824921957566</range>
+					<altitudeMode>relativeToSeaFloor</altitudeMode>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>0.02343191709651915,51.47438149570627,0</coordinates>
 				</Point>
 			</Placemark>
 		</Folder>
@@ -9243,6 +9287,69 @@
 					<coordinates>-0.1808973543618675,51.49675315496057,0</coordinates>
 				</Point>
 			</Placemark>
+			<Placemark>
+				<name>DORN, Marion</name>
+				<description><![CDATA[DORN, Marion (1896-1964)<br>
+				EDWARD McKNIGHT KAUFFER, 1890-1954, MARION DORN, 1896-1964, Designers, lived here in flats 139/141<br>
+				Swan Court, Chelsea Manor Street, Chelsea, SW3 5RY<br>
+				Kensington &amp; Chelsea 2015<br>
+				Shared plaque with Edward MacKnight Kauffer]]></description>
+				<LookAt>
+					<longitude>-0.1669774697911364</longitude>
+					<latitude>51.48742575739021</latitude>
+					<altitude>0</altitude>
+					<heading>-0.0001314313973745374</heading>
+					<tilt>0</tilt>
+					<range>503.1668998767905</range>
+					<altitudeMode>relativeToSeaFloor</altitudeMode>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.166977,51.487403,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>MaCKNIGHT KAUFFER, Edward</name>
+				<description><![CDATA[MaCKNIGHT KAUFFER, Edward (1890-1954)<br>
+				EDWARD McKNIGHT KAUFFER, 1890-1954, MARION DORN, 1896-1964, Designers, lived here in flats 139/141<br>
+				Swan Court, Chelsea Manor Street, Chelsea, SW3 5RY<br>
+				Kensington &amp; Chelsea 2015<br>
+				Shared plaque with Marion Dorn]]></description>
+				<LookAt>
+					<longitude>-0.1669774697911364</longitude>
+					<latitude>51.48742575739021</latitude>
+					<altitude>0</altitude>
+					<heading>-0.0001314313973745374</heading>
+					<tilt>0</tilt>
+					<range>503.1668998767905</range>
+					<altitudeMode>relativeToSeaFloor</altitudeMode>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.166977,51.487403,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>LANCASTER, Sir Osbert</name>
+				<description><![CDATA[LANCASTER, Sir Osbert (1908-1986)<br>
+				Cartoonist and Writer was born here<br>
+				79 Elgin Crescent, Notting Hill, W11 2JE<br>
+				Kensington &amp; Chelsea 2015]]>
+				</description>
+				<LookAt>
+					<longitude>-0.20827453633398</longitude>
+					<latitude>51.51409523374817</latitude>
+					<altitude>0</altitude>
+					<heading>1.695738560087313e-005</heading>
+					<tilt>0</tilt>
+					<range>425.4305308786387</range>
+					<altitudeMode>relativeToGround</altitudeMode>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.2083265627938702,51.51389505374072,0</coordinates>
+				</Point>
+			</Placemark>
 		</Folder>
 		<Folder>
 			<name>Kingston upon Thames</name>
@@ -10202,6 +10309,46 @@
 					<coordinates>-0.2234939999581656,51.42978900017782,0</coordinates>
 				</Point>
 			</Placemark>
+			<Placemark>
+				<name>HEYER, Georgette</name>
+				<description><![CDATA[HEYER, Georgette (1902-1974)<br>
+				Novelist was born here<br>
+				103 Woodside, Wimbledon, SW19 7BA<br>
+				Merton 2015]]></description>
+				<LookAt>
+					<longitude>-0.2025243999975401</longitude>
+					<latitude>51.42647199954881</latitude>
+					<altitude>0</altitude>
+					<heading>3.76540402160107e-012</heading>
+					<tilt>0</tilt>
+					<range>1000.000091012942</range>
+					<altitudeMode>relativeToSeaFloor</altitudeMode>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.2025243999975401,51.42647199954881,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TERTIS, Lione</name>
+				<description><![CDATA[TERTIS, Lione (1876-1975)<br>
+				Viola soloist Lived in a flat here 1961-1975<br>
+				42 Marryat Rd, Wimbledon, SW19 5BD<br>
+				Merton 2015]]></description>
+				<LookAt>
+					<longitude>-0.2174311999737399</longitude>
+					<latitude>51.42900809973581</latitude>
+					<altitude>0</altitude>
+					<heading>2.30613571604547e-011</heading>
+					<tilt>0</tilt>
+					<range>1000.000068516807</range>
+					<altitudeMode>relativeToSeaFloor</altitudeMode>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.217442,51.429018,0</coordinates>
+				</Point>
+			</Placemark>
 		</Folder>
 		<Folder>
 			<name>Newham</name>
@@ -11108,7 +11255,6 @@
 			</Placemark>
 			<Folder>
 				<name>Southwark Council Plaques</name>
-				<open>1</open>
 				<Placemark>
 					<name>ABEL, Bobby</name>
 					<description><![CDATA[ABEL, Bobby (1857-1936)<br>
@@ -12754,44 +12900,6 @@
 		<Folder>
 			<name>Westminster</name>
 			<Placemark>
-				<name>MILL, James</name>
-				<description><![CDATA[MILL, James (1773-1836)<br>
-				Philosophers lived here 1814-1831<br>
-				40 Queen Anne&apos;s Gate, Westminste SW1H 9AP<br>
-				Westminster]]></description>
-				<LookAt>
-					<longitude>-0.1342963999214952</longitude>
-					<latitude>51.50031770038856</latitude>
-					<altitude>0</altitude>
-					<heading>6.373712310852331e-011</heading>
-					<tilt>0</tilt>
-					<range>1000.000125435249</range>
-				</LookAt>
-				<styleUrl>#myDefaultStyles</styleUrl>
-				<Point>
-					<coordinates>-0.1343296,51.500318,0</coordinates>
-				</Point>
-			</Placemark>
-			<Placemark>
-				<name>MILL, John Stuart</name>
-				<description><![CDATA[MILL, John Stuart (1806-1873)<br>
-				Philosophers lived here 1814-1831<br>
-				40 Queen Anne&apos;s Gate, Westminste SW1H 9AP<br>
-				Westminster]]></description>
-				<LookAt>
-					<longitude>-0.1342963999214952</longitude>
-					<latitude>51.50031770038856</latitude>
-					<altitude>0</altitude>
-					<heading>6.373712310852331e-011</heading>
-					<tilt>0</tilt>
-					<range>1000.000125435249</range>
-				</LookAt>
-				<styleUrl>#myDefaultStyles</styleUrl>
-				<Point>
-					<coordinates>-0.1343296,51.500318,0</coordinates>
-				</Point>
-			</Placemark>
-			<Placemark>
 				<name>BOWEN, Elizabeth</name>
 				<description><![CDATA[BOWEN, Elizabeth (1899-1973)<br>
 				Writer lived here 1935-1952<br>
@@ -12846,25 +12954,6 @@
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
 					<coordinates>-0.157539999883588,51.5230849999283,0</coordinates>
-				</Point>
-			</Placemark>
-			<Placemark>
-				<name>CUMMING, Sir Mansfield</name>
-				<description><![CDATA[CUMMING, Sir Mansfield (1859-1923)<br>
-				First Chief of the Secret Service lived and worked here 1911-1922<br>
-				2 Whitehall Court, London SW1A 2EJ<br>
-				Westminster 2015]]></description>
-				<LookAt>
-					<longitude>-0.124186292562829</longitude>
-					<latitude>51.5057259355645</latitude>
-					<altitude>0</altitude>
-					<heading>1.261030869231652e-006</heading>
-					<tilt>0</tilt>
-					<range>794.809211679531</range>
-				</LookAt>
-				<styleUrl>#myDefaultStyles</styleUrl>
-				<Point>
-					<coordinates>-0.12422,51.505736,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
@@ -19523,6 +19612,48 @@ Westminster 1938]]></description>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
 					<coordinates>-0.1617071221507094,51.51892444767537,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>MILL, John Stuart</name>
+				<description><![CDATA[MILL, John Stuart (1806-1873)<br>
+				Philosophers lived here 1814-1831<br>
+				40 Queen Anne&apos;s Gate, Westminste SW1H 9AP<br>
+				Westminster 2012<br>
+				Shared plaque with John Stuart Mill]]></description>
+				<LookAt>
+					<longitude>-0.1342963999214952</longitude>
+					<latitude>51.50031770038856</latitude>
+					<altitude>0</altitude>
+					<heading>6.373712310852331e-011</heading>
+					<tilt>0</tilt>
+					<range>1000.000125435249</range>
+					<altitudeMode>relativeToSeaFloor</altitudeMode>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.1343296,51.500318,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>MILL, James</name>
+				<description><![CDATA[MILL, James (1773-1836)<br>
+				Philosophers lived here 1814-1831<br>
+				40 Queen Anne&apos;s Gate, Westminste SW1H 9AP<br>
+				Westminster 2012<br>
+				Shared plaque with John Stuart Mill]]></description>
+				<LookAt>
+					<longitude>-0.1342963999214952</longitude>
+					<latitude>51.50031770038856</latitude>
+					<altitude>0</altitude>
+					<heading>6.373712310852331e-011</heading>
+					<tilt>0</tilt>
+					<range>1000.000125435249</range>
+					<altitudeMode>relativeToSeaFloor</altitudeMode>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.1343296,51.500318,0</coordinates>
 				</Point>
 			</Placemark>			
 		</Folder>
