@@ -5,7 +5,6 @@ apply plugin: 'findbugs'
 android {
     compileSdkVersion 23
     buildToolsVersion '23.0.0'
-    useLibrary 'org.apache.http.legacy'
     lintOptions {
         abortOnError true
         lintConfig file("${project.rootDir}/config/lint/lint.xml")
