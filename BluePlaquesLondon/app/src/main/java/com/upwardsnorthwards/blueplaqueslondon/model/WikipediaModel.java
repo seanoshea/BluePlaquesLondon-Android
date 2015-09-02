@@ -82,7 +82,7 @@ public class WikipediaModel extends AsyncTask<String, String, String> {
                 urlConnection = (HttpURLConnection) new URL(newUrl).openConnection();
             }
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in, WIKIPEDIA_MODEL_ENCODING));
             String line;
             while ((line = reader.readLine()) != null) {
                 result.append(line);
