@@ -37,10 +37,15 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
     <application
         android:name=".BluePlaquesLondonApplication"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:allowBackup="true"
         android:theme="@style/AppTheme">
 
         <meta-data
@@ -52,10 +57,6 @@
         <meta-data
             android:name="com.google.android.gms.analytics.globalConfigResource"
             android:resource="@xml/app_tracker" />
-
-        <uses-feature
-            android:glEsVersion="0x00020000"
-            android:required="true" />
 
         <activity
             android:name=".activities.MainActivity"

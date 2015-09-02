@@ -84,7 +84,7 @@ public class BluePlaquesSharedPreferences {
                     PREFERENCES_KEY, Context.MODE_PRIVATE);
             final SharedPreferences.Editor editor = preferences.edit();
             editor.putFloat(MAP_ZOOM, zoom);
-            editor.commit();
+            editor.apply();
         }
     }
 
@@ -100,7 +100,7 @@ public class BluePlaquesSharedPreferences {
                 PREFERENCES_KEY, Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(ANALYTICS_ENABLED, enabled);
-        editor.commit();
+        editor.apply();
     }
 
     private static void saveCoordinate(final Context context, final LatLng latLng, final String latitudeKey, final String longitudeKey) {
@@ -109,7 +109,7 @@ public class BluePlaquesSharedPreferences {
         final SharedPreferences.Editor editor = preferences.edit();
         editor.putFloat(latitudeKey, (float) latLng.latitude);
         editor.putFloat(longitudeKey, (float) latLng.longitude);
-        editor.commit();
+        editor.apply();
     }
 
     private static LatLng getSavedCoordinate(final Context context, final String latitudeKey, final String longitudeKey) {

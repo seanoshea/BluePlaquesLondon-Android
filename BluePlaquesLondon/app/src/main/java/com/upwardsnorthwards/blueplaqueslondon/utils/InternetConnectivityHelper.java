@@ -44,7 +44,7 @@ import com.upwardsnorthwards.blueplaqueslondon.R;
  */
 public class InternetConnectivityHelper {
 
-    private static final String TAG = "InternetConnectivityHelper";
+    private static final String TAG = "ConnectivityHelper";
 
     /**
      * Weak reference to the context in which this helper was instantiated.
