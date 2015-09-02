@@ -61,7 +61,7 @@ public class BluePlaquesLondonApplication extends Application implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    private final static String TAG = "BluePlaquesLondonApplication";
+    private final static String TAG = "BluePlaquesLondonApp";
 
     public final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     public final static int CONNECTION_FAILURE_NO_RESOLUTION_REQUEST = 9001;

@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Used to display the list of placemarks displayed when the user is searching for a particular placemark.
@@ -141,8 +142,8 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
     private List<Placemark> filterPlacemarksWithText(final String filterText) {
         final List<Placemark> localPlacemarks = new ArrayList<Placemark>();
         for (final Placemark placemark : placemarks) {
-            if (placemark.getName().toLowerCase()
-                    .contains(filterText.toLowerCase())) {
+            if (placemark.getName().toLowerCase(Locale.ENGLISH)
+                    .contains(filterText.toLowerCase(Locale.ENGLISH))) {
                 localPlacemarks.add(placemark);
             }
         }
