@@ -30,19 +30,19 @@ package com.upwardsnorthwards.blueplaqueslondon.model;
 
 import android.os.AsyncTask;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLEncoder;
 
 /**
@@ -52,6 +52,7 @@ public class WikipediaModel extends AsyncTask<String, String, String> {
 
     private static final String WIKIPEDIA_SEARCH_URL_FORMAT = "http://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=%s&srprop=timestamp&format=json";
     private static final String WIKIPEDIA_MODEL_ENCODING = "UTF-8";
+    private static final String WIKIPEDIA_MODEL_LOCATION_STRING = "Location";
     private String responseUrl;
 
     private IWikipediaModelDelegate delegate;
@@ -64,28 +65,39 @@ public class WikipediaModel extends AsyncTask<String, String, String> {
     protected String doInBackground(final String... params) {
         final String name = params[0];
         responseUrl = params[1];
-        final HttpClient httpclient = new DefaultHttpClient();
+        StringBuilder result = new StringBuilder();
         String responseString = null;
+        HttpURLConnection urlConnection = null;
+        URL url = null;
         try {
-            final String url = String.format(WIKIPEDIA_SEARCH_URL_FORMAT,
-                    URLEncoder.encode(name, WIKIPEDIA_MODEL_ENCODING));
-            final HttpGet get = new HttpGet(url);
-            final HttpResponse response = httpclient.execute(get);
-            final StatusLine statusLine = response.getStatusLine();
-            if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-                final ByteArrayOutputStream out = new ByteArrayOutputStream();
-                response.getEntity().writeTo(out);
-                out.close();
-                responseString = out.toString(WIKIPEDIA_MODEL_ENCODING);
-            } else {
-                // Closes the connection.
-                response.getEntity().getContent().close();
-                throw new IOException(statusLine.getReasonPhrase());
+            url = new URL(String.format(WIKIPEDIA_SEARCH_URL_FORMAT,
+                    URLEncoder.encode(name, WIKIPEDIA_MODEL_ENCODING)));
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setInstanceFollowRedirects(true);
+            int status = urlConnection.getResponseCode();
+            if (status != HttpURLConnection.HTTP_OK && (status == HttpURLConnection.HTTP_MOVED_TEMP
+                    || status == HttpURLConnection.HTTP_MOVED_PERM
+                    || status == HttpURLConnection.HTTP_SEE_OTHER)) {
+                String newUrl = urlConnection.getHeaderField(WIKIPEDIA_MODEL_LOCATION_STRING);
+                urlConnection = (HttpURLConnection) new URL(newUrl).openConnection();
             }
-        } catch (ClientProtocolException e) {
+            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in, WIKIPEDIA_MODEL_ENCODING));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                result.append(line);
+            }
+            responseString = result.toString();
+        } catch (MalformedURLException e) {
+            delegate.onRetriveWikipediaUrlFailure();
+        } catch (UnsupportedEncodingException e) {
             delegate.onRetriveWikipediaUrlFailure();
         } catch (IOException e) {
             delegate.onRetriveWikipediaUrlFailure();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
         }
         return responseString;
     }
