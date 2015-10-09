@@ -1446,8 +1446,8 @@
 				6 Bedford Square, WC1<br>
 				Camden 1954]]></description>
 				<LookAt>
-					<longitude>-0.129016</longitude>
-					<latitude>51.519137</latitude>
+					<longitude>-0.1290169999988012</longitude>
+					<latitude>51.51519137995093</latitude>
 					<altitude>0</altitude>
 					<heading>-3.760136227909894e-013</heading>
 					<tilt>0</tilt>
@@ -1455,7 +1455,7 @@
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
-					<coordinates>-0.129016,51.519137,0</coordinates>
+					<coordinates>-0.1290169999988012,51.51519137995093,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
@@ -9754,7 +9754,7 @@
 					<altitude>0</altitude>
 					<heading>1.427099976722611e-012</heading>
 					<tilt>0</tilt>
-					<range>1000.000021623472</range>
+					<range>1000</range>
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
@@ -9769,16 +9769,16 @@
 				Lambeth 1926<br>
 				<em>Note: Plaque dated 1925, on a post in front garden. Replaces plaque put up in 1909 on house now demolished.</em>]]></description>
 				<LookAt>
-					<longitude>-0.09632599996592715</longitude>
-					<latitude>51.45738800025548</latitude>
+					<longitude>-0.095819</longitude>
+					<latitude>51.457428</latitude>
 					<altitude>0</altitude>
 					<heading>2.258392608506688e-012</heading>
 					<tilt>0</tilt>
-					<range>1000.000123393987</range>
+					<range>1000</range>
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
-					<coordinates>-0.09632599996592715,51.45738800025548,0</coordinates>
+					<coordinates>-0.095819,51.457428,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
@@ -9995,25 +9995,6 @@
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
 					<coordinates>-0.06096900002651751,51.44052899987539,0</coordinates>
-				</Point>
-			</Placemark>
-			<Placemark>
-				<name>PETTIT SMITH, Sir Francis</name>
-				<description><![CDATA[PETTIT SMITH, Sir Francis (1808-1874)<br>
-				Pioneer of the Screw Propellor lived here 1864-1870<br>
-				17 Sydenham Hill, SE26<br>
-				Lewisham 2008]]></description>
-				<LookAt>
-					<longitude>-0.07358100006361212</longitude>
-					<latitude>51.4313300000574</latitude>
-					<altitude>0</altitude>
-					<heading>9.671433160202603e-012</heading>
-					<tilt>0</tilt>
-					<range>1000.000123062874</range>
-				</LookAt>
-				<styleUrl>#myDefaultStyles</styleUrl>
-				<Point>
-					<coordinates>-0.07358100006361212,51.43133000005741,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
@@ -11156,22 +11137,21 @@
 			</Placemark>
 			<Placemark>
 				<name>PETTIT SMITH, Sir Francis</name>
-				<description><![CDATA[PETTIT SMITH, Sir Francis (1808-1870)<br>
-					Pioneer of the Screw Propeller lived here<br>
-					17 Sydenham Hill, SE26<br>
-					Southwark 2008]]></description>
+				<description><![CDATA[PETTIT SMITH, Sir Francis (1808-1874)<br>
+				Pioneer of the Screw Propeller lived here 1864-1870<br>
+				17 Sydenham Hill, SE26<br>
+				Southwark 2007]]></description>
 				<LookAt>
-					<longitude>-0.07372000001922396</longitude>
-					<latitude>51.43172300065171</latitude>
+					<longitude>-0.0749895</longitude>
+					<latitude>51.4283923</latitude>
 					<altitude>0</altitude>
-					<heading>2.9929230761281e-011</heading>
+					<heading>9.671433160202603e-012</heading>
 					<tilt>0</tilt>
-					<range>1000.00066359613</range>
-					<altitudeMode>relativeToGround</altitudeMode>
+					<range>1000</range>
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
-					<coordinates>-0.07372000001921397,51.4317230006517,0</coordinates>
+					<coordinates>-0.0749895,51.4283923,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
@@ -11191,26 +11171,6 @@
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
 					<coordinates>-0.09581399995839487,51.45745799974323,0</coordinates>
-				</Point>
-			</Placemark>
-			<Placemark>
-				<name>RUSKIN, John</name>
-				<description><![CDATA[RUSKIN, John (1819-1900)<br>
-				Man of Letters, lived in a house on this site<br>
-				26 Herne Hill, SE24<br>
-				Lambeth 1926<br>
-				<em>Note: Plaque dated 1925, on a post in front garden. Replaces plaque put up in 1909 on house now demolished.</em>]]></description>
-				<LookAt>
-					<longitude>-0.09639800004259769</longitude>
-					<latitude>51.45695899975475</latitude>
-					<altitude>0</altitude>
-					<heading>7.336396638297681e-013</heading>
-					<tilt>0</tilt>
-					<range>1000.000159627699</range>
-				</LookAt>
-				<styleUrl>#myDefaultStyles</styleUrl>
-				<Point>
-					<coordinates>-0.09639800004259769,51.45695899975475,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
