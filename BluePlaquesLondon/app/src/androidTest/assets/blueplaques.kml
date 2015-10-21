@@ -1446,8 +1446,8 @@
 				6 Bedford Square, WC1<br>
 				Camden 1954]]></description>
 				<LookAt>
-					<longitude>-0.1290169999988012</longitude>
-					<latitude>51.51519137995093</latitude>
+					<longitude>-0.129016</longitude>
+					<latitude>51.519137</latitude>
 					<altitude>0</altitude>
 					<heading>-3.760136227909894e-013</heading>
 					<tilt>0</tilt>
@@ -1455,7 +1455,7 @@
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
-					<coordinates>-0.1290169999988012,51.51519137995093,0</coordinates>
+					<coordinates>-0.129016,51.519137,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
@@ -1721,13 +1721,33 @@
 					<altitude>0</altitude>
 					<heading>8.440620618684848e-012</heading>
 					<tilt>0</tilt>
-					<range>1000.000099446285</range>
+					<range>500</range>
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
 					<coordinates>-0.1827440000266591,51.5562359995474,0</coordinates>
 				</Point>
 			</Placemark>
+			<Placemark>
+				<name>GOMBRICH, E.H.</name>
+				<description><![CDATA[GOMBRICH, E.H. (1909-2001)<br>
+				Art historian lived here 1952-2001<br>
+				19 Briardale Gardens, Hampstead, NW3 7PN<br>
+				Camden 2015]]></description>
+				<LookAt>
+					<longitude>-0.1957820071703076</longitude>
+					<latitude>51.56025134739285</latitude>
+					<altitude>0</altitude>
+					<heading>-1.468854849611962e-006</heading>
+					<tilt>0</tilt>
+					<range>500</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.1957820071703076,51.56025134739285,0</coordinates>
+				</Point>
+			</Placemark>			
 			<Placemark>
 				<name>GREENAWAY, Kate</name>
 				<description><![CDATA[GREENAWAY, Kate (1846-1901)<br>
@@ -1740,7 +1760,7 @@
 					<altitude>0</altitude>
 					<heading>1.71866674438185e-005</heading>
 					<tilt>0</tilt>
-					<range>949.4138339269726</range>
+					<range>500</range>
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
@@ -5237,7 +5257,7 @@
 					<altitude>0</altitude>
 					<heading>2.589319383879587e-012</heading>
 					<tilt>0</tilt>
-					<range>1000.000150934211</range>
+					<range>750</range>
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
@@ -5247,6 +5267,26 @@
 		</Folder>
 		<Folder>
 			<name>Haringey</name>
+			<Placemark>
+				<name>HILL, A. V.</name>
+				<description><![CDATA[HILL, A. V. (1886-1977)<br>
+				Physiologist lived here 1923-1967<br>
+				16 Bishopswood Road, Highgate, London, N6 4NY<br>
+				Haringey 2015]]></description>
+				<LookAt>
+					<longitude>-0.1585638836680547</longitude>
+					<latitude>51.57380365634417</latitude>
+					<altitude>0</altitude>
+					<heading>-0.0001273697227122049</heading>
+					<tilt>0</tilt>
+					<range>750</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.1582404369260448,51.57372015971991,0</coordinates>
+				</Point>
+			</Placemark>
 			<Placemark>
 				<name>HOUSMAN, A.E.</name>
 				<description><![CDATA[HOUSMAN, A.E. (1859-1936)<br>
@@ -5259,7 +5299,7 @@
 					<altitude>0</altitude>
 					<heading>8.071800516052323e-012</heading>
 					<tilt>0</tilt>
-					<range>1000.000059411418</range>
+					<range>750</range>
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
@@ -16665,7 +16705,7 @@
 					<altitude>0</altitude>
 					<heading>-8.016240201460505e-013</heading>
 					<tilt>0</tilt>
-					<range>1000.000121657583</range>
+					<range>1000</range>
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
@@ -16676,20 +16716,20 @@
 				<name>NAPOLEON III</name>
 				<description><![CDATA[NAPOLEON III (1808-1873)<br>
 				Emperor of the French, lived here 1848.<br>
-				1c King Street, St James&apos;s, SW1<br>
+				1c King Street, St James's, London SW1Y 6QG<br>
 				Westminster 1875<br>
 				Installed in September 1867 this is the oldest official plaque still in existence. It is also the only plaque that was erected while the recipient was still alive.]]></description>
 				<LookAt>
-					<longitude>-0.123792000078609</longitude>
-					<latitude>51.51174200017751</latitude>
+					<longitude>-0.136629</longitude>
+					<latitude>51.506761</latitude>
 					<altitude>0</altitude>
 					<heading>1.006137413376673e-011</heading>
 					<tilt>0</tilt>
-					<range>1000.000150891016</range>
+					<range>1000</range>
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
-					<coordinates>-0.123792000078609,51.51174200017751,0</coordinates>
+					<coordinates>-0.136629,51.506761,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
