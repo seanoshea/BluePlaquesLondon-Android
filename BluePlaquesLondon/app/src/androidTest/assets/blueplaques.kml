@@ -10693,8 +10693,8 @@
 					3 St Mary&apos;s Grove, Barnes, SW13<br>
 					Richmond Upon Thames 2000]]></description>
 				<LookAt>
-					<longitude>-0.291341000033043</longitude>
-					<latitude>51.46307499968217</latitude>
+					<longitude>-0.23542277777778</longitude>
+					<latitude>51.466346388889</latitude>
 					<altitude>0</altitude>
 					<heading>5.59260783801841e-012</heading>
 					<tilt>0</tilt>
@@ -10702,7 +10702,7 @@
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
-					<coordinates>-0.291341000033043,51.46307499968217,0</coordinates>
+					<coordinates>-0.23542277777778,51.466346388889,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
