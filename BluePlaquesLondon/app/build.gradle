@@ -3,6 +3,16 @@ apply plugin: 'pmd'
 apply plugin: 'findbugs'
 
 android {
+    signingConfigs {
+        config {
+        }
+        production {
+            keyAlias 'production'
+            keyPassword 'password_here'
+            storeFile file('~/production.keystore')
+            storePassword 'password_here'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion '23.0.2'
     lintOptions {
@@ -15,20 +25,22 @@ android {
         applicationId "com.upwardsnorthwards.blueplaqueslondon"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 7
-        versionName "1.4"
+        versionCode 8
+        versionName "1.5"
+        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.production
         }
     }
     productFlavors {
     }
 }
 
-task pmd (type: Pmd, dependsOn: assembleDebug) {
+task pmd(type: Pmd, dependsOn: assembleDebug) {
     ruleSetFiles = files("${project.rootDir}/config/pmd/pmd-ruleset.xml")
     ignoreFailures = false
     ruleSets = []
