@@ -26,6 +26,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+
 package com.upwardsnorthwards.blueplaqueslondon;
 
 import android.app.Application;
@@ -35,6 +36,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.Location;
 import android.os.Build;
+import com.crashlytics.android.Crashlytics;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -51,7 +53,7 @@ import com.squareup.leakcanary.RefWatcher;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
-
+import io.fabric.sdk.android.Fabric;
 import java.util.HashMap;
 
 /**
@@ -96,6 +98,7 @@ public class BluePlaquesLondonApplication extends Application implements
         }
         refWatcher = LeakCanary.install(this);
         trackApplicationLoadedEvent();
+        Fabric.with(this, new Crashlytics());
     }
 
     @Override
