@@ -290,7 +290,8 @@
 				<description><![CDATA[PICK, Frank (1878-1941)<br>
 				Pioneer of Good Design for London Transport, lived here.<br>
 				15 Wildwood Road, NW11<br>
-				Barnet 1981]]></description>
+				Barnet 1981<br>
+				One of only four plaques to use the Johnston LT typeface.]]></description>
 				<LookAt>
 					<longitude>-0.1819819999991239</longitude>
 					<latitude>51.57766199989536</latitude>
@@ -2675,6 +2676,25 @@
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
 					<coordinates>-0.1589440001024229,51.54886300027084,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>NASH, John</name>
+				<description><![CDATA[NASH, John (1752-1835)<br>
+				Architect, designed this terrace and lived here<br>
+				66 Great Russell Street, Bloomsbury, London WC1B 3BN<br>
+				Camden 2013]]></description>
+				<LookAt>
+					<longitude>-0.124627654911198</longitude>
+					<latitude>51.51888745998361</latitude>
+					<altitude>0</altitude>
+					<heading>4.943687714707782e-012</heading>
+					<tilt>0</tilt>
+					<range>500</range>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.124620769054743,51.51879565116384,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
@@ -5135,7 +5155,8 @@
 				<description><![CDATA[JOHNSTON, Edward (1872-1944)<br>
 				Master Calligrapher, lived here 1905-1912.<br>
 				3 Hammersmith Terrace, W6<br>
-				Hammersmith and Fulham 1977]]></description>
+				Hammersmith and Fulham 1977<br>
+				One of only four plaques to use the Johnston LT typeface.]]></description>
 				<LookAt>
 					<longitude>-0.2425840001076835</longitude>
 					<latitude>51.48974299968779</latitude>
@@ -9628,10 +9649,30 @@
 				</Point>
 			</Placemark>
 			<Placemark>
+				<name>COX, David</name>
+				<description><![CDATA[COX, David (1783-1859)<br>
+				Artist, lived here<br>
+				34 Foxley Road, Camberwell, London SW9 6ES<br>
+				Lambeth 1951]]>
+				</description>
+				<LookAt>
+					<longitude>-0.1076390000331384</longitude>
+					<latitude>51.47902200018017</latitude>
+					<altitude>0</altitude>
+					<heading>-2.955725495205047e-011</heading>
+					<tilt>0</tilt>
+					<range>500</range>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.107639,51.479022,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
 				<name>ELLIS, Henry Havelock</name>
 				<description><![CDATA[ELLIS, Henry Havelock (1859-1939)<br>
-				Pioneer in the scientific study of sex, lived here. <br>
-				14 Dover Mansions, Canterbury Crescent, SW9 <br>
+				Pioneer in the scientific study of sex, lived here.<br>
+				14 Dover Mansions, Canterbury Crescent, SW9<br>
 				Lambeth 1981]]></description>
 				<LookAt>
 					<longitude>-0.1137549999927217</longitude>
@@ -9663,6 +9704,25 @@
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
 					<coordinates>-0.1437489999826236,51.46268999974966,24.66310294648761</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>GREET, Sir Philip Ben</name>
+				<description><![CDATA[GREET, Sir Philip Ben (1857-1936)<br>
+				Actor-manager lived here 1920-1936<br>
+				160 Lambeth Road, Lambeth, London SE1 7DF<br>
+				Lambeth 1961]]></description>
+				<LookAt>
+					<longitude>-0.113795999996148</longitude>
+					<latitude>51.49594500001193</latitude>
+					<altitude>0</altitude>
+					<heading>0</heading>
+					<tilt>0</tilt>
+					<range>500</range>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.1140523304629804,51.49596056425646,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
@@ -12376,7 +12436,8 @@
 				<description><![CDATA[BECK, Harry (1902-1974)<br>
 				Designer of the London Underground map was born here<br>
 				14 Wesley Road, Leyton, E10 6JF
-				Waltham Forest 2013]]></description>
+				Waltham Forest 2013<br>
+				One of only four plaques to use the Johnston LT typeface.]]></description>
 				<LookAt>
 					<longitude>-0.006834999999932868</longitude>
 					<latitude>51.57002300093066</latitude>
@@ -13273,7 +13334,8 @@
 				<description><![CDATA[ASHFIELD, Albert Henry Stanley, Lord Ashfield (1874-1948)<br>
 				First Chairman of London Transport, lived here.<br>
 				43 South Street, Mayfair, W1<br>
-				Westminster 1984]]></description>
+				Westminster 1984<br>
+				One of only four plaques to use the Johnston LT typeface.]]></description>
 				<LookAt>
 					<longitude>-0.1504589999955925</longitude>
 					<latitude>51.50855400006978</latitude>
@@ -14457,26 +14519,26 @@
 				<name>DE GAULLE, General Charles</name>
 				<description><![CDATA[DE GAULLE, General Charles<br>
 				President of the French National Committee, set up the Headquarters of the Free French Forces here in 1940.<br>
-				4 Carlton Gardens, SW1<br>
+				4 Carlton Gardens, St James’s, London SW1Y 5AA<br>
 				Westminster 1984]]></description>
 				<LookAt>
-					<longitude>-0.1341169999966212</longitude>
-					<latitude>51.50561300021088</latitude>
+					<longitude>-0.1337644023324136</longitude>
+					<latitude>51.50571139703161</latitude>
 					<altitude>0</altitude>
-					<heading>-9.404999585421412e-015</heading>
+					<heading>0</heading>
 					<tilt>0</tilt>
 					<range>500</range>
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
-					<coordinates>-0.1341169999966212,51.50561300021088,0</coordinates>
+					<coordinates>-0.1338248880202619,51.50565796886164,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
 				<name>DE QUINCEY, Thomas</name>
 				<description><![CDATA[DE QUINCEY, Thomas (1785-1859)<br>
 				Thomas, de Quincy, 1785-1859<br>
-				wrote, 'Confessions of an, English Opium Eater', in this house<br>
+				wrote, ‘Confessions of an, English Opium Eater’, in this house<br>
 				36 Tavistock Street, WC2<br>
 				Westminster 1981<br>
 				<em>Note: name is spelt incorrectly on the plaque (no ‘e’)</em>]]></description>
@@ -15644,20 +15706,21 @@
 			<Placemark>
 				<name>KITCHENER of Khartoum, Field Marshal Earl, KG</name>
 				<description><![CDATA[KITCHENER of Khartoum, Field Marshal Earl, KG (1850-1916)<br>
-				lived here 1914-1915.<br>
-				2 Carlton Gardens, SW1<br>
+				lived here 1914-1915<br>
+				2 Carlton Gardens, St James's, London SW1Y 5AA<br>
 				Westminster 1924]]></description>
 				<LookAt>
-					<longitude>-0.1333749997678382</longitude>
-					<latitude>51.50587100014637</latitude>
+					<longitude>-0.1339136163288923</longitude>
+					<latitude>51.50544014594246</latitude>
 					<altitude>0</altitude>
-					<heading>9.647019918214025e-012</heading>
+					<heading>0</heading>
 					<tilt>0</tilt>
 					<range>500</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
-					<coordinates>-0.1333749997678382,51.50587100014636,0</coordinates>
+					<coordinates>-0.1340319018485714,51.50525174880945,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
@@ -16234,20 +16297,20 @@
 			<Placemark>
 				<name>CURZON, George Nathaniel, Marquess Curzon of Kedleston</name>
 				<description><![CDATA[CURZON, George Nathaniel, Marquess Curzon of Kedleston (1859-1925)<br>
-				Statesman, Viceroy of India, lived here.<br>
-				1 Carlton House Terrace, SW1<br>
+				Statesman, Viceroy of India, lived here<br>
+				1 Carlton House Terrace, St James's, London SW1Y 5AA<br>
 				Westminster 1976]]></description>
 				<LookAt>
-					<longitude>-0.1332749999526612</longitude>
-					<latitude>51.50575100031407</latitude>
+					<longitude>-0.1332890371884754</longitude>
+					<latitude>51.50587842428683</latitude>
 					<altitude>0</altitude>
-					<heading>2.699644874392854e-012</heading>
+					<heading>0</heading>
 					<tilt>0</tilt>
 					<range>500</range>
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
-					<coordinates>-0.1332749999526612,51.50575100031406,0</coordinates>
+					<coordinates>-0.1334380877403762,51.50579014634477,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
@@ -17004,22 +17067,22 @@
 			<Placemark>
 				<name>PALMERSTON, Henry John Temple, 3rd Viscount</name>
 				<description><![CDATA[PALMERSTON, Henry John Temple, 3rd Viscount (1784-1865)<br>
-				Lord, Palmerston, 1784-1865<br>
+				Lord, Palmerston, 1784-1865,<br>
 				Statesman, Lived Here<br>
-				4 Carlton Gardens, SW1<br>
+				4 Carlton Gardens, St James's, London SW1Y 5AA<br>
 				Westminster 1907<br>
 				<em>Note: Tablet beneath plaque reads: Tablet fixed 1907, Premises rebuilt 1933, Tablet refixed 1936 </em>]]></description>
 				<LookAt>
-					<longitude>-0.1341169999966212</longitude>
-					<latitude>51.50561300021088</latitude>
+					<longitude>-0.1338613203208483</longitude>
+					<latitude>51.50564589354401</latitude>
 					<altitude>0</altitude>
-					<heading>-9.404999585421412e-015</heading>
+					<heading>0</heading>
 					<tilt>0</tilt>
 					<range>500</range>
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
-					<coordinates>-0.1341169999966212,51.50561300021088,0</coordinates>
+					<coordinates>-0.1337420018079683,51.50568078246423,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
@@ -19262,7 +19325,7 @@
 			<Placemark>
 				<name>BROWN, Robert</name>
 				<description><![CDATA[BROWN, Robert (1773-1858)<br>
-Sir Joseph Banks 1743-1820, President of the Royal Society, Robert Brown 1773-1858 and, David Don 1799-1841 Botanists, Lived in a house on this site, The Linnean Society met here 1821-1857.<br>
+Sir Joseph Banks 1743-1820, President of the Royal Society, Robert Brown 1773-1858 and, David Don 1800-1841 Botanists, Lived in a house on this site, The Linnean Society met here 1821-1857.<br>
 <em>On rebuilt premises. Replaces plaque put up in 1911 on old premises.</em><br>
 32 Soho Square, W1<br>
 Westminster 1938]]></description>
@@ -19282,7 +19345,7 @@ Westminster 1938]]></description>
 			<Placemark>
 				<name>DON, David</name>
 				<description><![CDATA[DON, David (1799-1841)<br>
-Sir Joseph Banks 1743-1820, President of the Royal Society, Robert Brown 1773-1858 and, David Don 1799-1841 Botanists, Lived in a house on this site, The Linnean Society met here 1821-1857.<br>
+Sir Joseph Banks 1743-1820, President of the Royal Society, Robert Brown 1773-1858 and, David Don 1800-1841 Botanists, Lived in a house on this site, The Linnean Society met here 1821-1857.<br>
 <em>On rebuilt premises. Replaces plaque put up in 1911 on old premises.</em><br>
 32 Soho Square, W1<br>
 Westminster 1938]]></description>
