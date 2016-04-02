@@ -56,20 +56,10 @@ public class InternetConnectivityHelper {
      * Used for communicating connectivity events back to client code.
      */
     private InternetConnectivityHelperDelegate delegate;
-
-    /**
-     * Gives an understanding of whether or not the application has an internet connection.
-     */
-    private enum InternetConnectivity {
-        InternetConnectivityConnected,
-        InternetConnectivityNoConnection,
-    }
-
     /**
      * The current state of internet connectivity.
      */
     private InternetConnectivity currentInternetConnectivity;
-
     /**
      * The receiver responsible for indicating whether or not the device has regained or lost internet connectivity.
      */
@@ -156,5 +146,13 @@ public class InternetConnectivityHelper {
 
     public void setDelegate(InternetConnectivityHelperDelegate delegate) {
         this.delegate = delegate;
+    }
+
+    /**
+     * Gives an understanding of whether or not the application has an internet connection.
+     */
+    private enum InternetConnectivity {
+        InternetConnectivityConnected,
+        InternetConnectivityNoConnection,
     }
 }

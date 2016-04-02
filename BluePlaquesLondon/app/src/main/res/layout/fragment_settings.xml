@@ -31,9 +31,9 @@
     android:id="@+id/fragment_settings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:minHeight="@dimen/settings_dialog_min_height"
-    android:background="@android:color/white"
     android:layout_gravity="center"
+    android:background="@android:color/white"
+    android:minHeight="@dimen/settings_dialog_min_height"
     android:orientation="vertical">
 
     <TextView

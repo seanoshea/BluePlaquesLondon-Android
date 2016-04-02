@@ -41,17 +41,15 @@ import com.google.android.gms.maps.model.LatLng;
  */
 public class BluePlaquesSharedPreferences {
 
+    static final float MAP_ZOOM_DEFAULT = 15.0f;
+    static final boolean ANALYTICS_ENABLED_DEFAULT = true;
     private static final String PREFERENCES_KEY = "PREFERENCES_KEY";
-
     private static final String LAST_KNOWN_BPL_COORDINATE_LATITUDE = "LAST_KNOWN_BPL_COORDINATE_LATITUDE";
     private static final String LAST_KNOWN_BPL_COORDINATE_LONGITUDE = "LAST_KNOWN_BPL_COORDINATE_LONGITUDE";
     private static final String LAST_KNOWN_COORDINATE_LATITUDE = "LAST_KNOWN_COORDINATE_LATITUDE";
     private static final String LAST_KNOWN_COORDINATE_LONGITUDE = "LAST_KNOWN_COORDINATE_LONGITUDE";
     private static final String MAP_ZOOM = "MAP_ZOOM";
     private static final String ANALYTICS_ENABLED = "ANALYTICS_ENABLED";
-
-    static final float MAP_ZOOM_DEFAULT = 15.0f;
-    static final boolean ANALYTICS_ENABLED_DEFAULT = true;
 
     @NonNull
     public static LatLng getLastKnownBPLCoordinate(@NonNull final Context context) {

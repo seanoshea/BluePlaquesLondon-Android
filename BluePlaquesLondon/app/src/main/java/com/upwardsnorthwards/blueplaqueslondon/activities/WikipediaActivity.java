@@ -51,15 +51,6 @@ public class WikipediaActivity extends BaseActivity implements IWikipediaModelDe
     private WebView webView;
     private Placemark placemark;
     private WikipediaModel wikipediaModel;
-
-    /**
-     * Used to see whether the web view has loaded ok or not
-     */
-    private enum WikipediaActivityWebViewLoadedState {
-        WikipediaActivityWebViewLoadedStateOK,
-        WikipediaActivityWebViewLoadedStateError,
-    }
-
     private WikipediaActivityWebViewLoadedState state;
 
     @Override
@@ -151,5 +142,13 @@ public class WikipediaActivity extends BaseActivity implements IWikipediaModelDe
         state = WikipediaActivityWebViewLoadedState.WikipediaActivityWebViewLoadedStateOK;
         wikipediaModel.setDelegate(this);
         wikipediaModel.execute(placemark.getName(), getString(R.string.wikipedia_url));
+    }
+
+    /**
+     * Used to see whether the web view has loaded ok or not
+     */
+    private enum WikipediaActivityWebViewLoadedState {
+        WikipediaActivityWebViewLoadedStateOK,
+        WikipediaActivityWebViewLoadedStateError,
     }
 }

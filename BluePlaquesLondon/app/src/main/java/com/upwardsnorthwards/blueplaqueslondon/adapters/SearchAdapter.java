@@ -162,12 +162,6 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
         return localPlacemarks;
     }
 
-    public static class ViewHolder {
-        public Placemark placemark;
-        public TextView title;
-        public TextView subtitle;
-    }
-
     public List<Placemark> getRelevantPlacemarks() {
         if (filteredPlacemarks != null) {
             return filteredPlacemarks;
@@ -189,6 +183,16 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
         final Placemark placemark = new Placemark();
         placemark.setName(closestPlacemarkTitle);
         return placemark;
+    }
+
+    private int getOffset() {
+        return filteredPlacemarks != null && filteredPlacemarks.size() > 1 ? 0 : 1;
+    }
+
+    public static class ViewHolder {
+        public Placemark placemark;
+        public TextView title;
+        public TextView subtitle;
     }
 
     private class PlacemarksFilter extends Filter {
@@ -217,9 +221,5 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
                 notifyDataSetInvalidated();
             }
         }
-    }
-
-    private int getOffset() {
-        return filteredPlacemarks != null && filteredPlacemarks.size() > 1 ? 0 : 1;
     }
 }

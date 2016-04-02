@@ -45,6 +45,6 @@
         android:icon="@android:drawable/ic_menu_search"
         android:title="@string/app_name"
         bpl:actionViewClass="com.upwardsnorthwards.blueplaqueslondon.views.ArrayAdapterSearchView"
-        bpl:showAsAction="ifRoom|collapseActionView"/>
+        bpl:showAsAction="ifRoom|collapseActionView" />
 
 </menu>

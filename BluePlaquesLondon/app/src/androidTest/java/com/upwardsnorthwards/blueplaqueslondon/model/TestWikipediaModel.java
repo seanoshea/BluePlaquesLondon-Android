@@ -67,7 +67,7 @@ public class TestWikipediaModel extends TestCase {
         assertEquals(delegate.getReturnedUrl(), "https://en.wikipedia.org/wiki/Malcolm_Sargent");
     }
 
-    private class DummyWikipediaModelDelegate implements  IWikipediaModelDelegate {
+    private class DummyWikipediaModelDelegate implements IWikipediaModelDelegate {
 
         @Nullable
         private String returnedUrl;

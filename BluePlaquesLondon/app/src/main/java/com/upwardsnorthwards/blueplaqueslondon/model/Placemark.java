@@ -39,6 +39,19 @@ import android.text.Html;
  */
 public class Placemark implements Parcelable {
 
+    public static final Parcelable.Creator<Placemark> CREATOR = new Parcelable.Creator<Placemark>() {
+
+        @NonNull
+        public Placemark createFromParcel(@NonNull final Parcel source) {
+            return new Placemark(source);
+        }
+
+        @NonNull
+        public Placemark[] newArray(final int size) {
+            return new Placemark[size];
+        }
+
+    };
     @NonNull
     private static String OverlayTitleDelimiter = "<br>";
     @NonNull
@@ -47,7 +60,6 @@ public class Placemark implements Parcelable {
     private static String EmphasisNoteOpeningTag = "<em>";
     @NonNull
     private static String EmphasisNoteClosingTag = "</em>";
-
     private String featureDescription;
     private String title;
     private String name;
@@ -78,6 +90,15 @@ public class Placemark implements Parcelable {
         longitude = in.readDouble();
     }
 
+    @NonNull
+    public static String keyFromLatLng(final double latitude, final double longitude) {
+        return Double.toString(latitude) + Double.toString(longitude);
+    }
+
+    private static String trimWhitespaceFromString(@NonNull String string) {
+        return string.replaceAll("\t", "").replaceAll("^\\s*", "");
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -95,25 +116,6 @@ public class Placemark implements Parcelable {
         dest.writeString(styleUrl);
         dest.writeDouble(latitude);
         dest.writeDouble(longitude);
-    }
-
-    public static final Parcelable.Creator<Placemark> CREATOR = new Parcelable.Creator<Placemark>() {
-
-        @NonNull
-        public Placemark createFromParcel(@NonNull final Parcel source) {
-            return new Placemark(source);
-        }
-
-        @NonNull
-        public Placemark[] newArray(final int size) {
-            return new Placemark[size];
-        }
-
-    };
-
-    @NonNull
-    public static String keyFromLatLng(final double latitude, final double longitude) {
-        return Double.toString(latitude) + Double.toString(longitude);
     }
 
     @NonNull
@@ -292,10 +294,6 @@ public class Placemark implements Parcelable {
             }
         }
         return inputWithNoteRemoved;
-    }
-
-    private static String trimWhitespaceFromString(@NonNull String string) {
-        return string.replaceAll("\t", "").replaceAll("^\\s*", "");
     }
 
     private String trimWhitespaceAndHTMLDecode(@NonNull String string) {

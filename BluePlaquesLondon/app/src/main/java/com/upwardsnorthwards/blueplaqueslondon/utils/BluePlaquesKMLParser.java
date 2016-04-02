@@ -45,12 +45,6 @@ import java.util.Map;
 public class BluePlaquesKMLParser {
 
     private static final String TAG = "BluePlaquesKMLParser";
-
-    private List<Placemark> massagedPlacemarks = new ArrayList<Placemark>();
-    private List<Placemark> placemarks = new ArrayList<Placemark>();
-    private Map<String, List<Integer>> keyToArrayPositions = new HashMap<String, List<Integer>>();
-    private Placemark currentPlacemark;
-
     private static final String FILE_NAME = "blueplaques.kml";
     private static final String FILE_ENCODING = "UTF-8";
     private static final String COORDINATES_KEY = "coordinates";
@@ -58,7 +52,10 @@ public class BluePlaquesKMLParser {
     private static final String NAME_KEY = "name";
     private static final String PLACEMARK_KEY = "placemark";
     private static final String STYLE_URL_KEY = "styleUrl";
-
+    private List<Placemark> massagedPlacemarks = new ArrayList<Placemark>();
+    private List<Placemark> placemarks = new ArrayList<Placemark>();
+    private Map<String, List<Integer>> keyToArrayPositions = new HashMap<String, List<Integer>>();
+    private Placemark currentPlacemark;
     private boolean processingNameTag;
     private boolean processingDescriptionTag;
     private boolean processingCoordinateTag;
@@ -168,10 +165,6 @@ public class BluePlaquesKMLParser {
         placemarks.add(currentPlacemark);
     }
 
-    public void setCurrentPlacemark(final Placemark currentPlacemark) {
-        this.currentPlacemark = currentPlacemark;
-    }
-
     public List<Placemark> getPlacemarks() {
         return placemarks;
     }
@@ -191,6 +184,10 @@ public class BluePlaquesKMLParser {
 
     public Placemark getCurrentPlacemark() {
         return currentPlacemark;
+    }
+
+    public void setCurrentPlacemark(final Placemark currentPlacemark) {
+        this.currentPlacemark = currentPlacemark;
     }
 
     public List<Placemark> getMassagedPlacemarks() {
