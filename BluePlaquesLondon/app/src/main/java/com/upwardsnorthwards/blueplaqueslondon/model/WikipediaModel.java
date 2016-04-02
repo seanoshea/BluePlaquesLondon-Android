@@ -48,13 +48,12 @@ import java.net.URLEncoder;
 /**
  * Used by the <code>WikipediaActivity</code> to reteieve the URL associated with a placemark.
  */
-public class WikipediaModel extends AsyncTask<String, String, String> {
+public class WikipediaModel extends AsyncTask<String, String, WikipediaModelSearchResult> {
 
-    private static final String WIKIPEDIA_SEARCH_URL_FORMAT = "http://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=%s&srprop=timestamp&format=json";
+    private static final String WIKIPEDIA_SEARCH_URL_FORMAT = "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=%s&srprop=timestamp&format=json";
     private static final String WIKIPEDIA_MODEL_ENCODING = "UTF-8";
     private static final String WIKIPEDIA_MODEL_LOCATION_STRING = "Location";
     private String responseUrl;
-
     private IWikipediaModelDelegate delegate;
 
     public void onPause() {
@@ -62,7 +61,7 @@ public class WikipediaModel extends AsyncTask<String, String, String> {
     }
 
     @Override
-    protected String doInBackground(final String... params) {
+    protected WikipediaModelSearchResult doInBackground(final String... params) {
         final String name = params[0];
         responseUrl = params[1];
         StringBuilder result = new StringBuilder();
@@ -99,22 +98,19 @@ public class WikipediaModel extends AsyncTask<String, String, String> {
                 urlConnection.disconnect();
             }
         }
-        return responseString;
+        return new WikipediaModelSearchResult(responseString, name);
     }
 
     @Override
-    protected void onPostExecute(final String result) {
-        super.onPostExecute(result);
+    protected void onPostExecute(final WikipediaModelSearchResult searchResult) {
+        super.onPostExecute(searchResult);
         try {
-            if (result.length() > 0) {
-                final JSONObject jObject = new JSONObject(result);
+            if (searchResult.hasResult()) {
+                final JSONObject jObject = new JSONObject(searchResult.getResult());
                 final JSONObject query = jObject.getJSONObject("query");
                 final JSONArray search = query.getJSONArray("search");
                 if (search.length() > 0) {
-                    // take the first result ...
-                    final JSONObject wikipediaArticle = (JSONObject) search
-                            .get(0);
-                    final String title = wikipediaArticle.getString("title");
+                    final String title = this.findTitleInSearchResults(search, searchResult.getName());
                     delegate.onRetriveWikipediaUrlSuccess(String.format(responseUrl, title.replace(" ", "_")));
                 } else {
                     delegate.onRetriveWikipediaUrlFailure();
@@ -127,7 +123,32 @@ public class WikipediaModel extends AsyncTask<String, String, String> {
         }
     }
 
+    private String findTitleInSearchResults(JSONArray searchResults, String name) throws JSONException {
+        String title = null;
+        // see if we can find the title in the searchResults first
+        for (int i = 0; i < searchResults.length(); i++) {
+            final JSONObject wikipediaArticle = searchResults.getJSONObject(i);
+            final String searchResultTitle = wikipediaArticle.getString("title");
+            final String[] titleComponents = searchResultTitle.split(" ");
+            if (titleComponents.length > 0 && name.contains(titleComponents[0])) {
+                title = searchResultTitle;
+                break;
+            }
+        }
+        if (title == null) {
+            // take the first result ...
+            final JSONObject wikipediaArticle = (JSONObject) searchResults
+                    .get(0);
+            title = wikipediaArticle.getString("title");
+        }
+        return title;
+    }
+
     public void setDelegate(IWikipediaModelDelegate delegate) {
         this.delegate = delegate;
+    }
+
+    public void setResponseUrl(String responseUrl) {
+        this.responseUrl = responseUrl;
     }
 }
