@@ -27,7 +27,7 @@ android {
         }
     }
     compileSdkVersion 23
-    buildToolsVersion '23.0.2'
+    buildToolsVersion '23.0.3'
     lintOptions {
         abortOnError true
         lintConfig file("${project.rootDir}/config/lint/lint.xml")
