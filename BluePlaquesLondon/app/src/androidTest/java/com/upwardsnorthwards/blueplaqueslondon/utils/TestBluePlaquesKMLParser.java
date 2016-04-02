@@ -28,6 +28,7 @@
 
 package com.upwardsnorthwards.blueplaqueslondon.utils;
 
+import android.support.annotation.NonNull;
 import android.test.InstrumentationTestCase;
 
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
@@ -131,7 +132,7 @@ public class TestBluePlaquesKMLParser extends InstrumentationTestCase {
         assertTrue(getPlacemark(parser, MOORE).getNote().equals("Note: This plaque was removed from 28 Bury Street, St James's Westminster in 1962."));
     }
 
-    private Placemark getPlacemark(BluePlaquesKMLParser parser, String key) {
+    private Placemark getPlacemark(@NonNull BluePlaquesKMLParser parser, String key) {
         List<Integer> positions = parser.getKeyToArrayPositions().get(key);
         Integer location = positions.get(0);
         Placemark placemark = parser.getPlacemarks().get(location);

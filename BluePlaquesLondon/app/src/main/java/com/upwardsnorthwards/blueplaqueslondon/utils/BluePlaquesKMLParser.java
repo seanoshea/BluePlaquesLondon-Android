@@ -29,6 +29,7 @@
 package com.upwardsnorthwards.blueplaqueslondon.utils;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
@@ -44,12 +45,6 @@ import java.util.Map;
 public class BluePlaquesKMLParser {
 
     private static final String TAG = "BluePlaquesKMLParser";
-
-    private List<Placemark> massagedPlacemarks = new ArrayList<Placemark>();
-    private List<Placemark> placemarks = new ArrayList<Placemark>();
-    private Map<String, List<Integer>> keyToArrayPositions = new HashMap<String, List<Integer>>();
-    private Placemark currentPlacemark;
-
     private static final String FILE_NAME = "blueplaques.kml";
     private static final String FILE_ENCODING = "UTF-8";
     private static final String COORDINATES_KEY = "coordinates";
@@ -57,13 +52,16 @@ public class BluePlaquesKMLParser {
     private static final String NAME_KEY = "name";
     private static final String PLACEMARK_KEY = "placemark";
     private static final String STYLE_URL_KEY = "styleUrl";
-
+    private List<Placemark> massagedPlacemarks = new ArrayList<Placemark>();
+    private List<Placemark> placemarks = new ArrayList<Placemark>();
+    private Map<String, List<Integer>> keyToArrayPositions = new HashMap<String, List<Integer>>();
+    private Placemark currentPlacemark;
     private boolean processingNameTag;
     private boolean processingDescriptionTag;
     private boolean processingCoordinateTag;
     private boolean processingStyleUrlTag;
 
-    public void loadMapData(final Context context) {
+    public void loadMapData(@NonNull final Context context) {
         try {
             final XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
@@ -123,7 +121,7 @@ public class BluePlaquesKMLParser {
         conslidateDuplicates();
     }
 
-    private void digestCoordinates(final String input) {
+    private void digestCoordinates(@NonNull final String input) {
         final String[] parts = input.split(",");
         if (parts.length == 3) {
             try {
@@ -167,10 +165,6 @@ public class BluePlaquesKMLParser {
         placemarks.add(currentPlacemark);
     }
 
-    public void setCurrentPlacemark(final Placemark currentPlacemark) {
-        this.currentPlacemark = currentPlacemark;
-    }
-
     public List<Placemark> getPlacemarks() {
         return placemarks;
     }
@@ -190,6 +184,10 @@ public class BluePlaquesKMLParser {
 
     public Placemark getCurrentPlacemark() {
         return currentPlacemark;
+    }
+
+    public void setCurrentPlacemark(final Placemark currentPlacemark) {
+        this.currentPlacemark = currentPlacemark;
     }
 
     public List<Placemark> getMassagedPlacemarks() {

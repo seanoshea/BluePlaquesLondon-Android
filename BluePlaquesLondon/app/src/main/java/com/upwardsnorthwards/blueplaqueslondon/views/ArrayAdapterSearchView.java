@@ -29,6 +29,7 @@
 package com.upwardsnorthwards.blueplaqueslondon.views;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.SearchView;
 import android.util.AttributeSet;
 import android.view.View;
@@ -53,12 +54,12 @@ public class ArrayAdapterSearchView extends SearchView implements SearchView.OnQ
     private SearchAdapter searchAdapter;
     private List<Placemark> placemarks;
 
-    public ArrayAdapterSearchView(final Context context) {
+    public ArrayAdapterSearchView(@NonNull final Context context) {
         super(context);
         initialize(context);
     }
 
-    public ArrayAdapterSearchView(final Context context, final AttributeSet attrs) {
+    public ArrayAdapterSearchView(@NonNull final Context context, final AttributeSet attrs) {
         super(context, attrs);
         initialize(context);
     }

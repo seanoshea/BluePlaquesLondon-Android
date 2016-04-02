@@ -36,10 +36,11 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.Location;
 import android.os.Build;
-import com.crashlytics.android.Crashlytics;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -53,8 +54,10 @@ import com.squareup.leakcanary.RefWatcher;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
-import io.fabric.sdk.android.Fabric;
+
 import java.util.HashMap;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Application class. Initialises Google Play Services and location services.
@@ -63,21 +66,22 @@ public class BluePlaquesLondonApplication extends Application implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    private final static String TAG = "BluePlaquesLondonApp";
-
     public final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     public final static int CONNECTION_FAILURE_NO_RESOLUTION_REQUEST = 9001;
-
-    public enum TrackerName {
-        APP_TRACKER,
-    }
+    public static final Bus bus = new Bus(ThreadEnforcer.MAIN);
+    private final static String TAG = "BluePlaquesLondonApp";
     private final static String TRACKER_ID = "UA-46153093-3";
     private RefWatcher refWatcher;
 
+    @NonNull
     private HashMap<TrackerName, Tracker> trackers = new HashMap<TrackerName, Tracker>();
     private GoogleApiClient locationClient;
     private Location currentLocation;
-    public static final Bus bus = new Bus(ThreadEnforcer.MAIN);
+
+    public static RefWatcher getRefWatcher(@NonNull Context context) {
+        BluePlaquesLondonApplication application = (BluePlaquesLondonApplication) context.getApplicationContext();
+        return application.refWatcher;
+    }
 
     @Override
     public void onCreate() {
@@ -102,7 +106,7 @@ public class BluePlaquesLondonApplication extends Application implements
     }
 
     @Override
-    public void onConnectionFailed(final ConnectionResult connectionResult) {
+    public void onConnectionFailed(@NonNull final ConnectionResult connectionResult) {
         Log.e(TAG, "onConnectionFailed " + connectionResult);
         try {
             if (connectionResult.hasResolution()) {
@@ -136,11 +140,6 @@ public class BluePlaquesLondonApplication extends Application implements
     @Override
     public void onLocationChanged(final Location location) {
         currentLocation = location;
-    }
-
-    public static RefWatcher getRefWatcher(Context context) {
-        BluePlaquesLondonApplication application = (BluePlaquesLondonApplication) context.getApplicationContext();
-        return application.refWatcher;
     }
 
     public void trackEvent(final String category, final String action, final String label) {
@@ -182,5 +181,9 @@ public class BluePlaquesLondonApplication extends Application implements
 
     public void setCurrentLocation(final Location currentLocation) {
         this.currentLocation = currentLocation;
+    }
+
+    public enum TrackerName {
+        APP_TRACKER,
     }
 }

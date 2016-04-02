@@ -29,8 +29,9 @@
 package com.upwardsnorthwards.blueplaqueslondon.fragments;
 
 import android.app.Dialog;
-import android.os.Bundle;
 import android.app.DialogFragment;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +54,7 @@ public class SettingsFragment extends DialogFragment implements OnCheckedChangeL
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_settings, container);
         getDialog().setTitle(getString(R.string.action_settings));
         return view;

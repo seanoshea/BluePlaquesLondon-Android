@@ -35,6 +35,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -79,7 +80,7 @@ public class MainActivity extends ActionBarActivity implements InternetConnectiv
     }
 
     @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull final Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         final SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -92,7 +93,7 @@ public class MainActivity extends ActionBarActivity implements InternetConnectiv
     }
 
     @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
         final FragmentManager fm = getFragmentManager();
         updateProgressBarVisibility(View.GONE);
         switch (item.getItemId()) {
@@ -187,6 +188,7 @@ public class MainActivity extends ActionBarActivity implements InternetConnectiv
         }
     }
 
+    @NonNull
     private BluePlaquesMapFragment getMapFragment() {
         return (BluePlaquesMapFragment) getFragmentManager().findFragmentById(R.id.map);
     }
@@ -247,6 +249,7 @@ public class MainActivity extends ActionBarActivity implements InternetConnectiv
      * @param which the index of the button pressed.
      * @return String identifier which maps to the `which` parameter.
      */
+    @NonNull
     private String analyticsStringForButtonPress(final int which) {
         String event = "";
         switch (which) {

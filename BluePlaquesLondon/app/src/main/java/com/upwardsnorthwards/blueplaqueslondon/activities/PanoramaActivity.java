@@ -30,6 +30,7 @@ package com.upwardsnorthwards.blueplaqueslondon.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -71,7 +72,7 @@ public class PanoramaActivity extends BaseActivity implements OnStreetViewPanora
     }
 
     @Override
-    public void onStreetViewPanoramaReady(final StreetViewPanorama streetViewPanorama) {
+    public void onStreetViewPanoramaReady(@NonNull final StreetViewPanorama streetViewPanorama) {
         streetViewPanorama.setPosition(new LatLng(placemark.getLatitude(), placemark.getLongitude()));
     }
 }

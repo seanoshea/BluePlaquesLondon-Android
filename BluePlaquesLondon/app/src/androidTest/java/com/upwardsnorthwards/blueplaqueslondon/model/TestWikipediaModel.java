@@ -28,6 +28,8 @@
 
 package com.upwardsnorthwards.blueplaqueslondon.model;
 
+import android.support.annotation.Nullable;
+
 import junit.framework.TestCase;
 
 public class TestWikipediaModel extends TestCase {
@@ -65,8 +67,9 @@ public class TestWikipediaModel extends TestCase {
         assertEquals(delegate.getReturnedUrl(), "https://en.wikipedia.org/wiki/Malcolm_Sargent");
     }
 
-    private class DummyWikipediaModelDelegate implements  IWikipediaModelDelegate {
+    private class DummyWikipediaModelDelegate implements IWikipediaModelDelegate {
 
+        @Nullable
         private String returnedUrl;
         private boolean failedToRetrieveUrl;
 
@@ -82,6 +85,7 @@ public class TestWikipediaModel extends TestCase {
             this.returnedUrl = null;
         }
 
+        @Nullable
         public String getReturnedUrl() {
             return returnedUrl;
         }

@@ -29,6 +29,8 @@
 package com.upwardsnorthwards.blueplaqueslondon.model;
 
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,6 +62,7 @@ public class WikipediaModel extends AsyncTask<String, String, WikipediaModelSear
         this.cancel(true);
     }
 
+    @Nullable
     @Override
     protected WikipediaModelSearchResult doInBackground(final String... params) {
         final String name = params[0];
@@ -102,7 +105,7 @@ public class WikipediaModel extends AsyncTask<String, String, WikipediaModelSear
     }
 
     @Override
-    protected void onPostExecute(final WikipediaModelSearchResult searchResult) {
+    protected void onPostExecute(@NonNull final WikipediaModelSearchResult searchResult) {
         super.onPostExecute(searchResult);
         try {
             if (searchResult.hasResult()) {
@@ -123,7 +126,8 @@ public class WikipediaModel extends AsyncTask<String, String, WikipediaModelSear
         }
     }
 
-    private String findTitleInSearchResults(JSONArray searchResults, String name) throws JSONException {
+    @Nullable
+    private String findTitleInSearchResults(@NonNull JSONArray searchResults, @NonNull String name) throws JSONException {
         String title = null;
         // see if we can find the title in the searchResults first
         for (int i = 0; i < searchResults.length(); i++) {

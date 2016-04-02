@@ -34,6 +34,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -55,20 +56,10 @@ public class InternetConnectivityHelper {
      * Used for communicating connectivity events back to client code.
      */
     private InternetConnectivityHelperDelegate delegate;
-
-    /**
-     * Gives an understanding of whether or not the application has an internet connection.
-     */
-    private enum InternetConnectivity {
-        InternetConnectivityConnected,
-        InternetConnectivityNoConnection,
-    }
-
     /**
      * The current state of internet connectivity.
      */
     private InternetConnectivity currentInternetConnectivity;
-
     /**
      * The receiver responsible for indicating whether or not the device has regained or lost internet connectivity.
      */
@@ -86,7 +77,7 @@ public class InternetConnectivityHelper {
     public void onResume() {
         networkConnectivityReceiver = new BroadcastReceiver() {
             @Override
-            public void onReceive(Context context, Intent intent) {
+            public void onReceive(Context context, @NonNull Intent intent) {
                 String action = intent.getAction();
                 if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
                     Log.v(TAG, "Received an intent related to internet connectivity");
@@ -155,5 +146,13 @@ public class InternetConnectivityHelper {
 
     public void setDelegate(InternetConnectivityHelperDelegate delegate) {
         this.delegate = delegate;
+    }
+
+    /**
+     * Gives an understanding of whether or not the application has an internet connection.
+     */
+    private enum InternetConnectivity {
+        InternetConnectivityConnected,
+        InternetConnectivityNoConnection,
     }
 }

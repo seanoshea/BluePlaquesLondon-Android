@@ -43,9 +43,9 @@
 
     <application
         android:name=".BluePlaquesLondonApplication"
+        android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:allowBackup="true"
         android:theme="@style/AppTheme">
 
         <meta-data
@@ -61,9 +61,9 @@
         <activity
             android:name=".activities.MainActivity"
             android:configChanges="orientation"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat"
-            android:label="@string/app_name">
+            android:theme="@style/Theme.AppCompat">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -78,20 +78,20 @@
         <activity
             android:name=".activities.MapDetailActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"></activity>
 
         <activity
             android:name=".activities.WikipediaActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"></activity>
 
         <activity
             android:name=".activities.PanoramaActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"></activity>
 
         <meta-data
             android:name="io.fabric.ApiKey"
