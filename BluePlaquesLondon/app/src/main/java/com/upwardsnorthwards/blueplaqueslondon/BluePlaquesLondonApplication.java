@@ -154,6 +154,7 @@ public class BluePlaquesLondonApplication extends Application implements
                 .setAction(action).setLabel(label).build());
     }
 
+    @SuppressWarnings("SameParameterValue")
     private synchronized Tracker getTracker(final TrackerName trackerId) {
         if (!trackers.containsKey(trackerId)) {
             final GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);

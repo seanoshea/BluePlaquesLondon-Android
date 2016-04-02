@@ -171,10 +171,6 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
         }
     }
 
-    public List<Placemark> getPlacemarks() {
-        return placemarks;
-    }
-
     public void setPlacemarks(final List<Placemark> placemarks) {
         this.placemarks = placemarks;
     }
@@ -190,6 +186,7 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
         return filteredPlacemarks != null && filteredPlacemarks.size() > 1 ? 0 : 1;
     }
 
+    @SuppressWarnings("unused")
     public static class ViewHolder {
         public Placemark placemark;
         public TextView title;

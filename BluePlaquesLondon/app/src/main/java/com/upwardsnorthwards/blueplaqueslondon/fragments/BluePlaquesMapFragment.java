@@ -111,6 +111,7 @@ public class BluePlaquesMapFragment extends MapFragment implements OnCameraChang
         refWatcher.watch(this);
     }
 
+    @SuppressWarnings("unused")
     @Subscribe
     public void onPlacemarkSelected(@NonNull Placemark placemark) {
         if (placemark.getName().equals(getString(R.string.closest))) {
@@ -125,10 +126,12 @@ public class BluePlaquesMapFragment extends MapFragment implements OnCameraChang
         navigateToPlacemark(placemark);
     }
 
+    @SuppressWarnings("UnusedParameters")
     public void internetConnectivityUpdated(boolean hasInternetConnectivity) {
         setupMap();
     }
 
+    @SuppressWarnings("deprecation")
     private void mapReady(final GoogleMap map) {
         googleMap = map;
         if (googleMap == null) {

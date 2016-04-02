@@ -69,6 +69,7 @@ public class SettingsFragment extends DialogFragment implements OnCheckedChangeL
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void onResume() {
         super.onResume();

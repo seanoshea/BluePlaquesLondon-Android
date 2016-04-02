@@ -41,9 +41,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
@@ -148,6 +146,7 @@ public class WikipediaModel extends AsyncTask<String, String, WikipediaModelSear
         this.delegate = delegate;
     }
 
+    @SuppressWarnings("SameParameterValue")
     public void setResponseUrl(String responseUrl) {
         this.responseUrl = responseUrl;
     }

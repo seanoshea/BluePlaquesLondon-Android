@@ -68,7 +68,6 @@ public class Placemark implements Parcelable {
     private String styleUrl;
     private double latitude;
     private double longitude;
-    private int placemarkPinType;
 
     public Placemark() {
 
@@ -306,10 +305,6 @@ public class Placemark implements Parcelable {
         return key() + " " + title + " " + name + occupation + " " + note + " " + councilAndYear;
     }
 
-    public String getFeatureDescription() {
-        return featureDescription;
-    }
-
     public void setFeatureDescription(final String featureDescription) {
         this.featureDescription = featureDescription;
     }
@@ -334,32 +329,16 @@ public class Placemark implements Parcelable {
         return occupation;
     }
 
-    public void setOccupation(final String occupation) {
-        this.occupation = occupation;
-    }
-
     public String getAddress() {
         return address;
-    }
-
-    public void setAddress(final String address) {
-        this.address = address;
     }
 
     public String getNote() {
         return note;
     }
 
-    public void setNote(final String note) {
-        this.note = note;
-    }
-
     public String getCouncilAndYear() {
         return councilAndYear;
-    }
-
-    public void setCouncilAndYear(final String councilAndYear) {
-        this.councilAndYear = councilAndYear;
     }
 
     public String getStyleUrl() {
@@ -386,11 +365,4 @@ public class Placemark implements Parcelable {
         this.longitude = longitude;
     }
 
-    public int getPlacemarkPinType() {
-        return placemarkPinType;
-    }
-
-    public void setPlacemarkPinType(final int placemarkPinType) {
-        this.placemarkPinType = placemarkPinType;
-    }
 }

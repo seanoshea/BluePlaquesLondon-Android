@@ -84,6 +84,7 @@ public class MultiplePlacemarksAdapter extends ArrayAdapter<Placemark> {
         return size;
     }
 
+    @SuppressWarnings("unused")
     public static class ViewHolder {
         public Placemark placemark;
         public TextView title;

@@ -58,6 +58,7 @@ public class MapModel {
         return placemarksAtIndices;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @NonNull
     public Placemark getPlacemarkClosestToPlacemark(@NonNull final Location location) {
         Placemark closestPlacemark = null;
