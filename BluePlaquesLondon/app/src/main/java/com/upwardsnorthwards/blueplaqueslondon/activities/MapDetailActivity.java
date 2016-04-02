@@ -32,6 +32,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -79,7 +80,7 @@ public class MapDetailActivity extends BaseActivity implements OnClickListener {
     }
 
     @Override
-    public void onClick(final View v) {
+    public void onClick(@NonNull final View v) {
         if (v.equals(streetViewButton)) {
             streetViewButtonClicked();
         } else if (v.equals(wikipediaArticleButton)) {
@@ -161,7 +162,7 @@ public class MapDetailActivity extends BaseActivity implements OnClickListener {
                 new DialogInterface.OnClickListener() {
 
                     @Override
-                    public void onClick(final DialogInterface dialog, final int which) {
+                    public void onClick(@NonNull final DialogInterface dialog, final int which) {
                         dialog.dismiss();
                     }
                 });

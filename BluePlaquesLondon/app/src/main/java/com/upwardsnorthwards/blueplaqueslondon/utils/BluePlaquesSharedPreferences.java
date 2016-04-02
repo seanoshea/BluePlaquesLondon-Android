@@ -30,6 +30,7 @@ package com.upwardsnorthwards.blueplaqueslondon.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -52,33 +53,35 @@ public class BluePlaquesSharedPreferences {
     static final float MAP_ZOOM_DEFAULT = 15.0f;
     static final boolean ANALYTICS_ENABLED_DEFAULT = true;
 
-    public static LatLng getLastKnownBPLCoordinate(final Context context) {
+    @NonNull
+    public static LatLng getLastKnownBPLCoordinate(@NonNull final Context context) {
         return getSavedCoordinate(context, LAST_KNOWN_BPL_COORDINATE_LATITUDE,
                 LAST_KNOWN_BPL_COORDINATE_LONGITUDE);
     }
 
-    public static void saveLastKnownBPLCoordinate(final Context context, final LatLng latLng) {
+    public static void saveLastKnownBPLCoordinate(@NonNull final Context context, @NonNull final LatLng latLng) {
         saveCoordinate(context, latLng, LAST_KNOWN_BPL_COORDINATE_LATITUDE,
                 LAST_KNOWN_BPL_COORDINATE_LONGITUDE);
     }
 
-    public static LatLng getLastKnownCoordinate(final Context context) {
+    @NonNull
+    public static LatLng getLastKnownCoordinate(@NonNull final Context context) {
         return getSavedCoordinate(context, LAST_KNOWN_COORDINATE_LATITUDE,
                 LAST_KNOWN_COORDINATE_LONGITUDE);
     }
 
-    public static void saveLastKnownCoordinate(final Context context, final LatLng latLng) {
+    public static void saveLastKnownCoordinate(@NonNull final Context context, @NonNull final LatLng latLng) {
         saveCoordinate(context, latLng, LAST_KNOWN_COORDINATE_LATITUDE,
                 LAST_KNOWN_COORDINATE_LONGITUDE);
     }
 
-    public static float getMapZoom(final Context context) {
+    public static float getMapZoom(@NonNull final Context context) {
         final SharedPreferences preferences = context.getSharedPreferences(
                 PREFERENCES_KEY, Context.MODE_PRIVATE);
         return preferences.getFloat(MAP_ZOOM, MAP_ZOOM_DEFAULT);
     }
 
-    public static void saveMapZoom(final Context context, final GoogleMap map, final float zoom) {
+    public static void saveMapZoom(@NonNull final Context context, @NonNull final GoogleMap map, final float zoom) {
         if (zoom <= map.getMaxZoomLevel() && zoom >= map.getMinZoomLevel()) {
             final SharedPreferences preferences = context.getSharedPreferences(
                     PREFERENCES_KEY, Context.MODE_PRIVATE);
@@ -88,14 +91,14 @@ public class BluePlaquesSharedPreferences {
         }
     }
 
-    public static boolean getAnalyticsEnabled(final Context context) {
+    public static boolean getAnalyticsEnabled(@NonNull final Context context) {
         final SharedPreferences preferences = context.getSharedPreferences(
                 PREFERENCES_KEY, Context.MODE_PRIVATE);
         return preferences.getBoolean(ANALYTICS_ENABLED,
                 ANALYTICS_ENABLED_DEFAULT);
     }
 
-    public static void saveAnalyticsEnabled(final Context context, final boolean enabled) {
+    public static void saveAnalyticsEnabled(@NonNull final Context context, final boolean enabled) {
         final SharedPreferences preferences = context.getSharedPreferences(
                 PREFERENCES_KEY, Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = preferences.edit();
@@ -103,7 +106,7 @@ public class BluePlaquesSharedPreferences {
         editor.apply();
     }
 
-    private static void saveCoordinate(final Context context, final LatLng latLng, final String latitudeKey, final String longitudeKey) {
+    private static void saveCoordinate(@NonNull final Context context, @NonNull final LatLng latLng, final String latitudeKey, final String longitudeKey) {
         final SharedPreferences preferences = context.getSharedPreferences(
                 PREFERENCES_KEY, Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = preferences.edit();
@@ -112,7 +115,8 @@ public class BluePlaquesSharedPreferences {
         editor.apply();
     }
 
-    private static LatLng getSavedCoordinate(final Context context, final String latitudeKey, final String longitudeKey) {
+    @NonNull
+    private static LatLng getSavedCoordinate(@NonNull final Context context, final String latitudeKey, final String longitudeKey) {
         final SharedPreferences preferences = context.getSharedPreferences(
                 PREFERENCES_KEY, Context.MODE_PRIVATE);
         final float latitude = preferences.getFloat(latitudeKey,

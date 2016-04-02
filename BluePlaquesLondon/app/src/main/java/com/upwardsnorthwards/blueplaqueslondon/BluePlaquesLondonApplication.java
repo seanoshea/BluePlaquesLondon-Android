@@ -38,6 +38,7 @@ import android.location.Location;
 import android.os.Build;
 import com.crashlytics.android.Crashlytics;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -74,6 +75,7 @@ public class BluePlaquesLondonApplication extends Application implements
     private final static String TRACKER_ID = "UA-46153093-3";
     private RefWatcher refWatcher;
 
+    @NonNull
     private HashMap<TrackerName, Tracker> trackers = new HashMap<TrackerName, Tracker>();
     private GoogleApiClient locationClient;
     private Location currentLocation;
@@ -102,7 +104,7 @@ public class BluePlaquesLondonApplication extends Application implements
     }
 
     @Override
-    public void onConnectionFailed(final ConnectionResult connectionResult) {
+    public void onConnectionFailed(@NonNull final ConnectionResult connectionResult) {
         Log.e(TAG, "onConnectionFailed " + connectionResult);
         try {
             if (connectionResult.hasResolution()) {
@@ -138,7 +140,7 @@ public class BluePlaquesLondonApplication extends Application implements
         currentLocation = location;
     }
 
-    public static RefWatcher getRefWatcher(Context context) {
+    public static RefWatcher getRefWatcher(@NonNull Context context) {
         BluePlaquesLondonApplication application = (BluePlaquesLondonApplication) context.getApplicationContext();
         return application.refWatcher;
     }

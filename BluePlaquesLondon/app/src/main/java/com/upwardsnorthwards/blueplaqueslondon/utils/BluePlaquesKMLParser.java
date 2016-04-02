@@ -29,6 +29,7 @@
 package com.upwardsnorthwards.blueplaqueslondon.utils;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
@@ -63,7 +64,7 @@ public class BluePlaquesKMLParser {
     private boolean processingCoordinateTag;
     private boolean processingStyleUrlTag;
 
-    public void loadMapData(final Context context) {
+    public void loadMapData(@NonNull final Context context) {
         try {
             final XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
@@ -123,7 +124,7 @@ public class BluePlaquesKMLParser {
         conslidateDuplicates();
     }
 
-    private void digestCoordinates(final String input) {
+    private void digestCoordinates(@NonNull final String input) {
         final String[] parts = input.split(",");
         if (parts.length == 3) {
             try {

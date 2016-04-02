@@ -30,6 +30,7 @@ package com.upwardsnorthwards.blueplaqueslondon.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.text.Html;
 
 /**
@@ -38,9 +39,13 @@ import android.text.Html;
  */
 public class Placemark implements Parcelable {
 
+    @NonNull
     private static String OverlayTitleDelimiter = "<br>";
+    @NonNull
     private static String NameDelimiter = "(";
+    @NonNull
     private static String EmphasisNoteOpeningTag = "<em>";
+    @NonNull
     private static String EmphasisNoteClosingTag = "</em>";
 
     private String featureDescription;
@@ -59,7 +64,7 @@ public class Placemark implements Parcelable {
 
     }
 
-    private Placemark(final Parcel in) {
+    private Placemark(@NonNull final Parcel in) {
         super();
         featureDescription = in.readString();
         title = in.readString();
@@ -79,7 +84,7 @@ public class Placemark implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(final Parcel dest, final int flags) {
+    public void writeToParcel(@NonNull final Parcel dest, final int flags) {
         dest.writeString(featureDescription);
         dest.writeString(title);
         dest.writeString(name);
@@ -94,20 +99,24 @@ public class Placemark implements Parcelable {
 
     public static final Parcelable.Creator<Placemark> CREATOR = new Parcelable.Creator<Placemark>() {
 
-        public Placemark createFromParcel(final Parcel source) {
+        @NonNull
+        public Placemark createFromParcel(@NonNull final Parcel source) {
             return new Placemark(source);
         }
 
+        @NonNull
         public Placemark[] newArray(final int size) {
             return new Placemark[size];
         }
 
     };
 
+    @NonNull
     public static String keyFromLatLng(final double latitude, final double longitude) {
         return Double.toString(latitude) + Double.toString(longitude);
     }
 
+    @NonNull
     public String key() {
         return Double.toString(latitude) + Double.toString(longitude);
     }
@@ -126,6 +135,7 @@ public class Placemark implements Parcelable {
      *
      * @return
      */
+    @NonNull
     public String getTrimmedTitle() {
         return trimWhitespaceAndHTMLDecode(title);
     }
@@ -135,6 +145,7 @@ public class Placemark implements Parcelable {
      *
      * @return
      */
+    @NonNull
     public String getTrimmedName() {
         return trimWhitespaceAndHTMLDecode(name);
     }
@@ -144,6 +155,7 @@ public class Placemark implements Parcelable {
      *
      * @return
      */
+    @NonNull
     public String getTrimmedOccupation() {
         return trimWhitespaceAndHTMLDecode(occupation);
     }
@@ -282,15 +294,16 @@ public class Placemark implements Parcelable {
         return inputWithNoteRemoved;
     }
 
-    private static String trimWhitespaceFromString(String string) {
+    private static String trimWhitespaceFromString(@NonNull String string) {
         return string.replaceAll("\t", "").replaceAll("^\\s*", "");
     }
 
-    private String trimWhitespaceAndHTMLDecode(String string) {
+    private String trimWhitespaceAndHTMLDecode(@NonNull String string) {
         // TODO: Need to use a faster fromHTML implementation.
         return Html.fromHtml(Placemark.trimWhitespaceFromString(string)).toString();
     }
 
+    @NonNull
     @Override
     public String toString() {
         return key() + " " + title + " " + name + occupation + " " + note + " " + councilAndYear;

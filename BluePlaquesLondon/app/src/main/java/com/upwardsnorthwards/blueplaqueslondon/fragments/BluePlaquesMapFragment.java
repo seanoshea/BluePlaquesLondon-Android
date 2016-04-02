@@ -32,6 +32,8 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 
@@ -72,7 +74,9 @@ public class BluePlaquesMapFragment extends MapFragment implements OnCameraChang
 
     private GoogleMap googleMap;
     private MapModel model;
+    @NonNull
     private List<KeyedMarker> markers = new ArrayList<KeyedMarker>();
+    @Nullable
     private AsyncTask<Void, Void, Void> task;
 
     @Override
@@ -105,7 +109,7 @@ public class BluePlaquesMapFragment extends MapFragment implements OnCameraChang
     }
 
     @Subscribe
-    public void onPlacemarkSelected(Placemark placemark) {
+    public void onPlacemarkSelected(@NonNull Placemark placemark) {
         if (placemark.getName() == getString(R.string.closest)) {
             final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getActivity().getApplication();
             final Location currentLocation = app.getCurrentLocation();
@@ -207,7 +211,7 @@ public class BluePlaquesMapFragment extends MapFragment implements OnCameraChang
     }
 
     @Override
-    public void onCameraChange(final CameraPosition position) {
+    public void onCameraChange(@NonNull final CameraPosition position) {
         BluePlaquesSharedPreferences.saveLastKnownCoordinate(getActivity(),
                 position.target);
         BluePlaquesSharedPreferences.saveMapZoom(getActivity(), googleMap,
@@ -215,7 +219,7 @@ public class BluePlaquesMapFragment extends MapFragment implements OnCameraChang
     }
 
     @Override
-    public boolean onMarkerClick(final Marker marker) {
+    public boolean onMarkerClick(@NonNull final Marker marker) {
         final LatLng latLng = marker.getPosition();
         final String key = Placemark.keyFromLatLng(latLng.latitude, latLng.longitude);
         final Integer location = model.getParser().getKeyToArrayPositions().get(key).get(0);
@@ -232,7 +236,7 @@ public class BluePlaquesMapFragment extends MapFragment implements OnCameraChang
     }
 
     @Override
-    public void onInfoWindowClick(final Marker marker) {
+    public void onInfoWindowClick(@NonNull final Marker marker) {
         final Intent intent = new Intent(getActivity(), MapDetailActivity.class);
         intent.putParcelableArrayListExtra(
                 BluePlaquesConstants.INFO_WINDOW_CLICKED_PARCLEABLE_KEY,
@@ -245,7 +249,7 @@ public class BluePlaquesMapFragment extends MapFragment implements OnCameraChang
         startActivity(intent);
     }
 
-    public void navigateToPlacemark(final Placemark placemark) {
+    public void navigateToPlacemark(@NonNull final Placemark placemark) {
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
                         placemark.getLatitude(), placemark.getLongitude()),
                 BluePlaquesSharedPreferences.getMapZoom(getActivity())));
@@ -264,7 +268,7 @@ public class BluePlaquesMapFragment extends MapFragment implements OnCameraChang
         }
     }
 
-    private String getSnippetForPlacemark(final Placemark placemark, final boolean trimmed) {
+    private String getSnippetForPlacemark(@NonNull final Placemark placemark, final boolean trimmed) {
         final String snippet;
         final List<Integer> numberOfPlacemarksAssociatedWithPlacemark = model
                 .getParser().getKeyToArrayPositions().get(placemark.key());
@@ -280,6 +284,7 @@ public class BluePlaquesMapFragment extends MapFragment implements OnCameraChang
         return snippet;
     }
 
+    @NonNull
     private ArrayList<Placemark> getListOfPlacemarksForMarker(final Marker marker) {
         ArrayList<Placemark> placemarks = new ArrayList<Placemark>();
         for (final KeyedMarker keyedMarker : markers) {
@@ -320,6 +325,7 @@ public class BluePlaquesMapFragment extends MapFragment implements OnCameraChang
      */
     private class ParsePlaquesTask extends AsyncTask<Void, Void, Void> {
 
+        @Nullable
         @Override
         protected Void doInBackground(final Void... params) {
             model.loadMapData(getActivity());

@@ -29,6 +29,7 @@
 package com.upwardsnorthwards.blueplaqueslondon.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,13 +49,13 @@ public class MultiplePlacemarksAdapter extends ArrayAdapter<Placemark> {
 
     private List<Placemark> placemarks;
 
-    public MultiplePlacemarksAdapter(final Context context, final int resource, final List<Placemark> objects) {
+    public MultiplePlacemarksAdapter(final Context context, final int resource, @NonNull final List<Placemark> objects) {
         super(context, resource, objects);
         placemarks = objects;
     }
 
     @Override
-    public View getView(final int position, final View convertView, final ViewGroup parent) {
+    public View getView(final int position, final View convertView, @NonNull final ViewGroup parent) {
         View v = convertView;
         if (v == null) {
             final LayoutInflater vi = (LayoutInflater) parent.getContext()
