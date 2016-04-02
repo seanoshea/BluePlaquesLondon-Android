@@ -29,15 +29,18 @@
 
 package com.upwardsnorthwards.blueplaqueslondon;
 
+import android.Manifest;
 import android.app.Application;
 import android.content.Context;
 import android.content.IntentSender;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
@@ -71,10 +74,9 @@ public class BluePlaquesLondonApplication extends Application implements
     public static final Bus bus = new Bus(ThreadEnforcer.MAIN);
     private final static String TAG = "BluePlaquesLondonApp";
     private final static String TRACKER_ID = "UA-46153093-3";
-    private RefWatcher refWatcher;
-
     @NonNull
-    private HashMap<TrackerName, Tracker> trackers = new HashMap<TrackerName, Tracker>();
+    private final HashMap<TrackerName, Tracker> trackers = new HashMap<>();
+    private RefWatcher refWatcher;
     private GoogleApiClient locationClient;
     private Location currentLocation;
 
@@ -122,14 +124,17 @@ public class BluePlaquesLondonApplication extends Application implements
 
     @Override
     public void onConnected(final Bundle connectionHint) {
-        currentLocation = LocationServices.FusedLocationApi.getLastLocation(
-                locationClient);
-        final LocationRequest locationRequest = new LocationRequest();
-        locationRequest.setInterval(10000);
-        locationRequest.setFastestInterval(5000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                locationClient, locationRequest, this);
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            currentLocation = LocationServices.FusedLocationApi.getLastLocation(
+                    locationClient);
+            final LocationRequest locationRequest = new LocationRequest();
+            locationRequest.setInterval(10000);
+            locationRequest.setFastestInterval(5000);
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                    locationClient, locationRequest, this);
+        }
     }
 
     @Override
@@ -148,6 +153,7 @@ public class BluePlaquesLondonApplication extends Application implements
                 .setAction(action).setLabel(label).build());
     }
 
+    @SuppressWarnings("SameParameterValue")
     private synchronized Tracker getTracker(final TrackerName trackerId) {
         if (!trackers.containsKey(trackerId)) {
             final GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
@@ -177,10 +183,6 @@ public class BluePlaquesLondonApplication extends Application implements
 
     public Location getCurrentLocation() {
         return currentLocation;
-    }
-
-    public void setCurrentLocation(final Location currentLocation) {
-        this.currentLocation = currentLocation;
     }
 
     public enum TrackerName {

@@ -37,7 +37,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,7 +45,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.squareup.otto.Subscribe;
 import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
 import com.upwardsnorthwards.blueplaqueslondon.R;
@@ -64,7 +64,7 @@ import hotchemi.android.rate.OnClickButtonListener;
 /**
  * Landing activity for the application. Includes a reference to the <code>BluePlaquesMapFragment</code>
  */
-public class MainActivity extends ActionBarActivity implements InternetConnectivityHelperDelegate {
+public class MainActivity extends AppCompatActivity implements InternetConnectivityHelperDelegate {
 
     private static final String TAG = "MainActivity";
     private static final int GOOGLE_PLAY_SERVICES_REQUEST = 9002;
@@ -143,7 +143,8 @@ public class MainActivity extends ActionBarActivity implements InternetConnectiv
                     break;
                     default: {
                         Log.e(TAG, "Tried to request the user to download the correct version of Google Play Services but it failed");
-                        final Dialog dialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this, GOOGLE_PLAY_SERVICES_REQUEST);
+                        GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
+                        final Dialog dialog = googleAPI.getErrorDialog(this, GOOGLE_PLAY_SERVICES_REQUEST, resultCode);
                         dialog.setCancelable(false);
                         dialog.show();
                     }
@@ -169,6 +170,7 @@ public class MainActivity extends ActionBarActivity implements InternetConnectiv
         }
     }
 
+    @SuppressWarnings({"unused", "UnusedParameters"})
     @Subscribe
     public void onPlacemarkSelected(final Placemark placemark) {
         searchView.setQuery("", false);
@@ -199,7 +201,8 @@ public class MainActivity extends ActionBarActivity implements InternetConnectiv
      * update their version of Google Play Services on the Play Store.
      */
     private void checkForGooglePlayServicesAvailability() {
-        final int playServicesAvailable = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
+        final int playServicesAvailable = googleAPI.isGooglePlayServicesAvailable(this);
         switch (playServicesAvailable) {
             case ConnectionResult.SUCCESS: {
                 Log.d(TAG, "Successfully connected to Google Play Services");
@@ -208,11 +211,11 @@ public class MainActivity extends ActionBarActivity implements InternetConnectiv
             default: {
                 boolean isRecoverable = true;
                 updateProgressBarVisibility(View.GONE);
-                if (GooglePlayServicesUtil.isUserRecoverableError(playServicesAvailable)) {
-                    GooglePlayServicesUtil.showErrorDialogFragment(playServicesAvailable, this, BluePlaquesLondonApplication.CONNECTION_FAILURE_RESOLUTION_REQUEST);
+                if (googleAPI.isUserResolvableError(playServicesAvailable)) {
+                    googleAPI.showErrorDialogFragment(this, playServicesAvailable, BluePlaquesLondonApplication.CONNECTION_FAILURE_RESOLUTION_REQUEST);
                 } else {
                     isRecoverable = false;
-                    GooglePlayServicesUtil.showErrorDialogFragment(playServicesAvailable, this, BluePlaquesLondonApplication.CONNECTION_FAILURE_NO_RESOLUTION_REQUEST);
+                    googleAPI.showErrorDialogFragment(this, playServicesAvailable, BluePlaquesLondonApplication.CONNECTION_FAILURE_NO_RESOLUTION_REQUEST);
                 }
                 final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
                 app.trackEvent(BluePlaquesConstants.ERROR_CATEGORY, BluePlaquesConstants.GOOGLE_PLAY_SERVICES_PROMPT, isRecoverable ? BluePlaquesConstants.GOOGLE_PLAY_SERVICES_PROMPT_RECOVERABLE : BluePlaquesConstants.GOOGLE_PLAY_SERVICES_PROMPT_UNRECOVERABLE);

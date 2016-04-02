@@ -47,10 +47,10 @@ import java.util.List;
  */
 public class MultiplePlacemarksAdapter extends ArrayAdapter<Placemark> {
 
-    private List<Placemark> placemarks;
+    private final List<Placemark> placemarks;
 
-    public MultiplePlacemarksAdapter(final Context context, final int resource, @NonNull final List<Placemark> objects) {
-        super(context, resource, objects);
+    public MultiplePlacemarksAdapter(final Context context, @NonNull final List<Placemark> objects) {
+        super(context, R.layout.multiple_placemarks_item, objects);
         placemarks = objects;
     }
 
@@ -84,6 +84,7 @@ public class MultiplePlacemarksAdapter extends ArrayAdapter<Placemark> {
         return size;
     }
 
+    @SuppressWarnings("unused")
     public static class ViewHolder {
         public Placemark placemark;
         public TextView title;

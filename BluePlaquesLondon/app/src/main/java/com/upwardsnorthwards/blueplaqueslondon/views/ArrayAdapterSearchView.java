@@ -52,7 +52,6 @@ public class ArrayAdapterSearchView extends SearchView implements SearchView.OnQ
 
     private SearchView.SearchAutoComplete searchAutoComplete;
     private SearchAdapter searchAdapter;
-    private List<Placemark> placemarks;
 
     public ArrayAdapterSearchView(@NonNull final Context context) {
         super(context);
@@ -65,15 +64,14 @@ public class ArrayAdapterSearchView extends SearchView implements SearchView.OnQ
     }
 
     public void notifyAdapterOfPlacemarks(final List<Placemark> placemarks) {
-        this.placemarks = placemarks;
         searchAdapter.setPlacemarks(placemarks);
     }
 
-    public void setOnItemClickListener(final OnItemClickListener listener) {
+    private void setOnItemClickListener(final OnItemClickListener listener) {
         searchAutoComplete.setOnItemClickListener(listener);
     }
 
-    public void setAdapter(final ArrayAdapter<?> adapter) {
+    private void setAdapter(final ArrayAdapter<?> adapter) {
         searchAutoComplete.setAdapter(adapter);
     }
 
@@ -106,7 +104,7 @@ public class ArrayAdapterSearchView extends SearchView implements SearchView.OnQ
 
     private void initialize(final Context context) {
         searchAutoComplete = (SearchAutoComplete) findViewById(R.id.search_src_text);
-        searchAdapter = new SearchAdapter(context, R.layout.search_item,
+        searchAdapter = new SearchAdapter(context,
                 new ArrayList<Placemark>());
         setAdapter(searchAdapter);
         setOnQueryTextListener(this);
@@ -114,11 +112,4 @@ public class ArrayAdapterSearchView extends SearchView implements SearchView.OnQ
         setOnItemClickListener(this);
     }
 
-    public List<Placemark> getPlacemarks() {
-        return placemarks;
-    }
-
-    public void setPlacemarks(final List<Placemark> placemarks) {
-        this.placemarks = placemarks;
-    }
 }

@@ -34,7 +34,7 @@
         <item name="android:windowTitleBackgroundStyle">@style/TitleBackground</item>
     </style>
 
-    <style name="AppTheme" parent="AppBaseTheme"></style>
+    <style name="AppTheme" parent="AppBaseTheme" />
 
     <style name="OrangeButton" parent="PrimaryHeader">
         <item name="android:background">@drawable/orange_button</item>
