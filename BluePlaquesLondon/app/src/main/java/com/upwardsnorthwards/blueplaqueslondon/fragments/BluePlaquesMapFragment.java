@@ -141,7 +141,7 @@ public class BluePlaquesMapFragment extends MapFragment implements OnCameraChang
             // a few settings
             googleMap.setIndoorEnabled(false);
             googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 googleMap.setMyLocationEnabled(true);
             }
             // listen for events
