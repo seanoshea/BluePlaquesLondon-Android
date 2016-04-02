@@ -56,12 +56,10 @@ import java.util.Locale;
 public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable {
 
     private static final String TAG = "SearchAdapter";
-
+    private final String closestPlacemarkTitle;
     private List<Placemark> placemarks;
     private List<Placemark> filteredPlacemarks;
     private PlacemarksFilter placemarksFilter;
-
-    private final String closestPlacemarkTitle;
 
     public SearchAdapter(@NonNull final Context context, @NonNull final List<Placemark> objects) {
         super(context, R.layout.search_item, objects);

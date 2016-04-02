@@ -74,10 +74,9 @@ public class BluePlaquesLondonApplication extends Application implements
     public static final Bus bus = new Bus(ThreadEnforcer.MAIN);
     private final static String TAG = "BluePlaquesLondonApp";
     private final static String TRACKER_ID = "UA-46153093-3";
-    private RefWatcher refWatcher;
-
     @NonNull
     private final HashMap<TrackerName, Tracker> trackers = new HashMap<>();
+    private RefWatcher refWatcher;
     private GoogleApiClient locationClient;
     private Location currentLocation;
 
@@ -125,7 +124,7 @@ public class BluePlaquesLondonApplication extends Application implements
 
     @Override
     public void onConnected(final Bundle connectionHint) {
-        if(ContextCompat.checkSelfPermission(this,
+        if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             currentLocation = LocationServices.FusedLocationApi.getLastLocation(
                     locationClient);

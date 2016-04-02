@@ -74,11 +74,10 @@ import java.util.List;
 public class BluePlaquesMapFragment extends MapFragment implements OnCameraChangeListener, OnMarkerClickListener, OnInfoWindowClickListener {
 
     private static final String TAG = "MapFragment";
-
-    private GoogleMap googleMap;
-    private MapModel model;
     @NonNull
     private final List<KeyedMarker> markers = new ArrayList<>();
+    private GoogleMap googleMap;
+    private MapModel model;
     @Nullable
     private AsyncTask<Void, Void, Void> task;
 
