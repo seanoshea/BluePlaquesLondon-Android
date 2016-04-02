@@ -37,6 +37,6 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:fastScrollEnabled="true"
-        android:padding="2dp"></ListView>
+        android:padding="2dp"/>
 
 </LinearLayout>

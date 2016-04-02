@@ -79,19 +79,19 @@
             android:name=".activities.MapDetailActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".activities.WikipediaActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".activities.PanoramaActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="io.fabric.ApiKey"
