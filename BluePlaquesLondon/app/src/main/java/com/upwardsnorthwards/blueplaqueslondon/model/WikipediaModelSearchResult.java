@@ -33,8 +33,8 @@ package com.upwardsnorthwards.blueplaqueslondon.model;
  */
 public class WikipediaModelSearchResult {
 
-    private String result;
-    private String name;
+    private final String result;
+    private final String name;
 
     public WikipediaModelSearchResult(String result, String name) {
         this.result = result;

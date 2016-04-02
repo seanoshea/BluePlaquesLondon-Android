@@ -66,7 +66,7 @@ public class PanoramaActivity extends BaseActivity implements OnStreetViewPanora
         streetViewPanoramaFragment.getStreetViewPanoramaAsync(this);
         final Intent intent = getIntent();
         if (intent != null) {
-            placemark = (Placemark) intent
+            placemark = intent
                     .getParcelableExtra(BluePlaquesConstants.PANORAMA_CLICKED_PARCLEABLE_KEY);
         }
     }

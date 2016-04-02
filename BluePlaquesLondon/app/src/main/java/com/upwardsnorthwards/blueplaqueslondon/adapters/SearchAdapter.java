@@ -31,6 +31,7 @@ package com.upwardsnorthwards.blueplaqueslondon.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,10 +61,10 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
     private List<Placemark> filteredPlacemarks;
     private PlacemarksFilter placemarksFilter;
 
-    private String closestPlacemarkTitle;
+    private final String closestPlacemarkTitle;
 
-    public SearchAdapter(@NonNull final Context context, final int resource, @NonNull final List<Placemark> objects) {
-        super(context, resource, objects);
+    public SearchAdapter(@NonNull final Context context, @NonNull final List<Placemark> objects) {
+        super(context, R.layout.search_item, objects);
         closestPlacemarkTitle = context.getString(R.string.closest);
         placemarks = objects;
     }
@@ -115,12 +116,12 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
             final ViewHolder holder = (ViewHolder) v.getTag();
             if (position == 0) {
                 v.setBackgroundResource(R.drawable.search_item_closest_background);
-                holder.title.setTextColor(parent.getContext().getResources().getColor(android.R.color.white));
+                holder.title.setTextColor(ContextCompat.getColor(parent.getContext(), android.R.color.white));
                 holder.title.setText(parent.getContext().getString(
                         R.string.closest));
             } else {
                 v.setBackgroundResource(R.drawable.search_item_background);
-                holder.title.setTextColor(parent.getContext().getResources().getColor(R.color.blue_color));
+                holder.title.setTextColor(ContextCompat.getColor(parent.getContext(), R.color.blue_color));
                 if (relevantPlacemarks.size() > position) {
                     placemark = relevantPlacemarks.get(position);
                     holder.placemark = placemark;
@@ -144,7 +145,7 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
 
     @NonNull
     private List<Placemark> filterPlacemarksWithText(@NonNull final String filterText) {
-        final List<Placemark> localPlacemarks = new ArrayList<Placemark>();
+        final List<Placemark> localPlacemarks = new ArrayList<>();
         for (final Placemark placemark : placemarks) {
             if (placemark.getName().toLowerCase(Locale.ENGLISH)
                     .contains(filterText.toLowerCase(Locale.ENGLISH))) {
@@ -162,7 +163,7 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
         return localPlacemarks;
     }
 
-    public List<Placemark> getRelevantPlacemarks() {
+    private List<Placemark> getRelevantPlacemarks() {
         if (filteredPlacemarks != null) {
             return filteredPlacemarks;
         } else {
@@ -179,7 +180,7 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
     }
 
     @NonNull
-    protected Placemark getClosestPlacemark() {
+    private Placemark getClosestPlacemark() {
         final Placemark placemark = new Placemark();
         placemark.setName(closestPlacemarkTitle);
         return placemark;

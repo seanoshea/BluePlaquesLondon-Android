@@ -31,7 +31,6 @@ package com.upwardsnorthwards.blueplaqueslondon.model;
 import android.content.Context;
 import android.location.Location;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesKMLParser;
 
@@ -40,7 +39,7 @@ import java.util.List;
 
 public class MapModel {
 
-    private BluePlaquesKMLParser parser;
+    private final BluePlaquesKMLParser parser;
 
     public MapModel() {
         parser = new BluePlaquesKMLParser();
@@ -52,14 +51,14 @@ public class MapModel {
 
     @NonNull
     public ArrayList<Placemark> getPlacemarksAtIndices(@NonNull final List<Integer> indices) {
-        final ArrayList<Placemark> placemarksAtIndices = new ArrayList<Placemark>();
+        final ArrayList<Placemark> placemarksAtIndices = new ArrayList<>();
         for (final Integer index : indices) {
             placemarksAtIndices.add(parser.getPlacemarks().get(index));
         }
         return placemarksAtIndices;
     }
 
-    @Nullable
+    @NonNull
     public Placemark getPlacemarkClosestToPlacemark(@NonNull final Location location) {
         Placemark closestPlacemark = null;
         float currentDistance = 0;
@@ -86,7 +85,4 @@ public class MapModel {
         return parser;
     }
 
-    public void setParser(final BluePlaquesKMLParser parser) {
-        this.parser = parser;
-    }
 }

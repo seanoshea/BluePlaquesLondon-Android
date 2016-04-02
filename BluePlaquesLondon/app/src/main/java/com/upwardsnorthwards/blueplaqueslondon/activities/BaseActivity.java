@@ -28,6 +28,7 @@
 
 package com.upwardsnorthwards.blueplaqueslondon.activities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.util.Log;
 import android.widget.TextView;
@@ -39,6 +40,7 @@ import com.upwardsnorthwards.blueplaqueslondon.utils.InternetConnectivityHelperD
 /**
  * Simple 'base'-style class which exposes the ability to set the text on the custom title bar.
  */
+@SuppressLint("Registered")
 public class BaseActivity extends Activity implements InternetConnectivityHelperDelegate {
 
     private static final String TAG = "BaseActivity";
@@ -68,7 +70,7 @@ public class BaseActivity extends Activity implements InternetConnectivityHelper
      *
      * @param text the text to set on the title bar.
      */
-    protected void setCustomTitleBarText(final String text) {
+    void setCustomTitleBarText(final String text) {
         final TextView titleBar = (TextView) findViewById(R.id.title_bar);
         if (titleBar != null) {
             titleBar.setText(text);

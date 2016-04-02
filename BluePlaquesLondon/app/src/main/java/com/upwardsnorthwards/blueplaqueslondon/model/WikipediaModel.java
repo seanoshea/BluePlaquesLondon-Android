@@ -70,7 +70,7 @@ public class WikipediaModel extends AsyncTask<String, String, WikipediaModelSear
         StringBuilder result = new StringBuilder();
         String responseString = null;
         HttpURLConnection urlConnection = null;
-        URL url = null;
+        URL url;
         try {
             url = new URL(String.format(WIKIPEDIA_SEARCH_URL_FORMAT,
                     URLEncoder.encode(name, WIKIPEDIA_MODEL_ENCODING)));
@@ -90,10 +90,6 @@ public class WikipediaModel extends AsyncTask<String, String, WikipediaModelSear
                 result.append(line);
             }
             responseString = result.toString();
-        } catch (MalformedURLException e) {
-            delegate.onRetriveWikipediaUrlFailure();
-        } catch (UnsupportedEncodingException e) {
-            delegate.onRetriveWikipediaUrlFailure();
         } catch (IOException e) {
             delegate.onRetriveWikipediaUrlFailure();
         } finally {
@@ -114,7 +110,7 @@ public class WikipediaModel extends AsyncTask<String, String, WikipediaModelSear
                 final JSONArray search = query.getJSONArray("search");
                 if (search.length() > 0) {
                     final String title = this.findTitleInSearchResults(search, searchResult.getName());
-                    delegate.onRetriveWikipediaUrlSuccess(String.format(responseUrl, title.replace(" ", "_")));
+                    delegate.onRetriveWikipediaUrlSuccess(String.format(responseUrl, title != null ? title.replace(" ", "_") : null));
                 } else {
                     delegate.onRetriveWikipediaUrlFailure();
                 }

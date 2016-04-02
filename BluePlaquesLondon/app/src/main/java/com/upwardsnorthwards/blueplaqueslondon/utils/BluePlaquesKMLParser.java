@@ -52,9 +52,9 @@ public class BluePlaquesKMLParser {
     private static final String NAME_KEY = "name";
     private static final String PLACEMARK_KEY = "placemark";
     private static final String STYLE_URL_KEY = "styleUrl";
-    private List<Placemark> massagedPlacemarks = new ArrayList<Placemark>();
-    private List<Placemark> placemarks = new ArrayList<Placemark>();
-    private Map<String, List<Integer>> keyToArrayPositions = new HashMap<String, List<Integer>>();
+    private final List<Placemark> massagedPlacemarks = new ArrayList<>();
+    private final List<Placemark> placemarks = new ArrayList<>();
+    private final Map<String, List<Integer>> keyToArrayPositions = new HashMap<>();
     private Placemark currentPlacemark;
     private boolean processingNameTag;
     private boolean processingDescriptionTag;
@@ -138,7 +138,7 @@ public class BluePlaquesKMLParser {
         for (final Placemark placemark : placemarks) {
             final String key = placemark.key();
             if (!keyToArrayPositions.containsKey(key)) {
-                final List<Integer> positions = new ArrayList<Integer>();
+                final List<Integer> positions = new ArrayList<>();
                 positions.add(index);
                 keyToArrayPositions.put(key, positions);
                 massagedPlacemarks.add(placemark);
@@ -161,7 +161,7 @@ public class BluePlaquesKMLParser {
         }
     }
 
-    public void addCurrentPlacemark() {
+    private void addCurrentPlacemark() {
         placemarks.add(currentPlacemark);
     }
 
@@ -169,32 +169,12 @@ public class BluePlaquesKMLParser {
         return placemarks;
     }
 
-    public void setPlacemarks(final List<Placemark> placemarks) {
-        this.placemarks = placemarks;
-    }
-
     public Map<String, List<Integer>> getKeyToArrayPositions() {
         return keyToArrayPositions;
-    }
-
-    public void setKeyToArrayPositions(
-            final Map<String, List<Integer>> keyToArrayPositions) {
-        this.keyToArrayPositions = keyToArrayPositions;
-    }
-
-    public Placemark getCurrentPlacemark() {
-        return currentPlacemark;
-    }
-
-    public void setCurrentPlacemark(final Placemark currentPlacemark) {
-        this.currentPlacemark = currentPlacemark;
     }
 
     public List<Placemark> getMassagedPlacemarks() {
         return massagedPlacemarks;
     }
 
-    public void setMassagedPlacemarks(final List<Placemark> massagedPlacemarks) {
-        this.massagedPlacemarks = massagedPlacemarks;
-    }
 }

@@ -17,6 +17,7 @@ apply plugin: 'findbugs'
 
 android {
     signingConfigs {
+        //noinspection GroovyMissingReturnStatement
         config {
         }
         production {
@@ -40,12 +41,14 @@ android {
         targetSdkVersion 23
         versionCode 8
         versionName "1.5"
+        //noinspection GroovyAssignabilityCheck
         signingConfig signingConfigs.config
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //noinspection GroovyAssignabilityCheck
             signingConfig signingConfigs.production
         }
     }
@@ -65,6 +68,7 @@ task pmd(type: Pmd, dependsOn: assembleDebug) {
     reports {
         xml.enabled = false
         html.enabled = true
+        //noinspection GroovyAssignabilityCheck
         xml {
             destination "$project.buildDir/reports/pmd/pmd.xml"
         }
@@ -88,6 +92,7 @@ task findbugs(type: FindBugs) {
     reports {
         xml.enabled = false
         html.enabled = true
+        //noinspection GroovyAssignabilityCheck
         xml {
             destination "$project.buildDir/reports/findbugs/findbugs.xml"
         }

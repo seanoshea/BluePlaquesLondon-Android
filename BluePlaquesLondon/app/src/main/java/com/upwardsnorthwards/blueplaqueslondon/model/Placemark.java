@@ -53,13 +53,11 @@ public class Placemark implements Parcelable {
 
     };
     @NonNull
-    private static String OverlayTitleDelimiter = "<br>";
+    private static final String OverlayTitleDelimiter = "<br>";
     @NonNull
-    private static String NameDelimiter = "(";
+    private static final String EmphasisNoteOpeningTag = "<em>";
     @NonNull
-    private static String EmphasisNoteOpeningTag = "<em>";
-    @NonNull
-    private static String EmphasisNoteClosingTag = "</em>";
+    private static final String EmphasisNoteClosingTag = "</em>";
     private String featureDescription;
     private String title;
     private String name;
@@ -135,7 +133,7 @@ public class Placemark implements Parcelable {
     /**
      * Used when displaying the title of a placemark to a user. Fully html decodes the title.
      *
-     * @return
+     * @return the trimmed & html decoded title
      */
     @NonNull
     public String getTrimmedTitle() {
@@ -145,7 +143,7 @@ public class Placemark implements Parcelable {
     /**
      * Used when displaying the name of a placemark to a user. Fully html decodes the name.
      *
-     * @return
+     * @return the trimmed and html decoded name
      */
     @NonNull
     public String getTrimmedName() {
@@ -155,7 +153,7 @@ public class Placemark implements Parcelable {
     /**
      * Used when displaying the occupation of a placemark to a user. Fully html decodes the occupation.
      *
-     * @return
+     * @return the trimmed and html decoded occupation
      */
     @NonNull
     public String getTrimmedOccupation() {
@@ -183,7 +181,8 @@ public class Placemark implements Parcelable {
 
     private void digestName() {
         name = title;
-        final int startOfYears = name.indexOf(NameDelimiter);
+        String nameDelimiter = "(";
+        final int startOfYears = name.indexOf(nameDelimiter);
         if (startOfYears != -1) {
             name = name.replaceAll(EmphasisNoteOpeningTag, "");
             name = name.replaceAll(EmphasisNoteClosingTag, "");

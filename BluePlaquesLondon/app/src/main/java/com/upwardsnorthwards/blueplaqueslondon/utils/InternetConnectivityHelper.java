@@ -50,7 +50,7 @@ public class InternetConnectivityHelper {
     /**
      * Weak reference to the context in which this helper was instantiated.
      */
-    private Context context;
+    private final Context context;
 
     /**
      * Used for communicating connectivity events back to client code.
@@ -68,7 +68,7 @@ public class InternetConnectivityHelper {
     /**
      * Simple constructor.
      *
-     * @param context
+     * @param context the activity context.
      */
     public InternetConnectivityHelper(Context context) {
         this.context = context;
@@ -111,7 +111,7 @@ public class InternetConnectivityHelper {
     /**
      * Executed callback when the device loses internet connectivity
      */
-    protected void lostInternetConnectivity() {
+    private void lostInternetConnectivity() {
         currentInternetConnectivity = InternetConnectivity.InternetConnectivityNoConnection;
         if (delegate != null) {
             delegate.lostInternetConnectivity();
@@ -121,7 +121,7 @@ public class InternetConnectivityHelper {
     /**
      * Executed callback when the device regains internet connectivity
      */
-    protected void regainedInternetConnectivity() {
+    private void regainedInternetConnectivity() {
         currentInternetConnectivity = InternetConnectivity.InternetConnectivityConnected;
         if (delegate != null) {
             delegate.regainedInternetConnectivity();

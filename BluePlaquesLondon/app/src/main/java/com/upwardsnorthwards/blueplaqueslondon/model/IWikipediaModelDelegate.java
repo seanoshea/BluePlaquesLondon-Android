@@ -38,11 +38,11 @@ public interface IWikipediaModelDelegate {
      *
      * @param url of the wikipedia article.
      */
-    public void onRetriveWikipediaUrlSuccess(String url);
+    void onRetriveWikipediaUrlSuccess(String url);
 
     /**
      * Callback executed when the call to the wikipedia datasource fails.
      */
-    public void onRetriveWikipediaUrlFailure();
+    void onRetriveWikipediaUrlFailure();
 
 }

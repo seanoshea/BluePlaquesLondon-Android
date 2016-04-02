@@ -38,16 +38,16 @@ public interface InternetConnectivityHelperDelegate {
      *
      * @param hasInternetConnectivity dictates the state of the internet connection.
      */
-    public void internetConnectivityUpdated(boolean hasInternetConnectivity);
+    void internetConnectivityUpdated(boolean hasInternetConnectivity);
 
     /**
      * Executed when the client loses an internet connection.
      */
-    public void lostInternetConnectivity();
+    void lostInternetConnectivity();
 
     /**
      * Executed when the client gains an internet connection.
      */
-    public void regainedInternetConnectivity();
+    void regainedInternetConnectivity();
 
 }

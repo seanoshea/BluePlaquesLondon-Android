@@ -54,7 +54,6 @@ import java.util.List;
 public class MapDetailActivity extends BaseActivity implements OnClickListener {
 
     private List<Placemark> placemarks;
-    private Placemark currentPlacemark;
 
     private TextView occupationTextView;
     private TextView addressTextView;
@@ -95,7 +94,7 @@ public class MapDetailActivity extends BaseActivity implements OnClickListener {
      *
      * @param placemark the placemark the user is switching to.
      */
-    protected void switchToPlacemark(final Placemark placemark) {
+    private void switchToPlacemark(final Placemark placemark) {
         placemarks.remove(placemark);
         placemarks.add(0, placemark);
         addTextToTextViews();
@@ -131,7 +130,7 @@ public class MapDetailActivity extends BaseActivity implements OnClickListener {
 
     private void addTextToTextViews() {
         // take the first one from the list of placemarks and run with it
-        currentPlacemark = placemarks.get(0);
+        Placemark currentPlacemark = placemarks.get(0);
         currentPlacemark.digestAnciliaryInformation();
         setCustomTitleBarText(currentPlacemark.getName());
         occupationTextView.setText(currentPlacemark.getTrimmedOccupation());
@@ -157,7 +156,7 @@ public class MapDetailActivity extends BaseActivity implements OnClickListener {
         builder.setIcon(R.drawable.ic_launcher);
         builder.setTitle(getString(R.string.multiple_placemarks_select_one));
         final MultiplePlacemarksAdapter arrayAdapter = new MultiplePlacemarksAdapter(
-                this, R.layout.multiple_placemarks_item, placemarks);
+                this, placemarks);
         builder.setNegativeButton(getString(R.string.cancel),
                 new DialogInterface.OnClickListener() {
 
