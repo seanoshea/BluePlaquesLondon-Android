@@ -5624,19 +5624,19 @@
 				<name>FORSTER, E.M.</name>
 				<description><![CDATA[FORSTER, E.M. (1879-1970)<br>
 				Novelist, lived here.<br>
-				Arlington Park Mansions, Sutton Lane, Turnham Green, W4<br>
+				Arlington Park Mansions, Sutton Lane, Turnham Green, W4 4HE<br>
 				Hounslow 1983]]></description>
 				<LookAt>
-					<longitude>-0.3761199999567567</longitude>
-					<latitude>51.47431800046312</latitude>
+					<longitude>-0.2672969998749342</longitude>
+					<latitude>51.49231399975528</latitude>
 					<altitude>0</altitude>
-					<heading>1.076071101839524e-012</heading>
+					<heading>1.051340301344469e-010</heading>
 					<tilt>0</tilt>
 					<range>500</range>
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
-					<coordinates>-0.3761199999567567,51.47431800046312,0</coordinates>
+					<coordinates>-0.2671299837191188,51.49229320210686,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
@@ -6100,6 +6100,68 @@
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
 					<coordinates>-0.1623459999585037,51.49678068070603,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>BAKER, Benjamin</name>
+				<description><![CDATA[BAKER, Benjamin (1840-1907)<br>
+				Civil Engineer and Designer of the Forth Bridge lived here<br>
+				3 Kensington Gate, Kensington, London W8 5NA<br>
+				Kensington &amp; Chelsea 2016]]></description>
+				<LookAt>
+					<longitude>-0.1832364079637749</longitude>
+					<latitude>51.49941115294099</latitude>
+					<altitude>0</altitude>
+					<heading>0</heading>
+					<tilt>0</tilt>
+					<range>500</range>
+					<altitudeMode>relativeToGround</altitudeMode>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.1832364079637749,51.49941115294099,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>BECKETT, Samuel</name>
+				<description><![CDATA[BECKETT, Samuel (1906-1989)<br>
+				Dramatist and Author lived here in 1934<br>
+				48 Paultons Square, Chelsea, London SW3 5DT<br>
+				Kensington &amp; Chelsea 2016<br>
+				Note: Plaque to Patrick Blackett also at this address]]></description>
+				<LookAt>
+					<longitude>-0.1734887606119073</longitude>
+					<latitude>51.48463901985033</latitude>
+					<altitude>0</altitude>
+					<heading>3.847385303324137e-011</heading>
+					<tilt>0</tilt>
+					<range>500</range>
+					<altitudeMode>relativeToGround</altitudeMode>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.1735111133006073,51.48467632897719,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>BLACKETT, Patrick</name>
+				<description><![CDATA[BLACKETT, Patrick (1897-1974)<br>
+				Physicist and Scientific Advisor lived here 1953-1969<br>
+				48 Paultons Square, Chelsea, London SW3 5DT<br>
+				Kensington &amp; Chelsea 2016<br>
+				Note: Plaque to Samuel Beckett also at this address]]></description>
+				<LookAt>
+					<longitude>-0.173524</longitude>
+					<latitude>51.484690</latitude>
+					<altitude>0</altitude>
+					<heading>3.847385303324137e-011</heading>
+					<tilt>0</tilt>
+					<range>500</range>
+					<altitudeMode>relativeToGround</altitudeMode>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.173524,51.484690,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
@@ -9371,7 +9433,7 @@
 				EDWARD McKNIGHT KAUFFER, 1890-1954, MARION DORN, 1896-1964, Designers, lived here in flats 139/141<br>
 				Swan Court, Chelsea Manor Street, Chelsea, SW3 5RY<br>
 				Kensington &amp; Chelsea 2015<br>
-				Shared plaque with Edward MacKnight Kauffer]]></description>
+				Shared plaque with Edward McKnight Kauffer]]></description>
 				<LookAt>
 					<longitude>-0.1669774697911364</longitude>
 					<latitude>51.48742575739021</latitude>
@@ -9387,8 +9449,8 @@
 				</Point>
 			</Placemark>
 			<Placemark>
-				<name>MaCKNIGHT KAUFFER, Edward</name>
-				<description><![CDATA[MaCKNIGHT KAUFFER, Edward (1890-1954)<br>
+				<name>McKNIGHT KAUFFER, Edward</name>
+				<description><![CDATA[McKNIGHT KAUFFER, Edward (1890-1954)<br>
 				EDWARD McKNIGHT KAUFFER, 1890-1954, MARION DORN, 1896-1964, Designers, lived here in flats 139/141<br>
 				Swan Court, Chelsea Manor Street, Chelsea, SW3 5RY<br>
 				Kensington &amp; Chelsea 2015<br>
@@ -19345,6 +19407,25 @@ Westminster 1938]]></description>
 			<Placemark>
 				<name>DON, David</name>
 				<description><![CDATA[DON, David (1799-1841)<br>
+Sir Joseph Banks 1743-1820, President of the Royal Society, Robert Brown 1773-1858 and, David Don 1800-1841 Botanists, Lived in a house on this site, The Linnean Society met here 1821-1857.<br>
+<em>On rebuilt premises. Replaces plaque put up in 1911 on old premises.</em><br>
+32 Soho Square, W1<br>
+Westminster 1938]]></description>
+				<LookAt>
+					<longitude>-0.1329150000090493</longitude>
+					<latitude>51.51532999945991</latitude>
+					<altitude>0</altitude>
+					<heading>5.932641435975341e-012</heading>
+					<tilt>0</tilt>
+					<range>500</range>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.1329150000090493,51.5153299994599,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<description><![CDATA[BANKS, Sir Joseph (1743-1820)<br>
 Sir Joseph Banks 1743-1820, President of the Royal Society, Robert Brown 1773-1858 and, David Don 1800-1841 Botanists, Lived in a house on this site, The Linnean Society met here 1821-1857.<br>
 <em>On rebuilt premises. Replaces plaque put up in 1911 on old premises.</em><br>
 32 Soho Square, W1<br>
