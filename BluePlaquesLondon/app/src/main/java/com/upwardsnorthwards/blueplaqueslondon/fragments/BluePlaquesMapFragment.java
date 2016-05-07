@@ -29,6 +29,7 @@
 package com.upwardsnorthwards.blueplaqueslondon.fragments;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -113,14 +114,13 @@ public class BluePlaquesMapFragment extends MapFragment implements OnCameraChang
     @SuppressWarnings("unused")
     @Subscribe
     public void onPlacemarkSelected(@NonNull Placemark placemark) {
+        final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getActivity().getApplication();
         if (placemark.getName().equals(getString(R.string.closest))) {
-            final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getActivity().getApplication();
             final Location currentLocation = app.getCurrentLocation();
             if (currentLocation != null) {
                 placemark = model.getPlacemarkClosestToPlacemark(currentLocation);
             }
         }
-        final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getActivity().getApplication();
         app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY, BluePlaquesConstants.TABLE_ROW_PRESSED_EVENT, placemark.getName());
         navigateToPlacemark(placemark);
     }
@@ -179,13 +179,16 @@ public class BluePlaquesMapFragment extends MapFragment implements OnCameraChang
 
     private void mapConfigured() {
         addPlacemarksToMap();
-        final LatLng lastKnownCoordinate = BluePlaquesSharedPreferences
-                .getLastKnownBPLCoordinate(getActivity());
-        MapsInitializer.initialize(getActivity());
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                lastKnownCoordinate,
-                BluePlaquesSharedPreferences.getMapZoom(getActivity())));
-        setProgressBarVisibility(View.GONE);
+        final Activity activity = getActivity();
+        if (activity != null) {
+            final LatLng lastKnownCoordinate = BluePlaquesSharedPreferences
+                    .getLastKnownBPLCoordinate(activity);
+            MapsInitializer.initialize(activity);
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                    lastKnownCoordinate,
+                    BluePlaquesSharedPreferences.getMapZoom(activity)));
+            setProgressBarVisibility(View.GONE);
+        }
     }
 
     private void addPlacemarksToMap() {
@@ -217,10 +220,15 @@ public class BluePlaquesMapFragment extends MapFragment implements OnCameraChang
 
     @Override
     public void onCameraChange(@NonNull final CameraPosition position) {
-        BluePlaquesSharedPreferences.saveLastKnownCoordinate(getActivity(),
-                position.target);
-        BluePlaquesSharedPreferences.saveMapZoom(getActivity(), googleMap,
-                position.zoom);
+        final Activity activity = getActivity();
+        if (activity != null) {
+            BluePlaquesSharedPreferences.saveLastKnownCoordinate(activity,
+                    position.target);
+            BluePlaquesSharedPreferences.saveMapZoom(activity, googleMap,
+                    position.zoom);
+        } else {
+            Log.v(TAG, "Tried saving the coordinates after a camera change, but the fragment returned null for getActivity");
+        }
     }
 
     @Override
@@ -229,46 +237,55 @@ public class BluePlaquesMapFragment extends MapFragment implements OnCameraChang
         final String key = Placemark.keyFromLatLng(latLng.latitude, latLng.longitude);
         final Integer location = model.getParser().getKeyToArrayPositions().get(key).get(0);
         final Placemark placemark = model.getParser().getPlacemarks().get(location);
-        marker.setTitle(placemark.getTrimmedName());
-        marker.setSnippet(getSnippetForPlacemark(placemark, true));
-        BluePlaquesSharedPreferences.saveLastKnownBPLCoordinate(getActivity(),
-                latLng);
-        final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getActivity()
-                .getApplication();
-        app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
-                BluePlaquesConstants.MARKER_PRESSED_EVENT, marker.getTitle());
+        final Activity activity = getActivity();
+        if (activity != null) {
+            final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) activity
+                    .getApplication();
+            marker.setTitle(placemark.getTrimmedName());
+            marker.setSnippet(getSnippetForPlacemark(placemark, true));
+            BluePlaquesSharedPreferences.saveLastKnownBPLCoordinate(activity,
+                    latLng);
+            app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
+                    BluePlaquesConstants.MARKER_PRESSED_EVENT, marker.getTitle());
+        }
         return false;
     }
 
     @Override
     public void onInfoWindowClick(@NonNull final Marker marker) {
-        final Intent intent = new Intent(getActivity(), MapDetailActivity.class);
-        intent.putParcelableArrayListExtra(
-                BluePlaquesConstants.INFO_WINDOW_CLICKED_PARCLEABLE_KEY,
-                getListOfPlacemarksForMarker(marker));
-        final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getActivity()
-                .getApplication();
-        app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
-                BluePlaquesConstants.MARKER_INFO_WINDOW_PRESSED_EVENT,
-                marker.getTitle());
-        startActivity(intent);
+        final Activity activity = getActivity();
+        if (activity != null) {
+            final Intent intent = new Intent(activity, MapDetailActivity.class);
+            intent.putParcelableArrayListExtra(
+                    BluePlaquesConstants.INFO_WINDOW_CLICKED_PARCLEABLE_KEY,
+                    getListOfPlacemarksForMarker(marker));
+            final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) activity
+                    .getApplication();
+            app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
+                    BluePlaquesConstants.MARKER_INFO_WINDOW_PRESSED_EVENT,
+                    marker.getTitle());
+            startActivity(intent);
+        }
     }
 
     private void navigateToPlacemark(@NonNull final Placemark placemark) {
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
-                        placemark.getLatitude(), placemark.getLongitude()),
-                BluePlaquesSharedPreferences.getMapZoom(getActivity())));
-        final LatLng latLng = new LatLng(placemark.getLatitude(),
-                placemark.getLongitude());
-        BluePlaquesSharedPreferences.saveLastKnownBPLCoordinate(getActivity(),
-                latLng);
-        for (final KeyedMarker keyedMarker : markers) {
-            if (placemark.key().equals(keyedMarker.getKey())) {
-                Marker marker = keyedMarker.getMarker();
-                marker.setTitle(placemark.getTrimmedName());
-                marker.setSnippet(getSnippetForPlacemark(placemark, true));
-                marker.showInfoWindow();
-                break;
+        final Activity activity = getActivity();
+        if (activity != null) {
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
+                            placemark.getLatitude(), placemark.getLongitude()),
+                    BluePlaquesSharedPreferences.getMapZoom(activity)));
+            final LatLng latLng = new LatLng(placemark.getLatitude(),
+                    placemark.getLongitude());
+            BluePlaquesSharedPreferences.saveLastKnownBPLCoordinate(activity,
+                    latLng);
+            for (final KeyedMarker keyedMarker : markers) {
+                if (placemark.key().equals(keyedMarker.getKey())) {
+                    Marker marker = keyedMarker.getMarker();
+                    marker.setTitle(placemark.getTrimmedName());
+                    marker.setSnippet(getSnippetForPlacemark(placemark, true));
+                    marker.showInfoWindow();
+                    break;
+                }
             }
         }
     }
