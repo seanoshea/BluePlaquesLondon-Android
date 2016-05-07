@@ -53,19 +53,18 @@ public class BluePlaquesSharedPreferences {
 
     @NonNull
     public static LatLng getLastKnownBPLCoordinate(@NonNull final Context context) {
-        return getSavedCoordinate(context, LAST_KNOWN_BPL_COORDINATE_LATITUDE,
-                LAST_KNOWN_BPL_COORDINATE_LONGITUDE);
+        final SharedPreferences preferences = context.getSharedPreferences(
+                PREFERENCES_KEY, Context.MODE_PRIVATE);
+        final float latitude = preferences.getFloat(LAST_KNOWN_BPL_COORDINATE_LATITUDE,
+                (float) BluePlaquesConstants.DEFAULT_LATITUDE);
+        final float longitude = preferences.getFloat(LAST_KNOWN_BPL_COORDINATE_LONGITUDE,
+                (float) BluePlaquesConstants.DEFAULT_LONGITUDE);
+        return new LatLng(latitude, longitude);
     }
 
     public static void saveLastKnownBPLCoordinate(@NonNull final Context context, @NonNull final LatLng latLng) {
         saveCoordinate(context, latLng, LAST_KNOWN_BPL_COORDINATE_LATITUDE,
                 LAST_KNOWN_BPL_COORDINATE_LONGITUDE);
-    }
-
-    @NonNull
-    public static LatLng getLastKnownCoordinate(@NonNull final Context context) {
-        return getSavedCoordinate(context, LAST_KNOWN_COORDINATE_LATITUDE,
-                LAST_KNOWN_COORDINATE_LONGITUDE);
     }
 
     public static void saveLastKnownCoordinate(@NonNull final Context context, @NonNull final LatLng latLng) {
@@ -111,16 +110,5 @@ public class BluePlaquesSharedPreferences {
         editor.putFloat(latitudeKey, (float) latLng.latitude);
         editor.putFloat(longitudeKey, (float) latLng.longitude);
         editor.apply();
-    }
-
-    @NonNull
-    private static LatLng getSavedCoordinate(@NonNull final Context context, final String latitudeKey, final String longitudeKey) {
-        final SharedPreferences preferences = context.getSharedPreferences(
-                PREFERENCES_KEY, Context.MODE_PRIVATE);
-        final float latitude = preferences.getFloat(latitudeKey,
-                (float) BluePlaquesConstants.DEFAULT_LATITUDE);
-        final float longitude = preferences.getFloat(longitudeKey,
-                (float) BluePlaquesConstants.DEFAULT_LONGITUDE);
-        return new LatLng(latitude, longitude);
     }
 }
