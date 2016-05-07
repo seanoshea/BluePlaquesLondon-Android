@@ -33,6 +33,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Window;
 import android.webkit.WebChromeClient;
@@ -49,6 +50,8 @@ import com.upwardsnorthwards.blueplaqueslondon.model.WikipediaModel;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 
 public class WikipediaActivity extends BaseActivity implements IWikipediaModelDelegate {
+
+    private static final String TAG = "WikipediaActivity";
 
     private WebView webView;
     private Placemark placemark;
@@ -71,8 +74,13 @@ public class WikipediaActivity extends BaseActivity implements IWikipediaModelDe
     @Override
     protected void onResume() {
         super.onResume();
-        setCustomTitleBarText(placemark.getTrimmedName());
-        initiateWebViewRequest();
+        if (placemark != null) {
+            setCustomTitleBarText(placemark.getTrimmedName());
+            initiateWebViewRequest();
+        } else {
+            Log.v(TAG, "Placemark was null when resuming the WikipediaActivity");
+            onRetriveWikipediaUrlFailure();
+        }
     }
 
     @Override
