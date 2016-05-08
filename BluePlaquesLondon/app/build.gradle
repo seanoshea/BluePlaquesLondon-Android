@@ -30,7 +30,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion '23.0.3'
     lintOptions {
-        abortOnError true
+        abortOnError false
         lintConfig file("${project.rootDir}/config/lint/lint.xml")
         htmlReport true
         htmlOutput file("$project.buildDir/reports/lint/lint.html")

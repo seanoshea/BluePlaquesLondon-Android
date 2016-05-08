@@ -10,6 +10,14 @@ Android Application for finding Blue Plaques through London. [Google Play Store 
 <a href="http://imgur.com/tsyVF9L"><img src="http://i.imgur.com/tsyVF9L.png" title="source: imgur.com" /></a>
 <a href="http://imgur.com/crwJFqh"><img src="http://i.imgur.com/crwJFqh.png" title="source: imgur.com" /></a>
 
+### Static Code Analysis
+Android linting, PMD and findbugs can all be run from the `BluePlaquesLondon` subfolder with commands like:
+```
+gradlew lint
+gradlew pmd
+gradlew findbugs
+```
+
 ### Contributing
 Suggestions and bug reports for the application are always welcome. Open an issue on github if you'd like to see an addition to the application or if you spot a bug. Pull requests are especially welcome (and most likely to get merged if you have some unit tests associated with the merge request).
 
