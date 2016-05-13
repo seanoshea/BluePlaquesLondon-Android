@@ -5620,6 +5620,26 @@
 					<coordinates>-0.2718039999838169,51.48243199965936,0</coordinates>
 				</Point>
 			</Placemark>
+            <Placemark>
+                <name>COOPER, Tommy</name>
+                <description><![CDATA[COOPER, Tommy (1921-1984)<br>
+                    Comedian lived here 1955-1984<br>
+                    51 Barrowgate Road, Chiswick, London W4 4QT<br>
+                    Hounslow 2016]]>
+                </description>
+                <LookAt>
+                    <longitude>-0.265478</longitude>
+                    <latitude>51.488658</latitude>
+                    <altitude>0</altitude>
+                    <heading>0</heading>
+                    <tilt>0</tilt>
+                    <range>500</range>
+                </LookAt>
+                <styleUrl>#myDefaultStyles</styleUrl>
+                <Point>
+                    <coordinates>-0.265478,51.48865800000001,0</coordinates>
+                </Point>
+            </Placemark>
 			<Placemark>
 				<name>FORSTER, E.M.</name>
 				<description><![CDATA[FORSTER, E.M. (1879-1970)<br>

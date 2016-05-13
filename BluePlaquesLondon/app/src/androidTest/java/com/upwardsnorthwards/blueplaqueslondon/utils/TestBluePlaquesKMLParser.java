@@ -63,8 +63,8 @@ public class TestBluePlaquesKMLParser extends InstrumentationTestCase {
         List<Placemark> placemarks = parser.getPlacemarks();
         List<Placemark> massagedPlacemarks = parser.getMassagedPlacemarks();
 
-        assertTrue(placemarks.size() == 1016);
-        assertTrue(massagedPlacemarks.size() == 933);
+        assertTrue(placemarks.size() == 1017);
+        assertTrue(massagedPlacemarks.size() == 934);
     }
 
     public void testNames() {
