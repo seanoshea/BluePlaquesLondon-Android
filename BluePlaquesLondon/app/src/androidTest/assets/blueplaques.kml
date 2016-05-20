@@ -6915,6 +6915,25 @@
 					<coordinates>-0.201198000005121,51.49782900007024,0</coordinates>
 				</Point>
 			</Placemark>
+            <Placemark>
+                <name>DAVID, Elizabeth</name>
+                <description><![CDATA[DAVID, Elizabeth (1913-1992)<br>
+                    Cookery writer lived and worked here 1947-1992<br>
+                    24 Halsey Street, London SW3 2PT<br>
+                    Kensington &amp; Chelsea 2016]]></description>
+                <LookAt>
+                    <longitude>-0.163332</longitude>
+                    <latitude>51.49423</latitude>
+                    <altitude>0</altitude>
+                    <heading>0</heading>
+                    <tilt>0</tilt>
+                    <range>500</range>
+                </LookAt>
+                <styleUrl>#myDefaultStyles</styleUrl>
+                <Point>
+                    <coordinates>-0.163332,51.49423,0</coordinates>
+                </Point>
+            </Placemark>
 			<Placemark>
 				<name>DE MORGAN, William</name>
 				<description><![CDATA[DE MORGAN, William (1839-1917)<br>
