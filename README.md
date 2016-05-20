@@ -36,7 +36,7 @@ keytool -list -v -keystore ~/production.keystore
 - Navigate to https://console.developers.google.com/apis/credentials?project=blue-plaques-london
 - Alter the `com.google.android.maps.v2.API_KEY` property in `AndroidManifest.xml` to include the production key for Google Maps. The Google Developer Console lists it as a production key.
 - Execute `./gradlew assembleRelease` to build.
-- Execute `adb install app/app-release.apk` while having a device attached.
+- Execute `adb install app/build/outputs/apk/app-release.apk` while having a device attached.
 
 ### iPhone/iPad Version
 The original idea behind an application for showing historical blue plaques around London was implemented in Objective-C for iOS devices. The source code for that version of the application is available [here](http://github.com/seanoshea/BluePlaquesLondon). It is downloadable from the Apple's [AppStore](http://www.appstore.com/seanoshea)
