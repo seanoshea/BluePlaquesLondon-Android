@@ -40,6 +40,8 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
@@ -65,7 +67,7 @@ import io.fabric.sdk.android.Fabric;
 /**
  * Application class. Initialises Google Play Services and location services.
  */
-public class BluePlaquesLondonApplication extends Application implements
+public class BluePlaquesLondonApplication extends MultiDexApplication implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
@@ -83,6 +85,12 @@ public class BluePlaquesLondonApplication extends Application implements
     public static RefWatcher getRefWatcher(@NonNull Context context) {
         BluePlaquesLondonApplication application = (BluePlaquesLondonApplication) context.getApplicationContext();
         return application.refWatcher;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     @Override

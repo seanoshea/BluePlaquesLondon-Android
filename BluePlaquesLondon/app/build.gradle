@@ -41,6 +41,8 @@ android {
         targetSdkVersion 23
         versionCode 10
         versionName "1.7"
+        multiDexEnabled true
+        testInstrumentationRunner "com.android.test.runner.MultiDexTestRunner"
         //noinspection GroovyAssignabilityCheck
         signingConfig signingConfigs.config
     }
@@ -124,4 +126,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-ads:9.0.2'
     compile 'com.google.android.gms:play-services-auth:9.0.2'
     compile 'com.google.android.gms:play-services-gcm:9.0.2'
+    compile 'com.android.support:multidex:1.0.1'
 }
