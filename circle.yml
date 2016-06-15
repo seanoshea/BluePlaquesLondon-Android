@@ -1,3 +1,3 @@
 test:
   override:
-    - ./BluePlaquesLondon/gradlew assembleDebug
+    - cd BluePlaquesLondon && ./gradlew assembleDebug
