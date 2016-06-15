@@ -1,6 +1,6 @@
 [![Twitter: @seanoshea](https://img.shields.io/badge/contact-@seanoshea-blue.svg?style=flat)](https://twitter.com/seanoshea)
 [![License](http://img.shields.io/badge/license-BSD-green.svg?style=flat)](https://github.com/seanoshea/BluePlaquesLondon-Android/blob/master/LICENSE)
-[![Build Status](https://img.shields.io/travis/seanoshea/BluePlaquesLondon-Android/develop.svg?style=flat)](https://travis-ci.org/seanoshea/BluePlaquesLondon-Android)
+[![Build Status](https://circleci.com/gh/seanoshea/BluePlaquesLondon-Android.svg?style=svg)](https://circleci.com/gh/seanoshea/BluePlaquesLondon-Android.svg?style=svg)
 ### BluePlaquesLondon Android
 Android Application for finding Blue Plaques through London. [Google Play Store Link](https://play.google.com/store/apps/details?id=com.upwardsnorthwards.blueplaqueslondon)
 
