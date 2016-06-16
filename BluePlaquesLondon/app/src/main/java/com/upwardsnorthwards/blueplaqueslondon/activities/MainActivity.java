@@ -293,11 +293,11 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
 
     @Override
     public void lostInternetConnectivity() {
-
+        Log.v(TAG, "Lost Internet Connectivity");
     }
 
     @Override
     public void regainedInternetConnectivity() {
-
+        Log.v(TAG, "Regained Internet Connectivity");
     }
 }

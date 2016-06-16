@@ -30,7 +30,6 @@
 package com.upwardsnorthwards.blueplaqueslondon;
 
 import android.Manifest;
-import android.app.Application;
 import android.content.Context;
 import android.content.IntentSender;
 import android.content.pm.PackageInfo;
