@@ -4,7 +4,6 @@ dependencies:
     - echo y | android update sdk --no-ui --all --filter "build-tools-23.0.3"
 test:
   override:
-    - cd BluePlaquesLondon
     # start the emulator
     - emulator -avd circleci-android22 -no-audio -no-window:
         background: true
@@ -12,8 +11,4 @@ test:
     # wait for it to have booted
     - circle-android wait-for-boot
     # run tests  against the emulator.
-    - ./gradlew connectedAndroidTest
-    # copy the build outputs to artifacts
-    - cp -r my-project/build/outputs $CIRCLE_ARTIFACTS
-    # copy the test results to the test results directory.
-    - cp -r my-project/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
+    - cd BluePlaquesLondon && ./gradlew connectedAndroidTest
