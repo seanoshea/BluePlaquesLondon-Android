@@ -3187,10 +3187,10 @@
         <state vertical-scroll-proportion="0.81201047">
           <caret line="300" column="28" selection-start-line="300" selection-start-column="28" selection-end-line="300" selection-end-column="28" />
           <folding>
-            <element signature="e#13201#13202#0" expanded="true" />
-            <element signature="e#13257#13258#0" expanded="true" />
-            <element signature="e#13321#13322#0" expanded="true" />
-            <element signature="e#13381#13382#0" expanded="true" />
+            <element signature="e#13201#13202#0" expanded="false" />
+            <element signature="e#13257#13258#0" expanded="false" />
+            <element signature="e#13321#13322#0" expanded="false" />
+            <element signature="e#13381#13382#0" expanded="false" />
           </folding>
         </state>
       </provider>
