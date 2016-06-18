@@ -5619,27 +5619,27 @@
 				<Point>
 					<coordinates>-0.2718039999838169,51.48243199965936,0</coordinates>
 				</Point>
-			</Placemark>
-            <Placemark>
-                <name>COOPER, Tommy</name>
-                <description><![CDATA[COOPER, Tommy (1921-1984)<br>
-                    Comedian lived here 1955-1984<br>
-                    51 Barrowgate Road, Chiswick, London W4 4QT<br>
-                    Hounslow 2016]]>
-                </description>
-                <LookAt>
-                    <longitude>-0.265478</longitude>
-                    <latitude>51.488658</latitude>
-                    <altitude>0</altitude>
-                    <heading>0</heading>
-                    <tilt>0</tilt>
-                    <range>500</range>
-                </LookAt>
-                <styleUrl>#myDefaultStyles</styleUrl>
-                <Point>
-                    <coordinates>-0.265478,51.48865800000001,0</coordinates>
-                </Point>
-            </Placemark>
+			</Placemark>	
+			<Placemark>
+				<name>COOPER, Tommy</name>
+				<description><![CDATA[COOPER, Tommy (1921-1984)<br>
+				Comedian lived here 1955-1984<br>
+				51 Barrowgate Road, Chiswick, London W4 4QT<br>
+				Hounslow 2016]]>
+				</description>
+				<LookAt>
+					<longitude>-0.265478</longitude>
+					<latitude>51.488658</latitude>
+					<altitude>0</altitude>
+					<heading>0</heading>
+					<tilt>0</tilt>
+					<range>500</range>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.265478,51.48865800000001,0</coordinates>
+				</Point>
+			</Placemark>			
 			<Placemark>
 				<name>FORSTER, E.M.</name>
 				<description><![CDATA[FORSTER, E.M. (1879-1970)<br>
@@ -6120,6 +6120,26 @@
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
 					<coordinates>-0.1623459999585037,51.49678068070603,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>ASHTON, Sir Frederick</name>
+				<description><![CDATA[ASHTON, Sir Frederick (1904-1988)<br>
+				Choreographer lived here 1959-1984<br>
+				8 Marlborough Street, Chelsea, London SW3 3PS<br>
+				Kensington &amp; Chelsea 2016]]></description>
+				<LookAt>
+					<longitude>-0.1682558201437301</longitude>
+					<latitude>51.49138847601042</latitude>
+					<altitude>0</altitude>
+					<heading>0</heading>
+					<tilt>0</tilt>
+					<range>500</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.1683100793471004,51.4913786159706,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
@@ -6915,25 +6935,25 @@
 					<coordinates>-0.201198000005121,51.49782900007024,0</coordinates>
 				</Point>
 			</Placemark>
-            <Placemark>
-                <name>DAVID, Elizabeth</name>
-                <description><![CDATA[DAVID, Elizabeth (1913-1992)<br>
-                    Cookery writer lived and worked here 1947-1992<br>
-                    24 Halsey Street, London SW3 2PT<br>
-                    Kensington &amp; Chelsea 2016]]></description>
-                <LookAt>
-                    <longitude>-0.163332</longitude>
-                    <latitude>51.49423</latitude>
-                    <altitude>0</altitude>
-                    <heading>0</heading>
-                    <tilt>0</tilt>
-                    <range>500</range>
-                </LookAt>
-                <styleUrl>#myDefaultStyles</styleUrl>
-                <Point>
-                    <coordinates>-0.163332,51.49423,0</coordinates>
-                </Point>
-            </Placemark>
+			<Placemark>
+				<name>DAVID, Elizabeth</name>
+				<description><![CDATA[DAVID, Elizabeth (1913-1992)<br>
+				Cookery writer lived and worked here 1947-1992<br>
+				24 Halsey Street, London SW3 2PT<br>
+				Kensington &amp; Chelsea 2016]]></description>
+				<LookAt>
+					<longitude>-0.163332</longitude>
+					<latitude>51.49423</latitude>
+					<altitude>0</altitude>
+					<heading>0</heading>
+					<tilt>0</tilt>
+					<range>500</range>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.163332,51.49423,0</coordinates>
+				</Point>
+			</Placemark>
 			<Placemark>
 				<name>DE MORGAN, William</name>
 				<description><![CDATA[DE MORGAN, William (1839-1917)<br>
@@ -13133,6 +13153,26 @@
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
 					<coordinates>-0.157539999883588,51.5230849999283,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>FONTEYN, Dame Margot</name>
+				<description><![CDATA[FONTEYN, Dame Margot (1919-1991)<br>
+				Prima Ballerina Assoluta lived here in Flat 9<br>
+				118 Long Acre, Covent Garden, London WC2E 9PA<br>
+				Westminster 2016]]></description>
+				<LookAt>
+					<longitude>-0.1250890925460002</longitude>
+					<latitude>51.51269503520454</latitude>
+					<altitude>0</altitude>
+					<heading>4.748146964410569e-011</heading>
+					<tilt>0</tilt>
+					<range>500</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.1250890926079407,51.51269503534564,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
@@ -19425,7 +19465,7 @@
 			</Placemark>
 			<Placemark>
 				<name>BROWN, Robert</name>
-				<description><![CDATA[BROWN, Robert (1773-1858)<br>
+                <description><![CDATA[BROWN, Robert (1773-1858)<br>
 Sir Joseph Banks 1743-1820, President of the Royal Society, Robert Brown 1773-1858 and, David Don 1800-1841 Botanists, Lived in a house on this site, The Linnean Society met here 1821-1857.<br>
 <em>On rebuilt premises. Replaces plaque put up in 1911 on old premises.</em><br>
 32 Soho Square, W1<br>
@@ -19445,7 +19485,7 @@ Westminster 1938]]></description>
 			</Placemark>
 			<Placemark>
 				<name>DON, David</name>
-				<description><![CDATA[DON, David (1799-1841)<br>
+                <description><![CDATA[DON, David (1799-1841)<br>
 Sir Joseph Banks 1743-1820, President of the Royal Society, Robert Brown 1773-1858 and, David Don 1800-1841 Botanists, Lived in a house on this site, The Linnean Society met here 1821-1857.<br>
 <em>On rebuilt premises. Replaces plaque put up in 1911 on old premises.</em><br>
 32 Soho Square, W1<br>
