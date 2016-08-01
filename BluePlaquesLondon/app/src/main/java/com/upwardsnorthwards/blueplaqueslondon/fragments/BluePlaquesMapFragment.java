@@ -130,13 +130,8 @@ public class BluePlaquesMapFragment extends MapFragment implements OnCameraChang
         setupMap();
     }
 
-    @SuppressWarnings("deprecation")
     private void mapReady(final GoogleMap map) {
         googleMap = map;
-        if (googleMap == null) {
-            googleMap = ((BluePlaquesMapFragment) getFragmentManager().findFragmentById(
-                    R.id.map)).getMap();
-        }
         if (googleMap != null) {
             // a few settings
             googleMap.setIndoorEnabled(false);

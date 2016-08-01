@@ -386,6 +386,28 @@
 			</Placemark>
 		</Folder>
 		<Folder>
+			<name>Barking and Dagenham</name>
+			<Placemark>
+				<name>MOORE, Bobby</name>
+				<description><![CDATA[MOORE, Bobby (1941-1993)<br>
+				Captain of the World Cup-winning England Football Team lived here<br>
+				43 Waverley Gardens, Barking, London IG11 0BH<br>
+				Barking &amp; Dagenham 2016]]></description>
+				<LookAt>
+					<longitude>0.09116914018367561</longitude>
+					<latitude>51.52844343828044</latitude>
+					<altitude>0</altitude>
+					<heading>0</heading>
+					<tilt>0</tilt>
+					<range>500</range>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>0.09111920408066299,51.52843344287021,0</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+		<Folder>
 			<name>Bexley</name>
 			<Placemark>
 				<name>CASTLEREAGH, Viscount</name>
@@ -10140,26 +10162,6 @@
 		<Folder>
 			<name>Lewisham</name>
 			<Placemark>
-				<name>MARX, Eleanor</name>
-				<description><![CDATA[MARX, Eleanor (1855-1898)<br>
-				Socialist Campaigner, lived and died here<br>
-				7 Jews Walk, SE26<br>
-				Lewisham 2008]]></description>
-				<LookAt>
-					<longitude>-0.05955599991387617</longitude>
-					<latitude>51.42919599922411</latitude>
-					<altitude>0</altitude>
-					<heading>1.077470048937699e-010</heading>
-					<tilt>0</tilt>
-					<range>500</range>
-					<altitudeMode>relativeToGround</altitudeMode>
-				</LookAt>
-				<styleUrl>#myDefaultStyles</styleUrl>
-				<Point>
-					<coordinates>-0.05955599991387617,51.42919599922411,0</coordinates>
-				</Point>
-			</Placemark>
-			<Placemark>
 				<name>BAIRD, John Logie</name>
 				<description><![CDATA[BAIRD, John Logie (1888-1946)<br>
 				Television Pioneer, lived here.<br>
@@ -10207,13 +10209,32 @@
 					<longitude>-0.008091999952313245</longitude>
 					<latitude>51.47193299993501</latitude>
 					<altitude>0</altitude>
-					<heading>-4.054794274779168e-011</heading>
+					<heading></heading>
 					<tilt>0</tilt>
 					<range>500</range>
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
 					<coordinates>-0.008091999952313245,51.47193299993502,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>GROVE, George</name>
+				<description><![CDATA[GROVE, George (1820-1900)<br>
+				Promoter of Musical Knowledge lived here<br>
+				14 Westwood Hill, Sydenham, London SE26 6QR<br>
+				Lewisham 2016]]></description>
+				<LookAt>
+					<longitude>-0.05896219779302214</longitude>
+					<latitude>51.42789274290096</latitude>
+					<altitude>0</altitude>
+					<heading>0</heading>
+					<tilt>0</tilt>
+					<range>500</range>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.05896219779302214,51.42789274290095,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
@@ -10233,6 +10254,26 @@
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
 					<coordinates>-0.06096900002651751,51.44052899987539,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>MARX, Eleanor</name>
+				<description><![CDATA[MARX, Eleanor (1855-1898)<br>
+				Socialist Campaigner, lived and died here<br>
+				7 Jews Walk, SE26<br>
+				Lewisham 2008]]></description>
+				<LookAt>
+					<longitude>-0.05955599991387617</longitude>
+					<latitude>51.42919599922411</latitude>
+					<altitude>0</altitude>
+					<heading>1.077470048937699e-010</heading>
+					<tilt>0</tilt>
+					<range>500</range>
+					<altitudeMode>relativeToGround</altitudeMode>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.05955599991387617,51.42919599922411,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
@@ -19465,7 +19506,7 @@
 			</Placemark>
 			<Placemark>
 				<name>BROWN, Robert</name>
-                <description><![CDATA[BROWN, Robert (1773-1858)<br>
+        <description><![CDATA[BROWN, Robert (1773-1858)<br>
 Sir Joseph Banks 1743-1820, President of the Royal Society, Robert Brown 1773-1858 and, David Don 1800-1841 Botanists, Lived in a house on this site, The Linnean Society met here 1821-1857.<br>
 <em>On rebuilt premises. Replaces plaque put up in 1911 on old premises.</em><br>
 32 Soho Square, W1<br>
@@ -19485,7 +19526,7 @@ Westminster 1938]]></description>
 			</Placemark>
 			<Placemark>
 				<name>DON, David</name>
-                <description><![CDATA[DON, David (1799-1841)<br>
+        <description><![CDATA[DON, David (1799-1841)<br>
 Sir Joseph Banks 1743-1820, President of the Royal Society, Robert Brown 1773-1858 and, David Don 1800-1841 Botanists, Lived in a house on this site, The Linnean Society met here 1821-1857.<br>
 <em>On rebuilt premises. Replaces plaque put up in 1911 on old premises.</em><br>
 32 Soho Square, W1<br>
