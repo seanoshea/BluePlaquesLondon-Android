@@ -1,19 +1,19 @@
 buildscript {
     repositories {
-        maven { url 'https://maven.fabric.io/public' }
+        maven { url "https://maven.fabric.io/public" }
     }
 
     dependencies {
-        classpath 'io.fabric.tools:gradle:1.15.2'
+        classpath "io.fabric.tools:gradle:1.15.2"
     }
 }
-apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
+apply plugin: "com.android.application"
+apply plugin: "io.fabric"
 repositories {
-    maven { url 'https://maven.fabric.io/public' }
+    maven { url "https://maven.fabric.io/public" }
 }
-apply plugin: 'pmd'
-apply plugin: 'findbugs'
+apply plugin: "pmd"
+apply plugin: "findbugs"
 
 android {
     signingConfigs {
@@ -21,14 +21,14 @@ android {
         config {
         }
         production {
-            keyAlias 'production'
-            keyPassword 'password_here'
-            storeFile file('~/production.keystore')
-            storePassword 'password_here'
+            keyAlias "production"
+            keyPassword "password_here"
+            storeFile file("~/production.keystore")
+            storePassword "password_here"
         }
     }
     compileSdkVersion 24
-    buildToolsVersion '24.0.1'
+    buildToolsVersion "24.0.1"
     lintOptions {
         abortOnError false
         lintConfig file("${project.rootDir}/config/lint/lint.xml")
@@ -49,7 +49,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             //noinspection GroovyAssignabilityCheck
             signingConfig signingConfigs.production
         }
@@ -63,9 +63,9 @@ task pmd(type: Pmd, dependsOn: assembleDebug) {
     ignoreFailures = false
     ruleSets = []
 
-    source 'src'
-    include '**/*.java'
-    exclude '**/gen/**'
+    source "src"
+    include "**/*.java"
+    exclude "**/gen/**"
 
     reports {
         xml.enabled = false
@@ -87,9 +87,9 @@ task findbugs(type: FindBugs) {
     excludeFilter = new File("${project.rootDir}/config/findbugs/findbugs-filter.xml")
     classes = files("${project.rootDir}/app/build/intermediates/classes")
 
-    source 'src'
-    include '**/*.java'
-    exclude '**/gen/**'
+    source "src"
+    include "**/*.java"
+    exclude "**/gen/**"
 
     reports {
         xml.enabled = false
@@ -112,19 +112,21 @@ check.doLast {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3'
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
+    ext.googlePlayServicesVersion = "9.4.0"
+    ext.androidBuildToolsVersion = "24.1.1"
+    compile fileTree(dir: "libs", include: ["*.jar"])
+    debugCompile "com.squareup.leakcanary:leakcanary-android:1.3"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:1.3"
+    compile("com.crashlytics.sdk.android:crashlytics:2.5.5@aar") {
         transitive = true;
     }
-    compile 'com.android.support:appcompat-v7:24.1.1'
-    compile 'com.google.android.gms:play-services:9.2.1'
-    compile 'com.github.hotchemi:android-rate:0.5.0'
-    compile 'com.squareup:otto:1.3.8'
-    compile 'com.android.support:support-annotations:24.1.1'
-    compile 'com.google.android.gms:play-services-ads:9.2.1'
-    compile 'com.google.android.gms:play-services-auth:9.2.1'
-    compile 'com.google.android.gms:play-services-gcm:9.2.1'
-    compile 'com.android.support:multidex:1.0.1'
+    compile "com.android.support:appcompat-v7:$androidBuildToolsVersion"
+    compile "com.google.android.gms:play-services:$googlePlayServicesVersion"
+    compile "com.github.hotchemi:android-rate:0.5.0"
+    compile "com.squareup:otto:1.3.8"
+    compile "com.android.support:support-annotations:$androidBuildToolsVersion"
+    compile "com.google.android.gms:play-services-ads:$googlePlayServicesVersion"
+    compile "com.google.android.gms:play-services-auth:$googlePlayServicesVersion"
+    compile "com.google.android.gms:play-services-gcm:$googlePlayServicesVersion"
+    compile "com.android.support:multidex:1.0.1"
 }
