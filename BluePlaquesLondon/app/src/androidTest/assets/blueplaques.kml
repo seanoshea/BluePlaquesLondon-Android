@@ -5729,13 +5729,32 @@
 					<longitude>-0.2531839999791146</longitude>
 					<latitude>51.49153899972601</latitude>
 					<altitude>0</altitude>
-					<heading>3.84133976462101e-012</heading>
+					<heading>0</heading>
 					<tilt>0</tilt>
 					<range>500</range>
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
 					<coordinates>-0.2531839999791146,51.49153899972601,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>MERCURY, Freddie</name>
+				<description><![CDATA[MERCURY, Freddie (1946-1991)<br>
+				(FRED BULSARA) Singer and Songwriter lived here<br>
+				22 Gladstone Avenue, Feltham, London TW14 9LL<br>
+				Hounslow 2016]]></description>
+				<LookAt>
+					<longitude>-0.4102009240223981</longitude>
+					<latitude>51.45388532206272</latitude>
+					<altitude>0</altitude>
+					<heading>0</heading>
+					<tilt>0</tilt>
+					<range>500</range>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.4102804823357753,51.45395371454573,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
@@ -5748,7 +5767,7 @@
 					<longitude>-0.244799999915017</longitude>
 					<latitude>51.49854599983968</latitude>
 					<altitude>0</altitude>
-					<heading>2.427210487458744e-012</heading>
+					<heading>0</heading>
 					<tilt>0</tilt>
 					<range>500</range>
 				</LookAt>
@@ -10219,8 +10238,8 @@
 				</Point>
 			</Placemark>
 			<Placemark>
-				<name>GROVE, George</name>
-				<description><![CDATA[GROVE, George (1820-1900)<br>
+				<name>GROVE, Sir George</name>
+				<description><![CDATA[GROVE, Sir George (1820-1900)<br>
 				Promoter of Musical Knowledge lived here<br>
 				14 Westwood Hill, Sydenham, London SE26 6QR<br>
 				Lewisham 2016]]></description>
@@ -19506,7 +19525,7 @@
 			</Placemark>
 			<Placemark>
 				<name>BROWN, Robert</name>
-        <description><![CDATA[BROWN, Robert (1773-1858)<br>
+				<description><![CDATA[BROWN, Robert (1773-1858)<br>
 Sir Joseph Banks 1743-1820, President of the Royal Society, Robert Brown 1773-1858 and, David Don 1800-1841 Botanists, Lived in a house on this site, The Linnean Society met here 1821-1857.<br>
 <em>On rebuilt premises. Replaces plaque put up in 1911 on old premises.</em><br>
 32 Soho Square, W1<br>
@@ -19526,7 +19545,7 @@ Westminster 1938]]></description>
 			</Placemark>
 			<Placemark>
 				<name>DON, David</name>
-        <description><![CDATA[DON, David (1799-1841)<br>
+				<description><![CDATA[DON, David (1799-1841)<br>
 Sir Joseph Banks 1743-1820, President of the Royal Society, Robert Brown 1773-1858 and, David Don 1800-1841 Botanists, Lived in a house on this site, The Linnean Society met here 1821-1857.<br>
 <em>On rebuilt premises. Replaces plaque put up in 1911 on old premises.</em><br>
 32 Soho Square, W1<br>
