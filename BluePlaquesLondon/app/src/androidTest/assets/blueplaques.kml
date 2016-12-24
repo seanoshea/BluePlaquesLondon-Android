@@ -5212,6 +5212,25 @@
 				</Point>
 			</Placemark>
 			<Placemark>
+				<name>LYONS, Joseph</name>
+				<description><![CDATA[LYONS, Joseph (1847-1917)<br>
+				Pioneer of mass catering lived here<br>
+				11a Palace Mansions, Hammersmith Road, West Kensington, W14 8QN<br>
+				Hammersmith &amp; Fulham 2016]]></description>
+				<LookAt>
+					<longitude>-0.2101757841565077</longitude>
+					<latitude>51.49559397000353</latitude>
+					<altitude>0</altitude>
+					<heading>-7.289633988796217e-006</heading>
+					<tilt>0</tilt>
+					<range>500.4721427970641</range>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.210223,51.49552609941827,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
 				<name>“OUIDA” (Marie Louise de la Ramée)</name>
 				<description><![CDATA[“OUIDA” (Marie Louise de la Ramée) (1839-1908)<br>
 				Novelist, lived here.<br>
@@ -7241,6 +7260,25 @@
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
 					<coordinates>-0.1994690000772579,51.49741100025508,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>FOWLER, Henry Watson</name>
+				<description><![CDATA[FOWLER, Henry Watson (1858-1933)<br>
+				Grammarian and Lexicographer lived here 1900-1903<br>
+				14 Paultons Square, Chelsea, SW3 5AP<br>
+				Kensington &amp; Chelsea 2016]]></description>
+				<LookAt>
+					<longitude>-0.1737830108186278</longitude>
+					<latitude>51.48422954119638</latitude>
+					<altitude>0</altitude>
+					<heading>-1.969264318313265e-005</heading>
+					<tilt>0</tilt>
+					<range>500</range>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.1738211198836215,51.48422886308931,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
@@ -12148,6 +12186,25 @@
 				</Point>
 			</Placemark>
 			<Placemark>
+				<name>BARNARDO, Thomas John</name>
+				<description><![CDATA[BARNARDO, Thomas John (1845-1905)<br>
+				Founder of Dr Barnardo’s Homes for children lived here 1875-1879<br>
+				32 Bow Road, Bow, London, E3 4LN<br>
+				Tower Hamlets 2016]]></description>
+				<LookAt>
+					<longitude>-0.02604200005124735</longitude>
+					<latitude>51.52678700014464</latitude>
+					<altitude>0</altitude>
+					<heading>9.958500599548781e-005</heading>
+					<tilt>0</tilt>
+					<range>500</range>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.026042,51.526787,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
 				<name>BOROUGH, Stephen</name>
 				<description><![CDATA[WILLOUGHBY, Sir Hugh<br>
 				This tablet is in memory of Sir Hugh WILLOUGHBY, Stephen BOROUGH, William BOROUGH , Sir Martin FROBISHER and other navigators who, in the latter half of the sixteenth century, set sail from this reach of the River Thames near Ratcliff Cross to explore the northern seas.<br>
@@ -15139,6 +15196,25 @@
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
 					<coordinates>-0.1685039999888716,51.49966099988403,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>GARDNER, Ava</name>
+				<description><![CDATA[GARDNER, Ava (1922-1990)<br>
+				Film Star lived and died here<br>
+				34 Ennismore Gardens, Knightsbridge, SW7 1AE<br>
+				Westminster 2016]]></description>
+				<LookAt>
+					<longitude>-0.1698237227385069</longitude>
+					<latitude>51.49919708486028</latitude>
+					<altitude>0</altitude>
+					<heading>-1.302770603339195e-010</heading>
+					<tilt>0</tilt>
+					<range>500.000004441436</range>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.1698388953795005,51.49919459918369,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
