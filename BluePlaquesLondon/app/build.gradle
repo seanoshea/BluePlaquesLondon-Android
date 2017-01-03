@@ -39,7 +39,7 @@ android {
         applicationId "com.upwardsnorthwards.blueplaqueslondon"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 12
+        versionCode 14
         versionName "2.0"
         multiDexEnabled true
         testInstrumentationRunner "com.android.test.runner.MultiDexTestRunner"
