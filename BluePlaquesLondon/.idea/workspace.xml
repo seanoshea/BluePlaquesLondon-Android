@@ -37,8 +37,8 @@
       <file leaf-file-name="build.gradle" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-506">
-              <caret line="40" column="24" selection-start-line="40" selection-start-column="8" selection-end-line="40" selection-end-column="24" />
+            <state relative-caret-position="450">
+              <caret line="30" column="23" selection-start-line="30" selection-start-column="23" selection-end-line="30" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -2251,7 +2251,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="4467708690000" />
+        <entry key="$PROJECT_DIR$" value="4467710794000" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -2764,8 +2764,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-506">
-          <caret line="40" column="24" selection-start-line="40" selection-start-column="8" selection-end-line="40" selection-end-column="24" />
+        <state relative-caret-position="450">
+          <caret line="30" column="23" selection-start-line="30" selection-start-column="23" selection-end-line="30" selection-end-column="29" />
           <folding />
         </state>
       </provider>
