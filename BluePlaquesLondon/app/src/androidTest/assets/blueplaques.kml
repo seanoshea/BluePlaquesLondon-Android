@@ -91,26 +91,6 @@
 		<Folder>
 			<name>Barnet</name>
 			<Placemark>
-				<name>RICHARDSON, Sir Ralph</name>
-				<description><![CDATA[RICHARDSON, Sir Ralph (1902-1983)<br>
-				Actor, lived here, 1944-1968<br>
-				Bedegar&apos;s Lea, Hampstead Lane, NW3<br>
-				Barnet 2009]]></description>
-				<LookAt>
-					<longitude>-0.1741549999553416</longitude>
-					<latitude>51.57078899981303</latitude>
-					<altitude>0</altitude>
-					<heading>4.486448191930574e-011</heading>
-					<tilt>0</tilt>
-					<range>500</range>
-					<altitudeMode>relativeToGround</altitudeMode>
-				</LookAt>
-				<styleUrl>#myDefaultStyles</styleUrl>
-				<Point>
-					<coordinates>-0.1741549999553416,51.57078899981303,0</coordinates>
-				</Point>
-			</Placemark>
-			<Placemark>
 				<name>ABRAHAMS, Harold</name>
 				<description><![CDATA[ABRAHAMS, Harold (1899-1978)<br>
 				Olympic athlete, lived here<br>
@@ -286,6 +266,26 @@
 				</Point>
 			</Placemark>
 			<Placemark>
+				<name>MACARTHUR, Mary</name>
+				<description><![CDATA[MACARTHUR, Mary (1880-1921)<br>
+				Trade Unionist and campaigner for working women lived and died here<br>
+				42 Woodstock Road, Golders Green, London NW11 8ER<br>
+				Barnet 2017]]>
+				</description>
+				<LookAt>
+					<longitude>-0.200107</longitude>
+					<latitude>51.572325</latitude>
+					<altitude>0</altitude>
+					<heading>1.116135170018744e-006</heading>
+					<tilt>0</tilt>
+					<range>500</range>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.200107,51.572325,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
 				<name>PICK, Frank</name>
 				<description><![CDATA[PICK, Frank (1878-1941)<br>
 				Pioneer of Good Design for London Transport, lived here.<br>
@@ -323,6 +323,26 @@
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
 					<coordinates>-0.2158500000318782,51.57806499987803,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>RICHARDSON, Sir Ralph</name>
+				<description><![CDATA[RICHARDSON, Sir Ralph (1902-1983)<br>
+				Actor, lived here, 1944-1968<br>
+				Bedegar&apos;s Lea, Hampstead Lane, NW3<br>
+				Barnet 2009]]></description>
+				<LookAt>
+					<longitude>-0.1741549999553416</longitude>
+					<latitude>51.57078899981303</latitude>
+					<altitude>0</altitude>
+					<heading>4.486448191930574e-011</heading>
+					<tilt>0</tilt>
+					<range>500</range>
+					<altitudeMode>relativeToGround</altitudeMode>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.1741549999553416,51.57078899981303,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
