@@ -5860,8 +5860,9 @@
 				<name>CASLON, William</name>
 				<description><![CDATA[CASLON, William<br>
 				The Foundry established by William Caslon, Typefounder (1692-1766) stood on this site 1737-1909.<br>
-				21-23 Chiswell Street, EC1<br>
-				Islington 1958]]></description>
+				21-23 Chiswell Street, EC1Y 4SD<br>
+				Islington 1958<br>
+				Note: Re-erected by English Heritage in 1989. Plaque currently covered by new fascia on building.]]></description>
 				<LookAt>
 					<longitude>-0.08964300004187464</longitude>
 					<latitude>51.52087600003597</latitude>
@@ -9829,6 +9830,25 @@
 				</Point>
 			</Placemark>
 			<Placemark>
+				<name>CHAPLIN, Charlie</name>
+				<description><![CDATA[CHAPLIN, Charlie (1889-1977)<br>
+				Actor and Film-maker lived here in Flat 15 1908-1910.<br>
+				15 Glenshaw Mansions, Brixton Road, London SW9 0DS<br>
+				Lambeth 2017]]></description>
+				<LookAt>
+					<longitude>-0.112219</longitude>
+					<latitude>51.478079</latitude>
+					<altitude>0</altitude>
+					<heading>0</heading>
+					<tilt>0</tilt>
+					<range>500</range>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.112219,51.478079,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
 				<name>CLAPHAM SECT, THE</name>
 				<description><![CDATA[WILBERFORCE, William <br>
 				and the Clapham Sect worshipped in this church. Their campaigning resulted in the abolition of slavery in the British Dominions 1833. <br>
@@ -11307,13 +11327,32 @@
 					<longitude>-0.07631400001483257</longitude>
 					<latitude>51.47232600026973</latitude>
 					<altitude>0</altitude>
-					<heading>2.171666585249047e-011</heading>
+					<heading>0</heading>
 					<tilt>0</tilt>
 					<range>500</range>
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
 					<coordinates>-0.07631400001483257,51.47232600026973,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>COTTON, Henry</name>
+				<description><![CDATA[COTTON, Henry (1907-1987)<br>
+				Champion Golfer lived here<br>
+				47 Crystal Palace Road, East Dulwich, London SE22 9EX<br>
+				Southwark 2017]]></description>
+				<LookAt>
+					<longitude>-0.071113</longitude>
+					<latitude>51.459279</latitude>
+					<altitude>0</altitude>
+					<heading>0</heading>
+					<tilt>0</tilt>
+					<range>500</range>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.071113,51.459279,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
@@ -15257,6 +15296,25 @@
 				</Point>
 			</Placemark>
 			<Placemark>
+				<name>GIELGUD, Sir John</name>
+				<description><![CDATA[GIELGUD, Sir John (1904-2000)<br>
+				Actor and Director lived here 1945-1976.<br>
+				16 Cowley Street, Westminster, London SW1P 3LZ<br>
+				Westminster 2017]]></description>
+				<LookAt>
+					<longitude>-0.127537</longitude>
+					<latitude>51.4971832</latitude>
+					<altitude>0</altitude>
+					<heading>0</heading>
+					<tilt>0</tilt>
+					<range>500</range>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.127537,51.4971832,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
 				<name>GIBBON, Edward</name>
 				<description><![CDATA[GIBBON, Edward (1737-1792)<br>
 				Historian, lived in a house on this site 1773-1783.<br>
@@ -16195,11 +16253,13 @@
 				<name>LISTER, Joseph, Lord</name>
 				<description><![CDATA[LISTER, Joseph, Lord (1827-1912)<br>
 				Surgeon, lived here.<br>
-				12 Park Crescent, W1<br>
-				Westminster 1915]]></description>
+				12 Park Crescent, W1B 1PH<br>
+				Westminster 1915<br>
+				Note: Originally erected in 1915, it was removed due to war damage and was reinstalled following the completion of rebuilding works in 1966. This plaque has again been temporarily removed, but will be restored soon.
+]]></description>
 				<LookAt>
-					<longitude>-0.1449960000118864</longitude>
-					<latitude>51.52298800022239</latitude>
+					<longitude>-0.145375</longitude>
+					<latitude>51.523153</latitude>
 					<altitude>0</altitude>
 					<heading>-9.534955061859335e-013</heading>
 					<tilt>0</tilt>
@@ -16207,7 +16267,7 @@
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
-					<coordinates>-0.1449960000118864,51.52298800022238,0</coordinates>
+					<coordinates>-0.145375,51.523153,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
@@ -18497,6 +18557,25 @@
 				</Point>
 			</Placemark>
 			<Placemark>
+				<name>STELLA, Lady Reading</name>
+				<description><![CDATA[STELLA, Lady Reading (1894-1971)<br>
+				Founder of the Women&apos;s Voluntary Services worked at its headquarters here 1938-1966<br>
+				41 Tothill Street, London, SW1H 9LQ<br>
+				Westminster 2017]]></description>
+				<LookAt>
+					<longitude>-0.132196</longitude>
+					<latitude>51.499645</latitude>
+					<altitude>0</altitude>
+					<heading>4.322524896372056e-005</heading>
+					<tilt>0</tilt>
+					<range>500</range>
+				</LookAt>
+				<styleUrl>#myDefaultStyles</styleUrl>
+				<Point>
+					<coordinates>-0.132196,51.499645,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
 				<name>STEPHENSON, Robert</name>
 				<description><![CDATA[STEPHENSON, Robert (1803-1859)<br>
 				Engineer, died here.<br>
@@ -18652,11 +18731,12 @@
 				<name>TEMPEST, Dame Marie</name>
 				<description><![CDATA[TEMPEST, Dame Marie (1864-1942)<br>
 				Actress, lived here 1899-1902.<br>
-				24 Park Crescent, W1<br>
-				Westminster 1972]]></description>
+				24 Park Crescent, W1B 1AL<br>
+				Westminster 1972<br>
+				Note: This plaque has been temporarily removed, but will be restored soon.]]></description>
 				<LookAt>
-					<longitude>-0.1461060000414847</longitude>
-					<latitude>51.52291400007294</latitude>
+					<longitude>-0.147028</longitude>
+					<latitude>51.522898</latitude>
 					<altitude>0</altitude>
 					<heading>-2.316636516110989e-012</heading>
 					<tilt>0</tilt>
@@ -18664,7 +18744,7 @@
 				</LookAt>
 				<styleUrl>#myDefaultStyles</styleUrl>
 				<Point>
-					<coordinates>-0.1461060000414847,51.52291400007294,0</coordinates>
+					<coordinates>-0.147028,51.522898,0</coordinates>
 				</Point>
 			</Placemark>
 			<Placemark>
@@ -19099,8 +19179,9 @@
 				<name>WHEATSTONE, Sir Charles</name>
 				<description><![CDATA[WHEATSTONE, Sir Charles (1802-1875)<br>
 				Scientist and Inventor, lived here.<br>
-				19 Park Crescent, W1<br>
-				Westminster 1981]]></description>
+				19 Park Crescent, W1B 1AL<br>
+				Westminster 1981<br>
+				Note: This plaque has been temporarily removed, but will be restored soon.]]></description>
 				<LookAt>
 					<longitude>-0.146679376900309</longitude>
 					<latitude>51.52284837871371</latitude>
@@ -19621,7 +19702,7 @@
 			</Placemark>
 			<Placemark>
 				<name>BROWN, Robert</name>
-				<description><![CDATA[BROWN, Robert (1773-1858)<br>
+				<description><![CDATA[BANKS, Sir Joseph (1743-1820)<br>
 Sir Joseph Banks 1743-1820, President of the Royal Society, Robert Brown 1773-1858 and, David Don 1800-1841 Botanists, Lived in a house on this site, The Linnean Society met here 1821-1857.<br>
 <em>On rebuilt premises. Replaces plaque put up in 1911 on old premises.</em><br>
 32 Soho Square, W1<br>
@@ -19641,7 +19722,7 @@ Westminster 1938]]></description>
 			</Placemark>
 			<Placemark>
 				<name>DON, David</name>
-				<description><![CDATA[DON, David (1799-1841)<br>
+				<description><![CDATA[BANKS, Sir Joseph (1743-1820)<br>
 Sir Joseph Banks 1743-1820, President of the Royal Society, Robert Brown 1773-1858 and, David Don 1800-1841 Botanists, Lived in a house on this site, The Linnean Society met here 1821-1857.<br>
 <em>On rebuilt premises. Replaces plaque put up in 1911 on old premises.</em><br>
 32 Soho Square, W1<br>
