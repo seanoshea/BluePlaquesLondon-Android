@@ -21,6 +21,9 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
+      - name: Create local.properties file
+        run: echo "GOOGLE_MAPS_API_KEY=${{ secrets.GOOGLE_MAPS_API_KEY }}" > ./BluePlaquesLondon/local.properties
+        
       - name: Grant execute permission for gradlew
         working-directory: ./BluePlaquesLondon
         run: chmod +x gradlew
@@ -32,7 +35,7 @@ jobs:
           GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
 
       - name: Run instrumented tests on emulator
-        uses: android-actions/emulator-manager@v1
+        uses: ReactiveCircus/android-emulator-runner@v2
         with:
           api-level: 30
           target: google_apis
