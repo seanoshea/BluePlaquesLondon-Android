@@ -29,13 +29,14 @@
 package com.upwardsnorthwards.blueplaqueslondon.adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.google.android.material.textview.MaterialTextView;
 import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 
@@ -50,7 +51,7 @@ public class MultiplePlacemarksAdapter extends ArrayAdapter<Placemark> {
     private final List<Placemark> placemarks;
 
     public MultiplePlacemarksAdapter(final Context context, @NonNull final List<Placemark> objects) {
-        super(context, R.layout.multiple_placemarks_item, objects);
+        super(context, R.layout.multiple_placemarks_item_layout, objects);
         placemarks = objects;
     }
 
@@ -60,9 +61,9 @@ public class MultiplePlacemarksAdapter extends ArrayAdapter<Placemark> {
         if (v == null) {
             final LayoutInflater vi = (LayoutInflater) parent.getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = vi.inflate(R.layout.multiple_placemarks_item, parent, false);
+            v = vi.inflate(R.layout.multiple_placemarks_item_layout, parent, false);
             final ViewHolder viewHolder = new ViewHolder();
-            viewHolder.title = (TextView) v
+            viewHolder.title = (MaterialTextView) v
                     .findViewById(R.id.multiple_placemarks_title);
             v.setTag(viewHolder);
         }
@@ -87,6 +88,6 @@ public class MultiplePlacemarksAdapter extends ArrayAdapter<Placemark> {
     @SuppressWarnings("unused")
     public static class ViewHolder {
         public Placemark placemark;
-        public TextView title;
+        public MaterialTextView title;
     }
 }

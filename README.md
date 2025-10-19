@@ -1,47 +1,60 @@
 [![Twitter: @seanoshea](https://img.shields.io/badge/contact-@seanoshea-blue.svg?style=flat)](https://twitter.com/seanoshea)
 [![License](http://img.shields.io/badge/license-BSD-green.svg?style=flat)](https://github.com/seanoshea/BluePlaquesLondon-Android/blob/master/LICENSE)
-[![Build Status](https://circleci.com/gh/seanoshea/BluePlaquesLondon-Android.svg?style=svg)](https://circleci.com/gh/seanoshea/BluePlaquesLondon-Android.svg?style=svg)
+[![Android CI](https://github.com/seanoshea/BluePlaquesLondon-Android/actions/workflows/android-ci.yml/badge.svg)](https://github.com/seanoshea/BluePlaquesLondon-Android/actions/workflows/android-ci.yml)
 [![codecov](https://codecov.io/gh/seanoshea/BluePlaquesLondon-Android/branch/develop/graph/badge.svg)](https://codecov.io/gh/seanoshea/BluePlaquesLondon-Android)
 [![PRs Welcome](https://img.shields.io/badge/prs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
-## BluePlaquesLondon Android
-Android Application for finding Blue Plaques through London. [Google Play Store Link](https://play.google.com/store/apps/details?id=com.upwardsnorthwards.blueplaqueslondon)
+
+# BluePlaquesLondon-Android
+
+This is a modernized version of the BluePlaquesLondon Android application, which helps users find historical blue plaques throughout London. The app is available on the [Google Play Store](https://play.google.com/store/apps/details?id=com.upwardsnorthwards.blueplaqueslondon).
+
+This project has undergone a significant modernization effort to align with the latest Android development best practices. The app now features a single-activity architecture, Jetpack Compose, Material Design 3, and a modern tech stack.
 
 ## Screenshots
+
 <a href="http://imgur.com/NXis7Ui"><img src="http://i.imgur.com/NXis7Ui.png" title="source: imgur.com" /></a>
 <a href="http://imgur.com/L6TKtZW"><img src="http://i.imgur.com/L6TKtZW.png" title="source: imgur.com" /></a>
 <a href="http://imgur.com/tsyVF9L"><img src="http://i.imgur.com/tsyVF9L.png" title="source: imgur.com" /></a>
 <a href="http://imgur.com/crwJFqh"><img src="http://i.imgur.com/crwJFqh.png" title="source: imgur.com" /></a>
 
-## Static Code Analysis
-Android linting, PMD and findbugs can all be run from the `BluePlaquesLondon` subfolder with commands like:
-```
-gradlew lint
-gradlew pmd
-gradlew findbugs
-```
+## Tech Stack
+
+- **Architecture**: Single-activity architecture with Jetpack Navigation Component
+- **UI**: Jetpack Compose and Material Design 3
+- **Build System**: Gradle with Kotlin DSL
+- **Asynchronous Operations**: Coroutines
+- **Dependency Injection**: Hilt (to be implemented)
+- **Testing**: JUnit, Mockito, Espresso, Robolectric
+- **Code Quality**: Spotless with ktlint
+
+## Building from Source
+
+To build the application from source, follow these steps:
+
+1.  **Clone the repository**:
+
+    ```
+    git clone https://github.com/seanoshea/BluePlaquesLondon-Android.git
+    ```
+
+2.  **Create a `local.properties` file**:
+
+    Create a `local.properties` file in the root of the project and add your Google Maps API key:
+
+    ```
+    GOOGLE_MAPS_API_KEY=YOUR_API_KEY
+    ```
+
+3.  **Build the app**:
+
+    ```
+    ./gradlew assembleDebug
+    ```
 
 ## Contributing
-Suggestions and bug reports for the application are always welcome. Open an issue on github if you'd like to see an addition to the application or if you spot a bug. Pull requests are especially welcome (and most likely to get merged if you have some unit tests associated with the merge request).
 
-## Building a Release
-- Alter the `gradle.properties` file to look like:
-```
-RELEASE_STORE_FILE=~/production.keystore
-RELEASE_STORE_PASSWORD=password_here
-RELEASE_KEY_ALIAS=production
-RELEASE_KEY_PASSWORD=password_here
-```
-- Ensure the `production.keystore` file includes the `AB:47:6B:2C:00:7E:00:35:3C:CA:58:5F:43:89:6F:8D:2F:F6:EB:B3` SHA by executing:
-```
-keytool -list -v -keystore ~/production.keystore
-```
-- Navigate to https://console.developers.google.com/apis/credentials?project=blue-plaques-london
-- Alter the `com.google.android.maps.v2.API_KEY` property in `AndroidManifest.xml` to include the production key for Google Maps. The Google Developer Console lists it as a production key.
-- Execute `./gradlew assembleRelease` to build.
-- Execute `adb install app/build/outputs/apk/app-release.apk` while having a device attached.
+Suggestions and bug reports for the application are always welcome. Open an issue on GitHub if you'd like to see an addition to the application or if you spot a bug. Pull requests are especially welcome (and most likely to get merged if you have some unit tests associated with the merge request).
 
-## iPhone/iPad Version
-The original idea behind an application for showing historical blue plaques around London was implemented in Objective-C for iOS devices. The source code for that version of the application is available [here](http://github.com/seanoshea/BluePlaquesLondon). It is downloadable from the Apple's [AppStore](http://www.appstore.com/seanoshea)
+## License
 
-## Beta Builds
-If you're interested in access to beta-builds of the application, there's a Google Group available [here](http://groups.google.com/forum/#!groupsettings/blue-plaques-london-android-beta-testers/information)
+This project is licensed under the BSD License - see the [LICENSE](LICENSE) file for details.

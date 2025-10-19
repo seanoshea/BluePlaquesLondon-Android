@@ -1,1 +1,4 @@
 /build
+
+# Local configuration files
+local.properties

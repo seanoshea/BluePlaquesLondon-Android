@@ -7,7 +7,7 @@
  1. Redistributions of source code must retain the above copyright
  notice, this list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright
- notice, this list of conditions and the following disclaimer in the
+ notice, this list of of conditions and the following disclaimer in the
  documentation and/or other materials provided with the distribution.
  3. All advertising materials mentioning features or use of this software
  must display the following acknowledgement:
@@ -28,8 +28,7 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.upwardsnorthwards.blueplaqueslondon">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -48,7 +47,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:allowBackup="false"
-        android:theme="@style/AppTheme"
+        android:theme="@style/Theme.BluePlaquesLondon"
         tools:ignore="GoogleAppIndexingWarning">
 
         <meta-data
@@ -56,7 +55,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyDqMX5XwX13lIgTrNq4p61rXzy3ntDmpr8" />
+            android-value="${googleMapsApiKey}" />
         <meta-data
             android:name="com.google.android.gms.analytics.globalConfigResource"
             android:resource="@xml/app_tracker" />
@@ -65,8 +64,7 @@
             android:name=".activities.MainActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat">
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -98,7 +96,7 @@
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="8aa2986353e21d6181e23a9360cd528dca68aafb" />
+            android:value="${fabricApiKey}" />
 
     </application>
 

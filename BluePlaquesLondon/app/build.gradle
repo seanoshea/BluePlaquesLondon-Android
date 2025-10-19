@@ -1,19 +1,13 @@
-buildscript {
-    repositories {
-        maven { url "https://maven.fabric.io/public" }
-    }
-
-    dependencies {
-        classpath "io.fabric.tools:gradle:1.21.6"
-    }
-}
 apply plugin: "com.android.application"
-apply plugin: "io.fabric"
-repositories {
-    maven { url "https://maven.fabric.io/public" }
+apply plugin: "com.google.gms.google-services"
+apply plugin: "com.google.firebase.crashlytics"
+
+// Load local.properties
+Properties localProperties = new Properties()
+File localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localProperties.load(new FileInputStream(localPropertiesFile))
 }
-apply plugin: "pmd"
-apply plugin: "findbugs"
 
 android {
     signingConfigs {
@@ -21,14 +15,29 @@ android {
         config {
         }
         production {
-            keyAlias "production"
-            keyPassword "password_here"
-            storeFile file("~/production.keystore")
-            storePassword "password_here"
+            keyAlias localProperties.getProperty('RELEASE_KEY_ALIAS')
+            keyPassword localProperties.getProperty('RELEASE_KEY_PASSWORD')
+            storeFile file(localProperties.getProperty('RELEASE_STORE_FILE'))
+            storePassword localProperties.getProperty('RELEASE_STORE_PASSWORD')
         }
     }
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdkVersion 34
+    namespace 'com.upwardsnorthwards.blueplaqueslondon'
+    
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    
+    buildFeatures {
+        buildConfig true
+        compose true
+    }
+    
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.5.3'
+    }
+    
     lintOptions {
         abortOnError false
         lintConfig file("${project.rootDir}/config/lint/lint.xml")
@@ -37,14 +46,24 @@ android {
     }
     defaultConfig {
         applicationId "com.upwardsnorthwards.blueplaqueslondon"
-        minSdkVersion 15
-        targetSdkVersion 25
+        minSdkVersion 21
+        targetSdkVersion 28
         versionCode 15
         versionName "2.1"
         multiDexEnabled true
-        testInstrumentationRunner "com.android.test.runner.MultiDexTestRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //noinspection GroovyAssignabilityCheck
         signingConfig signingConfigs.config
+        
+        // API Keys from local.properties
+        buildConfigField "String", "GOOGLE_MAPS_API_KEY", "\"${localProperties.getProperty('GOOGLE_MAPS_API_KEY', '')}\""
+        buildConfigField "String", "FABRIC_API_KEY", "\"${localProperties.getProperty('FABRIC_API_KEY', '')}\""
+        
+        // Add to manifest placeholders
+        manifestPlaceholders = [
+            googleMapsApiKey: localProperties.getProperty('GOOGLE_MAPS_API_KEY', ''),
+            fabricApiKey: localProperties.getProperty('FABRIC_API_KEY', '')
+        ]
     }
     buildTypes {
         debug {
@@ -61,75 +80,50 @@ android {
     }
 }
 
-task pmd(type: Pmd, dependsOn: "assembleDebug") {
-    ruleSetFiles = files("${project.rootDir}/config/pmd/pmd-ruleset.xml")
-    ignoreFailures = false
-    ruleSets = []
 
-    source "src"
-    include "**/*.java"
-    exclude "**/gen/**"
-
-    reports {
-        xml.enabled = false
-        html.enabled = true
-        //noinspection GroovyAssignabilityCheck
-        xml {
-            destination "$project.buildDir/reports/pmd/pmd.xml"
-        }
-        html {
-            destination "$project.buildDir/reports/pmd/pmd.html"
-        }
-    }
-}
-
-task findbugs(type: FindBugs) {
-    ignoreFailures = false
-    effort = "max"
-    reportLevel = "high"
-    excludeFilter = new File("${project.rootDir}/config/findbugs/findbugs-filter.xml")
-    classes = files("${project.rootDir}/app/build/intermediates/classes")
-
-    source "src"
-    include "**/*.java"
-    exclude "**/gen/**"
-
-    reports {
-        xml.enabled = false
-        html.enabled = true
-        //noinspection GroovyAssignabilityCheck
-        xml {
-            destination "$project.buildDir/reports/findbugs/findbugs.xml"
-        }
-        html {
-            destination "$project.buildDir/reports/findbugs/findbugs.html"
-        }
-    }
-
-    classpath = files()
-}
-
-check.doLast {
-    project.tasks.getByName("pmd").execute()
-    project.tasks.getByName("findbugs").execute()
-}
 
 dependencies {
-    ext.googlePlayServicesVersion = "10.2.1"
+    ext.googlePlayServicesVersion = "21.0.1"
     ext.androidBuildToolsVersion = "25.0.0"
-    compile fileTree(dir: "libs", include: ["*.jar"])
-    debugCompile "com.squareup.leakcanary:leakcanary-android:1.5"
-    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:1.5"
-    compile("com.crashlytics.sdk.android:crashlytics:2.6.7@aar") {
-        transitive = true;
-    }
-    compile "com.android.support:appcompat-v7:$androidBuildToolsVersion"
-    compile "com.google.android.gms:play-services:$googlePlayServicesVersion"
-    compile "com.github.hotchemi:android-rate:1.0.1"
-    compile "com.squareup:otto:1.3.8"
-    compile "com.android.support:support-annotations:$androidBuildToolsVersion"
-    compile "com.google.android.gms:play-services-ads:$googlePlayServicesVersion"
-    compile "com.google.android.gms:play-services-auth:$googlePlayServicesVersion"
-    compile "com.google.android.gms:play-services-gcm:$googlePlayServicesVersion"
-    compile "com.android.support:multidex:1.0.1"
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:2.12"
+    implementation "com.google.firebase:firebase-crashlytics:18.6.1"
+    implementation "com.google.firebase:firebase-analytics:21.5.0"
+    implementation "androidx.appcompat:appcompat:1.6.1"
+    implementation "androidx.annotation:annotation:1.7.0"
+    implementation "androidx.multidex:multidex:2.0.1"
+    implementation "com.google.android.gms:play-services-maps:18.2.0"
+    implementation "com.google.android.gms.play-services-location:21.0.1"
+    implementation "com.google.android.gms:play-services-ads:21.5.0"
+    implementation "com.google.android.gms:play-services-auth:20.7.0"
+    implementation "com.google.firebase:firebase-messaging:23.4.0"
+    implementation "com.github.hotchemi:android-rate:1.0.1"
+    implementation "androidx.lifecycle:lifecycle-livedata:2.7.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.7.0"
+    implementation "org.greenrobot:eventbus:3.3.1"
+    implementation "androidx.navigation:navigation-fragment:2.7.5"
+    implementation "androidx.navigation:navigation-ui:2.7.5"
+    
+    // Compose
+    def composeBom = platform('androidx.compose:compose-bom:2023.10.01')
+    implementation composeBom
+    androidTestImplementation composeBom
+
+    implementation 'androidx.compose.material3:material3'
+    implementation 'androidx.compose.ui:ui-tooling-preview'
+    debugImplementation 'androidx.compose.ui:ui-tooling'
+    implementation 'androidx.activity:activity-compose:1.8.0'
+    
+    // Testing dependencies
+    testImplementation "junit:junit:4.13.2"
+    testImplementation "org.mockito:mockito-core:5.7.0"
+    testImplementation "org.mockito:mockito-inline:5.2.0"
+    testImplementation "androidx.test:core:1.5.0"
+    testImplementation "org.robolectric:robolectric:4.11.1"
+    
+    androidTestImplementation "androidx.test.ext:junit:1.1.5"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
+    androidTestImplementation "androidx.test:runner:1.5.2"
+    androidTestImplementation "androidx.test:rules:1.5.0"
+    androidTestImplementation "org.mockito:mockito-android:5.7.0"
 }

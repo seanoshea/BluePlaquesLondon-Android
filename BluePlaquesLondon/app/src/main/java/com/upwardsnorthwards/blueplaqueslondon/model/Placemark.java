@@ -30,17 +30,12 @@ package com.upwardsnorthwards.blueplaqueslondon.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.Html;
 
-/**
- * Includes all information needed to display one placemark. Main domain object for the application.
- * Each entry in the kml file is represented by one of these objects.
- */
 public class Placemark implements Parcelable {
 
     public static final Parcelable.Creator<Placemark> CREATOR = new Parcelable.Creator<Placemark>() {
-
         @NonNull
         public Placemark createFromParcel(@NonNull final Parcel source) {
             return new Placemark(source);
@@ -50,8 +45,8 @@ public class Placemark implements Parcelable {
         public Placemark[] newArray(final int size) {
             return new Placemark[size];
         }
-
     };
+
     @NonNull
     private static final String OverlayTitleDelimiter = "<br>";
     @NonNull
@@ -68,9 +63,9 @@ public class Placemark implements Parcelable {
     private String styleUrl;
     private double latitude;
     private double longitude;
+    private String wikipediaUrl;
 
     public Placemark() {
-
     }
 
     private Placemark(@NonNull final Parcel in) {
@@ -85,6 +80,7 @@ public class Placemark implements Parcelable {
         styleUrl = in.readString();
         latitude = in.readDouble();
         longitude = in.readDouble();
+        wikipediaUrl = in.readString();
     }
 
     @NonNull
@@ -113,6 +109,7 @@ public class Placemark implements Parcelable {
         dest.writeString(styleUrl);
         dest.writeDouble(latitude);
         dest.writeDouble(longitude);
+        dest.writeString(wikipediaUrl);
     }
 
     @NonNull
@@ -122,48 +119,27 @@ public class Placemark implements Parcelable {
 
     public void digestFeatureDescription() {
         if (featureDescription != null) {
-            // these must be done in order ...
             digestTitle();
             digestName();
             digestOccupation();
         }
     }
 
-    /**
-     * Used when displaying the title of a placemark to a user. Fully html decodes the title.
-     *
-     * @return the trimmed & html decoded title
-     */
     @NonNull
     public String getTrimmedTitle() {
         return trimWhitespaceAndHTMLDecode(title);
     }
 
-    /**
-     * Used when displaying the name of a placemark to a user. Fully html decodes the name.
-     *
-     * @return the trimmed and html decoded name
-     */
     @NonNull
     public String getTrimmedName() {
         return trimWhitespaceAndHTMLDecode(name);
     }
 
-    /**
-     * Used when displaying the occupation of a placemark to a user. Fully html decodes the occupation.
-     *
-     * @return the trimmed and html decoded occupation
-     */
     @NonNull
     public String getTrimmedOccupation() {
         return trimWhitespaceAndHTMLDecode(occupation);
     }
 
-    /**
-     * Not all information for the placemark is absolutely necessary when the .kml file is parsed. This method should
-     * be invoked whenever the user requests more information about the plaque as it parses out additional information
-     * such as the address, notes associated with the plaque and the council and year associated with the plaque.
-     */
     public void digestAnciliaryInformation() {
         digestAddress();
         digestNote();
@@ -198,15 +174,11 @@ public class Placemark implements Parcelable {
             final int start = occupation.indexOf(OverlayTitleDelimiter);
             if (start == 0) {
                 final int delimiterLength = OverlayTitleDelimiter.length();
-                final int end = occupation.indexOf(OverlayTitleDelimiter, start
-                        + delimiterLength);
-                occupation = trimWhitespaceFromString(occupation.substring(
-                        start + delimiterLength, end));
+                final int end = occupation.indexOf(OverlayTitleDelimiter, start + delimiterLength);
+                occupation = trimWhitespaceFromString(occupation.substring(start + delimiterLength, end));
                 occupation = trimWhitespaceFromString(occupation);
-                if (occupation.length() == 9
-                        && occupation.matches("[0-9]{4}-[0-9]{4}")) {
-                    final String[] components = featureDescription
-                            .split(OverlayTitleDelimiter);
+                if (occupation.length() == 9 && occupation.matches("[0-9]{4}-[0-9]{4}")) {
+                    final String[] components = featureDescription.split(OverlayTitleDelimiter);
                     if (components.length > 3) {
                         occupation = components[2];
                     }
@@ -220,47 +192,36 @@ public class Placemark implements Parcelable {
         if (components.length != 0) {
             switch (components.length) {
                 case 2:
-                case 3: {
+                case 3:
                     address = trimWhitespaceAndHTMLDecode(components[1]);
-                }
-                break;
+                    break;
                 case 4:
-                case 5: {
+                case 5:
                     address = trimWhitespaceAndHTMLDecode(components[2]);
-                }
-                break;
-                case 6: {
+                    break;
+                case 6:
                     address = trimWhitespaceAndHTMLDecode(components[3]);
-                }
-                break;
-                case 7: {
+                    break;
+                case 7:
                     address = trimWhitespaceAndHTMLDecode(components[4]);
-                }
-                break;
+                    break;
             }
         }
     }
 
     private void digestNote() {
-        final int startOfEmphasis = featureDescription
-                .indexOf(EmphasisNoteOpeningTag);
+        final int startOfEmphasis = featureDescription.indexOf(EmphasisNoteOpeningTag);
         if (startOfEmphasis != -1) {
-            int endOfEmphasisIndex = featureDescription
-                    .indexOf(EmphasisNoteClosingTag);
+            int endOfEmphasisIndex = featureDescription.indexOf(EmphasisNoteClosingTag);
             if (endOfEmphasisIndex == -1) {
-                // some notes don't have the correct closing tag ... search for
-                // the starting tag again
-                final int locationOfLastEmphasis = featureDescription
-                        .lastIndexOf(EmphasisNoteOpeningTag);
+                final int locationOfLastEmphasis = featureDescription.lastIndexOf(EmphasisNoteOpeningTag);
                 if (locationOfLastEmphasis != startOfEmphasis) {
-                    endOfEmphasisIndex = featureDescription.length()
-                            - EmphasisNoteOpeningTag.length();
+                    endOfEmphasisIndex = featureDescription.length() - EmphasisNoteOpeningTag.length();
                 } else {
                     endOfEmphasisIndex = featureDescription.length();
                 }
             }
-            note = featureDescription.substring(startOfEmphasis
-                    + EmphasisNoteOpeningTag.length(), endOfEmphasisIndex);
+            note = featureDescription.substring(startOfEmphasis + EmphasisNoteOpeningTag.length(), endOfEmphasisIndex);
             note = trimWhitespaceAndHTMLDecode(note);
         }
     }
@@ -277,17 +238,11 @@ public class Placemark implements Parcelable {
         String inputWithNoteRemoved = input;
         if (note != null) {
             inputWithNoteRemoved = trimWhitespaceFromString(inputWithNoteRemoved);
-            inputWithNoteRemoved = inputWithNoteRemoved.replaceAll(
-                    EmphasisNoteOpeningTag, "");
+            inputWithNoteRemoved = inputWithNoteRemoved.replaceAll(EmphasisNoteOpeningTag, "");
             inputWithNoteRemoved = inputWithNoteRemoved.replaceAll(note, "");
-            inputWithNoteRemoved = inputWithNoteRemoved.replaceAll(
-                    EmphasisNoteClosingTag, "");
-            // check for a trailing delimiter
-            final int locationOfFinalDelimiter = inputWithNoteRemoved
-                    .lastIndexOf(OverlayTitleDelimiter);
-            if (locationOfFinalDelimiter != -1
-                    && locationOfFinalDelimiter == inputWithNoteRemoved
-                    .length() - OverlayTitleDelimiter.length()) {
+            inputWithNoteRemoved = inputWithNoteRemoved.replaceAll(EmphasisNoteClosingTag, "");
+            final int locationOfFinalDelimiter = inputWithNoteRemoved.lastIndexOf(OverlayTitleDelimiter);
+            if (locationOfFinalDelimiter != -1 && locationOfFinalDelimiter == inputWithNoteRemoved.length() - OverlayTitleDelimiter.length()) {
                 inputWithNoteRemoved = inputWithNoteRemoved.substring(locationOfFinalDelimiter);
             }
         }
@@ -295,7 +250,6 @@ public class Placemark implements Parcelable {
     }
 
     private String trimWhitespaceAndHTMLDecode(@NonNull String string) {
-        // TODO: Need to use a faster fromHTML implementation.
         return Html.fromHtml(Placemark.trimWhitespaceFromString(string)).toString();
     }
 
@@ -303,6 +257,10 @@ public class Placemark implements Parcelable {
     @Override
     public String toString() {
         return key() + " " + title + " " + name + occupation + " " + note + " " + councilAndYear;
+    }
+
+    public String getFeatureDescription() {
+        return featureDescription;
     }
 
     public void setFeatureDescription(final String featureDescription) {
@@ -365,4 +323,14 @@ public class Placemark implements Parcelable {
         this.longitude = longitude;
     }
 
+    public String getWikipediaUrl() {
+        if (wikipediaUrl == null) {
+            return "https://en.wikipedia.org/wiki/" + name.replace(" ", "_");
+        }
+        return wikipediaUrl;
+    }
+
+    public void setWikipediaUrl(String wikipediaUrl) {
+        this.wikipediaUrl = wikipediaUrl;
+    }
 }

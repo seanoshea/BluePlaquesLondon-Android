@@ -1,0 +1,16 @@
+# Local configuration template
+# Copy this file to local.properties and fill in your actual values
+# DO NOT commit local.properties to version control
+
+# SDK location
+sdk.dir=/path/to/android/sdk
+
+# API Keys
+GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
+FABRIC_API_KEY=your_fabric_api_key_here
+
+# Keystore configuration
+RELEASE_STORE_FILE=/path/to/your/keystore.jks
+RELEASE_STORE_PASSWORD=your_store_password
+RELEASE_KEY_ALIAS=your_key_alias
+RELEASE_KEY_PASSWORD=your_key_password

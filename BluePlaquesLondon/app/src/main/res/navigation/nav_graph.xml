@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/map_fragment">
+
+    <fragment
+        android:id="@+id/map_fragment"
+        android:name="com.upwardsnorthwards.blueplaqueslondon.fragments.BluePlaquesMapFragment"
+        android:label="BluePlaquesMapFragment"
+        tools:layout="@layout/activity_main" />
+
+    <fragment
+        android:id="@+id/about_fragment"
+        android:name="com.upwardsnorthwards.blueplaqueslondon.fragments.AboutFragment"
+        android:label="AboutFragment"
+        tools:layout="@layout/fragment_about" />
+
+    <fragment
+        android:id="@+id/settings_fragment"
+        android:name="com.upwardsnorthwards.blueplaqueslondon.fragments.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/map_detail_fragment"
+        android:name="com.upwardsnorthwards.blueplaqueslondon.fragments.MapDetailFragment"
+        android:label="MapDetailFragment"
+        tools:layout="@layout/fragment_map_detail" />
+
+    <fragment
+        android:id="@+id/wikipedia_fragment"
+        android:name="com.upwardsnorthwards.blueplaqueslondon.fragments.WikipediaFragment"
+        android:label="WikipediaFragment"
+        tools:layout="@layout/fragment_wikipedia" />
+
+    <fragment
+        android:id="@+id/panorama_fragment"
+        android:name="com.upwardsnorthwards.blueplaqueslondon.fragments.PanoramaFragment"
+        android:label="PanoramaFragment"
+        tools:layout="@layout/fragment_panorama" />
+
+</navigation>

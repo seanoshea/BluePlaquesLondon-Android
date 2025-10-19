@@ -28,14 +28,22 @@
 
 package com.upwardsnorthwards.blueplaqueslondon.utils;
 
-import android.support.annotation.NonNull;
-import android.test.InstrumentationTestCase;
+import androidx.annotation.NonNull;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import java.util.List;
 
-public class TestBluePlaquesKMLParser extends InstrumentationTestCase {
+import static org.junit.Assert.*;
+
+@RunWith(AndroidJUnit4.class)
+public class TestBluePlaquesKMLParser {
 
     private static final String WANAMAKER = "51.50805700012604-0.09657699988338207";
     private static final String GAINSBOROUGH = "51.50587100027157-0.1362019998878026";
@@ -56,9 +64,10 @@ public class TestBluePlaquesKMLParser extends InstrumentationTestCase {
     private static final String PELHAM = "51.50705700003604-0.1409309999618671";
     private static final String HANCOCK = "51.49675315496057-0.1808973543618675";
 
+    @Test
     public void testLoadMapData() {
         BluePlaquesKMLParser parser = new BluePlaquesKMLParser();
-        parser.loadMapData(getInstrumentation().getContext());
+        parser.loadMapData(InstrumentationRegistry.getInstrumentation().getContext());
 
         List<Placemark> placemarks = parser.getPlacemarks();
         List<Placemark> massagedPlacemarks = parser.getMassagedPlacemarks();
@@ -67,9 +76,10 @@ public class TestBluePlaquesKMLParser extends InstrumentationTestCase {
         assertTrue(massagedPlacemarks.size() == 949);
     }
 
+    @Test
     public void testNames() {
         BluePlaquesKMLParser parser = new BluePlaquesKMLParser();
-        parser.loadMapData(getInstrumentation().getContext());
+        parser.loadMapData(InstrumentationRegistry.getInstrumentation().getContext());
 
         assertTrue(getPlacemark(parser, WANAMAKER).getName().equals("WANAMAKER, Sam"));
         assertTrue(getPlacemark(parser, GAINSBOROUGH).getName().equals("GAINSBOROUGH, Thomas"));
@@ -91,9 +101,10 @@ public class TestBluePlaquesKMLParser extends InstrumentationTestCase {
         assertTrue(getPlacemark(parser, HANCOCK).getName().equals("HANCOCK, Tony"));
     }
 
+    @Test
     public void testOccupations() {
         BluePlaquesKMLParser parser = new BluePlaquesKMLParser();
-        parser.loadMapData(getInstrumentation().getContext());
+        parser.loadMapData(InstrumentationRegistry.getInstrumentation().getContext());
 
         assertTrue(getPlacemark(parser, WANAMAKER).getTrimmedOccupation().equals("The man behind Shakespeare's Globe"));
         assertTrue(getPlacemark(parser, GAINSBOROUGH).getTrimmedOccupation().equals("Artist, lived here"));
@@ -114,9 +125,10 @@ public class TestBluePlaquesKMLParser extends InstrumentationTestCase {
         assertTrue(getPlacemark(parser, HANCOCK).getTrimmedOccupation().equals("Comedian lived here 1952-1958"));
     }
 
+    @Test
     public void testAddress() {
         BluePlaquesKMLParser parser = new BluePlaquesKMLParser();
-        parser.loadMapData(getInstrumentation().getContext());
+        parser.loadMapData(InstrumentationRegistry.getInstrumentation().getContext());
 
         assertTrue(getPlacemark(parser, WANAMAKER).getAddress().equals("New Globe Buildings, Bankside, SE1"));
         assertTrue(getPlacemark(parser, POPPER).getAddress().equals("16 Burlington Rise, EN4"));
@@ -124,9 +136,10 @@ public class TestBluePlaquesKMLParser extends InstrumentationTestCase {
         assertTrue(getPlacemark(parser, ADAM).getAddress().equals("1-3 Robert Street, Adelphi, WC2"));
     }
 
+    @Test
     public void testNote() {
         BluePlaquesKMLParser parser = new BluePlaquesKMLParser();
-        parser.loadMapData(getInstrumentation().getContext());
+        parser.loadMapData(InstrumentationRegistry.getInstrumentation().getContext());
 
         assertTrue(getPlacemark(parser, GAINSBOROUGH).getNote().equals("Note: Replaces plaque up in 1881 by RSA at No. 80."));
         assertTrue(getPlacemark(parser, MOORE).getNote().equals("Note: This plaque was removed from 28 Bury Street, St James's Westminster in 1962."));

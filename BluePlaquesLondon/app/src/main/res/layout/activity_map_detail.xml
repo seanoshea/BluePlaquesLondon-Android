@@ -27,48 +27,71 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@android:color/white">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/activity_map_details"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <include layout="@layout/toolbar" />
 
-        <TextView
-            android:id="@+id/activity_map_details_occupation"
-            style="@style/PrimaryText" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:attr/colorBackground">
 
-        <TextView
-            android:id="@+id/activity_map_details_address"
-            style="@style/SecondaryText" />
+        <LinearLayout
+            android:id="@+id/activity_map_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <TextView
-            android:id="@+id/activity_map_details_council_and_year"
-            style="@style/SecondaryText" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/activity_map_details_occupation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceHeadline6" />
 
-        <TextView
-            android:id="@+id/activity_map_details_note"
-            style="@style/SecondaryText" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/activity_map_details_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceBody1" />
 
-        <Button
-            android:id="@+id/activity_map_details_street_view"
-            style="@style/OrangeButton"
-            android:text="@string/street_view" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/activity_map_details_council_and_year"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceBody2" />
 
-        <Button
-            android:id="@+id/activity_map_details_wikipedia_article"
-            style="@style/OrangeButton"
-            android:text="@string/wikipedia_article" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/activity_map_details_note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceBody2" />
 
-        <Button
-            android:id="@+id/activity_map_details_more"
-            style="@style/OrangeButton"
-            android:text="@string/multiple_placemarks"
-            android:visibility="gone" />
-    </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/activity_map_details_street_view"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/street_view" />
 
-</ScrollView>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/activity_map_details_wikipedia_article"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/wikipedia_article" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/activity_map_details_more"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/multiple_placemarks"
+                android:visibility="gone" />
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

@@ -28,9 +28,12 @@
 
 package com.upwardsnorthwards.blueplaqueslondon.model;
 
-import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import android.os.Handler;
+import android.os.Looper;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,7 +51,7 @@ import java.net.URLEncoder;
 /**
  * Used by the <code>WikipediaActivity</code> to reteieve the URL associated with a placemark.
  */
-public class WikipediaModel extends AsyncTask<String, String, WikipediaModelSearchResult> {
+public class WikipediaModel {
 
     private static final String WIKIPEDIA_SEARCH_URL_FORMAT = "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=%s&srprop=timestamp&format=json";
     private static final String WIKIPEDIA_MODEL_ENCODING = "UTF-8";
@@ -56,15 +59,26 @@ public class WikipediaModel extends AsyncTask<String, String, WikipediaModelSear
     private String responseUrl;
     private IWikipediaModelDelegate delegate;
 
+    private ExecutorService executorService;
+    
     public void onPause() {
-        this.cancel(true);
+        if (executorService != null) {
+            executorService.shutdown();
+        }
     }
 
-    @Nullable
-    @Override
-    protected WikipediaModelSearchResult doInBackground(final String... params) {
-        final String name = params[0];
-        responseUrl = params[1];
+    public void searchWikipedia(final String name, final String url) {
+        responseUrl = url;
+        executorService = Executors.newSingleThreadExecutor();
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+        
+        executorService.execute(() -> {
+            WikipediaModelSearchResult result = performSearch(name);
+            mainHandler.post(() -> onPostExecute(result));
+        });
+    }
+    
+    private WikipediaModelSearchResult performSearch(final String name) {
         StringBuilder result = new StringBuilder();
         String responseString = null;
         HttpURLConnection urlConnection = null;
@@ -98,9 +112,7 @@ public class WikipediaModel extends AsyncTask<String, String, WikipediaModelSear
         return new WikipediaModelSearchResult(responseString, name);
     }
 
-    @Override
-    protected void onPostExecute(@NonNull final WikipediaModelSearchResult searchResult) {
-        super.onPostExecute(searchResult);
+    private void onPostExecute(@NonNull final WikipediaModelSearchResult searchResult) {
         try {
             if (searchResult.hasResult()) {
                 final JSONObject jObject = new JSONObject(searchResult.getResult());

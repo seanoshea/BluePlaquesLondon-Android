@@ -30,7 +30,7 @@ package com.upwardsnorthwards.blueplaqueslondon.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;

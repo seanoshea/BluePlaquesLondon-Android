@@ -29,11 +29,8 @@
 package com.upwardsnorthwards.blueplaqueslondon.activities;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.util.Log;
-import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
 
-import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.utils.InternetConnectivityHelper;
 import com.upwardsnorthwards.blueplaqueslondon.utils.InternetConnectivityHelperDelegate;
 
@@ -41,7 +38,7 @@ import com.upwardsnorthwards.blueplaqueslondon.utils.InternetConnectivityHelperD
  * Simple 'base'-style class which exposes the ability to set the text on the custom title bar.
  */
 @SuppressLint("Registered")
-public class BaseActivity extends Activity implements InternetConnectivityHelperDelegate {
+public class BaseActivity extends AppCompatActivity implements InternetConnectivityHelperDelegate {
 
     private static final String TAG = "BaseActivity";
 
@@ -61,21 +58,6 @@ public class BaseActivity extends Activity implements InternetConnectivityHelper
         super.onPause();
         if (internetConnectivityHelper != null) {
             internetConnectivityHelper.onPause();
-        }
-    }
-
-    /**
-     * The application uses a custom title bar. This method allows client code to set the title
-     * easily. Will do nothing if it cannot find the title_bar
-     *
-     * @param text the text to set on the title bar.
-     */
-    void setCustomTitleBarText(final String text) {
-        final TextView titleBar = (TextView) findViewById(R.id.title_bar);
-        if (titleBar != null) {
-            titleBar.setText(text);
-        } else {
-            Log.v(TAG, "Tried to set the title bar text to " + text + " but could not find title_bar in the view hierarchy");
         }
     }
 

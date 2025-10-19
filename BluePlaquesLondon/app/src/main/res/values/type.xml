@@ -1,0 +1,53 @@
+<resources>
+    <style name="TextAppearance.App.Headline1" parent="TextAppearance.Material3.Headline1">
+        <item name="fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="TextAppearance.App.Headline2" parent="TextAppearance.Material3.Headline2">
+        <item name="fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="TextAppearance.App.Headline3" parent="TextAppearance.Material3.Headline3">
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.App.Headline4" parent="TextAppearance.Material3.Headline4">
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.App.Headline5" parent="TextAppearance.Material3.Headline5">
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.App.Headline6" parent="TextAppearance.Material3.Headline6">
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.App.Subtitle1" parent="TextAppearance.Material3.Subtitle1">
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.App.Subtitle2" parent="TextAppearance.Material3.Subtitle2">
+        <item name="fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="TextAppearance.App.Body1" parent="TextAppearance.Material3.Body1">
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.App.Body2" parent="TextAppearance.Material3.Body2">
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.App.Button" parent="TextAppearance.Material3.Button">
+        <item name="fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="TextAppearance.App.Caption" parent="TextAppearance.Material3.Caption">
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.App.Overline" parent="TextAppearance.Material3.Overline">
+        <item name="fontFamily">sans-serif</item>
+    </style>
+</resources>

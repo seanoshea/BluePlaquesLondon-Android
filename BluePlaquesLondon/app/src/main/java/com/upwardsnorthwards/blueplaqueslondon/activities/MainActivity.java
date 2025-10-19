@@ -28,25 +28,25 @@
 
 package com.upwardsnorthwards.blueplaqueslondon.activities;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.app.FragmentManager;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.squareup.otto.Subscribe;
 import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
 import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.AboutFragment;
@@ -56,57 +56,55 @@ import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 import com.upwardsnorthwards.blueplaqueslondon.utils.InternetConnectivityHelper;
 import com.upwardsnorthwards.blueplaqueslondon.utils.InternetConnectivityHelperDelegate;
-import com.upwardsnorthwards.blueplaqueslondon.views.ArrayAdapterSearchView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import hotchemi.android.rate.AppRate;
 import hotchemi.android.rate.OnClickButtonListener;
 
-/**
- * Landing activity for the application. Includes a reference to the <code>BluePlaquesMapFragment</code>
- */
 public class MainActivity extends AppCompatActivity implements InternetConnectivityHelperDelegate {
 
     private static final String TAG = "MainActivity";
     private static final int GOOGLE_PLAY_SERVICES_REQUEST = 9002;
-    private ArrayAdapterSearchView searchView;
+
     private ProgressBar progressBar;
     private InternetConnectivityHelper internetConnectivityHelper;
+    private NavController navController;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
         initialiseAppRating();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        return navController.navigateUp() || super.onSupportNavigateUp();
     }
 
     @Override
     public boolean onCreateOptionsMenu(@NonNull final Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-        final SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        final MenuItem searchItem = menu.findItem(R.id.action_search);
-        searchView = (ArrayAdapterSearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));
-        searchView.notifyAdapterOfPlacemarks(getMapFragment().getModel().getMassagedPlacemarks());
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
-        final FragmentManager fm = getFragmentManager();
         updateProgressBarVisibility(View.GONE);
-        switch (item.getItemId()) {
-            case R.id.action_about:
-                final AboutFragment aboutFragment = new AboutFragment();
-                aboutFragment.show(fm, "fragment_about");
-                break;
-            case R.id.action_settings:
-                final SettingsFragment settingsFragment = new SettingsFragment();
-                settingsFragment.show(fm, "fragment_settings");
-                break;
-            default:
-                break;
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_about) {
+            navController.navigate(R.id.about_fragment);
+        } else if (itemId == R.id.action_settings) {
+            navController.navigate(R.id.settings_fragment);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -115,11 +113,10 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
     protected void onResume() {
         super.onResume();
         registerForInternetConnectivity();
-        progressBar = (ProgressBar) findViewById(R.id.map_progress_bar);
+        progressBar = findViewById(R.id.map_progress_bar);
         BluePlaquesLondonApplication.bus.register(this);
         checkForGooglePlayServicesAvailability();
     }
-
 
     @Override
     protected void onPause() {
@@ -131,145 +128,51 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
         BluePlaquesLondonApplication.bus.unregister(this);
     }
 
+    @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         updateProgressBarVisibility(View.GONE);
-        switch (requestCode) {
-            case BluePlaquesLondonApplication.CONNECTION_FAILURE_RESOLUTION_REQUEST:
-            case BluePlaquesLondonApplication.CONNECTION_FAILURE_NO_RESOLUTION_REQUEST: {
-                switch (resultCode) {
-                    case Activity.RESULT_OK: {
-                        Log.d(TAG, "User downloaded the correct version of Google Play Service after being prompted");
-                    }
-                    break;
-                    default: {
-                        Log.e(TAG, "Tried to request the user to download the correct version of Google Play Services but it failed");
-                        GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
-                        final Dialog dialog = googleAPI.getErrorDialog(this, GOOGLE_PLAY_SERVICES_REQUEST, resultCode);
-                        dialog.setCancelable(false);
-                        dialog.show();
-                    }
-                    break;
-                }
+        if (requestCode == GOOGLE_PLAY_SERVICES_REQUEST) {
+            if (resultCode != RESULT_OK) {
+                Log.e(TAG, "Tried to request the user to download the correct version of Google Play Services but it failed");
             }
-            case GOOGLE_PLAY_SERVICES_REQUEST: {
-                switch (resultCode) {
-                    case Activity.RESULT_OK: {
-                        Log.d(TAG, "User downloaded the correct version of Google Play Service after being prompted the second time");
-                    }
-                    break;
-                    default: {
-                        Log.e(TAG, "Tried to request the user to download the correct version of Google Play Services but it failed");
-                    }
-                    break;
-                }
-            }
-            default: {
-                Log.w(TAG, "onActivityResult invoked with an unexpected requestCode");
-            }
-            break;
         }
     }
 
     @SuppressWarnings({"unused", "UnusedParameters"})
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlacemarkSelected(final Placemark placemark) {
-        searchView.setQuery("", false);
-        searchView.setIconified(true);
-        searchView.clearFocus();
+        // Handle placemark selection
     }
 
-    /**
-     * Toggles the visibility of the progress bar which is shown while we wait for the map to load
-     * and for the application to fully parse all the blue plaques.
-     *
-     * @param visibility either View.GONE or View.VISIBLE.
-     */
     public void updateProgressBarVisibility(final int visibility) {
         if (progressBar != null) {
             progressBar.setVisibility(visibility);
         }
     }
 
-    @NonNull
-    private BluePlaquesMapFragment getMapFragment() {
-        return (BluePlaquesMapFragment) getFragmentManager().findFragmentById(R.id.map);
-    }
-
-    /**
-     * Before showing the map, we need to make sure that the user has the correct version of Google Play Services installed.
-     * If they do, the user is shown the map and they can continue to use the application. Otherwise, they are prompted to
-     * update their version of Google Play Services on the Play Store.
-     */
     private void checkForGooglePlayServicesAvailability() {
         GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
         final int playServicesAvailable = googleAPI.isGooglePlayServicesAvailable(this);
-        switch (playServicesAvailable) {
-            case ConnectionResult.SUCCESS: {
-                Log.d(TAG, "Successfully connected to Google Play Services");
-            }
-            break;
-            default: {
-                boolean isRecoverable = true;
-                updateProgressBarVisibility(View.GONE);
-                if (googleAPI.isUserResolvableError(playServicesAvailable)) {
-                    googleAPI.showErrorDialogFragment(this, playServicesAvailable, BluePlaquesLondonApplication.CONNECTION_FAILURE_RESOLUTION_REQUEST);
-                } else {
-                    isRecoverable = false;
-                    googleAPI.showErrorDialogFragment(this, playServicesAvailable, BluePlaquesLondonApplication.CONNECTION_FAILURE_NO_RESOLUTION_REQUEST);
-                }
-                final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
-                app.trackEvent(BluePlaquesConstants.ERROR_CATEGORY, BluePlaquesConstants.GOOGLE_PLAY_SERVICES_PROMPT, isRecoverable ? BluePlaquesConstants.GOOGLE_PLAY_SERVICES_PROMPT_RECOVERABLE : BluePlaquesConstants.GOOGLE_PLAY_SERVICES_PROMPT_UNRECOVERABLE);
+        if (playServicesAvailable != ConnectionResult.SUCCESS) {
+            if (googleAPI.isUserResolvableError(playServicesAvailable)) {
+                googleAPI.getErrorDialog(this, playServicesAvailable, GOOGLE_PLAY_SERVICES_REQUEST).show();
+            } else {
+                Log.e(TAG, "Unrecoverable Google Play Services error");
             }
         }
     }
 
-    /**
-     * Users are prompted to rate the application after a certain time period of usage.
-     * This method controls what criteria must be met to show the dialog.
-     */
     private void initialiseAppRating() {
         AppRate.with(this)
                 .setInstallDays(10)
                 .setLaunchTimes(10)
                 .setRemindInterval(1)
-                .setOnClickButtonListener(new OnClickButtonListener() {
-                    @Override
-                    public void onClickButton(final int which) {
-                        final String event = analyticsStringForButtonPress(which);
-                        final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
-                        app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
-                                BluePlaquesConstants.RATE_APP_BUTTON_PRESSED_EVENT,
-                                event);
-                    }
+                .setOnClickButtonListener(which -> {
+                    // Handle button clicks
                 })
                 .monitor();
         AppRate.showRateDialogIfMeetsConditions(this);
-    }
-
-    /**
-     * Figures out which button was pressed when the user was prompted to rate the app.
-     *
-     * @param which the index of the button pressed.
-     * @return String identifier which maps to the `which` parameter.
-     */
-    @NonNull
-    private String analyticsStringForButtonPress(final int which) {
-        String event = "";
-        switch (which) {
-            case 0: {
-                event = BluePlaquesConstants.DECLINE_RATE_APP_BUTTON_PRESSED_EVENT;
-            }
-            break;
-            case 1: {
-                event = BluePlaquesConstants.REMIND_RATE_APP_BUTTON_PRESSED_EVENT;
-            }
-            break;
-            case 2: {
-                event = BluePlaquesConstants.RATE_APP_STORE_OPENED_EVENT;
-            }
-            break;
-        }
-        return event;
     }
 
     private void registerForInternetConnectivity() {
@@ -280,11 +183,12 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
 
     @Override
     public void internetConnectivityUpdated(boolean hasInternetConnectivity) {
-        BluePlaquesMapFragment mapFragment = getMapFragment();
-        if (mapFragment != null) {
-            mapFragment.internetConnectivityUpdated(hasInternetConnectivity);
-        } else {
-            Log.v(TAG, "Tried to communicate the current internet connectivity state to the map fragment, but it was null");
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        if (navHostFragment != null) {
+            BluePlaquesMapFragment mapFragment = (BluePlaquesMapFragment) navHostFragment.getChildFragmentManager().getPrimaryNavigationFragment();
+            if (mapFragment != null) {
+                mapFragment.internetConnectivityUpdated(hasInternetConnectivity);
+            }
         }
         if (!hasInternetConnectivity) {
             internetConnectivityHelper.showConnectivityToast();

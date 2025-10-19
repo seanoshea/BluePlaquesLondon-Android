@@ -38,30 +38,25 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
+import androidx.core.content.ContextCompat;
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+// Migrated to Firebase Analytics
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
-import com.squareup.otto.Bus;
-import com.squareup.otto.ThreadEnforcer;
+import org.greenrobot.eventbus.EventBus;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 
 import java.util.HashMap;
 
-import io.fabric.sdk.android.Fabric;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 /**
  * Application class. Initialises Google Play Services and location services.
@@ -72,19 +67,13 @@ public class BluePlaquesLondonApplication extends MultiDexApplication implements
 
     public final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     public final static int CONNECTION_FAILURE_NO_RESOLUTION_REQUEST = 9001;
-    public static final Bus bus = new Bus(ThreadEnforcer.MAIN);
+    public static final EventBus bus = EventBus.getDefault();
     private final static String TAG = "BluePlaquesLondonApp";
     private final static String TRACKER_ID = "UA-46153093-3";
     @NonNull
-    private final HashMap<TrackerName, Tracker> trackers = new HashMap<>();
-    private RefWatcher refWatcher;
+    private FirebaseAnalytics firebaseAnalytics;
     private GoogleApiClient locationClient;
     private Location currentLocation;
-
-    public static RefWatcher getRefWatcher(@NonNull Context context) {
-        BluePlaquesLondonApplication application = (BluePlaquesLondonApplication) context.getApplicationContext();
-        return application.refWatcher;
-    }
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -109,9 +98,9 @@ public class BluePlaquesLondonApplication extends MultiDexApplication implements
             currentLocation
                     .setLongitude(BluePlaquesConstants.DEFAULT_LONGITUDE);
         }
-        refWatcher = LeakCanary.install(this);
         trackApplicationLoadedEvent();
-        Fabric.with(this, new Crashlytics());
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
     @Override
@@ -155,25 +144,14 @@ public class BluePlaquesLondonApplication extends MultiDexApplication implements
     }
 
     public void trackEvent(final String category, final String action, final String label) {
-        final Tracker tracker = getTracker(TrackerName.APP_TRACKER);
-        tracker.send(new HitBuilders.EventBuilder().setCategory(category)
-                .setAction(action).setLabel(label).build());
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, category);
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, action);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, label);
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 
-    @SuppressWarnings("SameParameterValue")
-    private synchronized Tracker getTracker(final TrackerName trackerId) {
-        if (!trackers.containsKey(trackerId)) {
-            final GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            // ideally, this would be loaded from the configuration file, but it's causing ANRs with the 6.5.87 version of Play Services
-            // https://github.com/seanoshea/BluePlaquesLondon-Android/issues/62 has the details.
-            final Tracker t = analytics.newTracker(TRACKER_ID);
-            t.setSessionTimeout(300);
-            t.enableExceptionReporting(true);
-            t.enableAutoActivityTracking(true);
-            trackers.put(trackerId, t);
-        }
-        return trackers.get(trackerId);
-    }
+    // Migrated to Firebase Analytics
 
     private void trackApplicationLoadedEvent() {
         final PackageInfo pInfo;
