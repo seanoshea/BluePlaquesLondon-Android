@@ -11,14 +11,16 @@ if (localPropertiesFile.exists()) {
 
 android {
     signingConfigs {
-        //noinspection GroovyMissingReturnStatement
-        config {
+        debug {
+            // No signing config needed for debug builds
         }
-        production {
-            keyAlias localProperties.getProperty('RELEASE_KEY_ALIAS')
-            keyPassword localProperties.getProperty('RELEASE_KEY_PASSWORD')
-            storeFile file(localProperties.getProperty('RELEASE_STORE_FILE'))
-            storePassword localProperties.getProperty('RELEASE_STORE_PASSWORD')
+        release {
+            if (localProperties.getProperty('RELEASE_STORE_FILE') != null) {
+                storeFile file(localProperties.getProperty('RELEASE_STORE_FILE'))
+                storePassword localProperties.getProperty('RELEASE_STORE_PASSWORD')
+                keyAlias localProperties.getProperty('RELEASE_KEY_ALIAS')
+                keyPassword localProperties.getProperty('RELEASE_KEY_PASSWORD')
+            }
         }
     }
     compileSdkVersion 34
@@ -52,8 +54,6 @@ android {
         versionName "2.1"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        //noinspection GroovyAssignabilityCheck
-        signingConfig signingConfigs.config
         
         // API Keys from local.properties
         buildConfigField "String", "GOOGLE_MAPS_API_KEY", "\"${localProperties.getProperty('GOOGLE_MAPS_API_KEY', '')}\""
@@ -68,12 +68,12 @@ android {
     buildTypes {
         debug {
             testCoverageEnabled true
+            signingConfig signingConfigs.debug
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            //noinspection GroovyAssignabilityCheck
-            signingConfig signingConfigs.production
+            signingConfig signingConfigs.release
         }
     }
     productFlavors {
@@ -93,7 +93,7 @@ dependencies {
     implementation "androidx.annotation:annotation:1.7.0"
     implementation "androidx.multidex:multidex:2.0.1"
     implementation "com.google.android.gms:play-services-maps:18.2.0"
-    implementation "com.google.android.gms.play-services-location:21.0.1"
+    implementation "com.google.android.gms:play-services-location:21.0.1"
     implementation "com.google.android.gms:play-services-ads:21.5.0"
     implementation "com.google.android.gms:play-services-auth:20.7.0"
     implementation "com.google.firebase:firebase-messaging:23.4.0"
