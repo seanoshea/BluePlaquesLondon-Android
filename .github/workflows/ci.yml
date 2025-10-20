@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches: [ develop, master, main ]
+  pull_request:
+    branches: [ develop, master, main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    env:
+      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 8
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '8'
+
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
+      with:
+        cache-read-only: false
+
+    - name: Set up Android SDK
+      uses: android-actions/setup-android@v3
+
+    - name: Install Android SDK components
+      run: |
+        sdkmanager "tools"
+        sdkmanager "build-tools;25.0.2"
+        sdkmanager "platforms;android-25"
+        sdkmanager "extras;android;m2repository"
+        sdkmanager "extras;google;m2repository"
+        sdkmanager "extras;google;google_play_services"
+
+    - name: Make gradlew executable
+      run: chmod +x BluePlaquesLondon/gradlew
+
+    - name: Run instrumented tests
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 22
+        arch: x86
+        profile: Nexus 5X
+        disable-animations: true
+        script: cd BluePlaquesLondon && ./gradlew :app:connectedAndroidTest
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        fail_ci_if_error: false
+        verbose: true
+
+    - name: Upload test reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-reports
+        path: |
+          BluePlaquesLondon/app/build/reports/
+          BluePlaquesLondon/app/build/outputs/androidTest-results/
