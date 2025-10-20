@@ -11,33 +11,33 @@ import androidx.compose.ui.unit.dp
 import com.upwardsnorthwards.blueplaqueslondon.R
 
 @Composable
-fun AboutScreen() {
+fun aboutScreen() {
     Column(modifier = Modifier.padding(16.dp)) {
         Text(
             text = stringResource(id = R.string.developed_details),
-            style = MaterialTheme.typography.headlineSmall
+            style = MaterialTheme.typography.headlineSmall,
         )
         Text(
             text = stringResource(id = R.string.developed_by),
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
         )
         Text(
             text = stringResource(id = R.string.designer_details),
             style = MaterialTheme.typography.headlineSmall,
-            modifier = Modifier.padding(top = 16.dp)
+            modifier = Modifier.padding(top = 16.dp),
         )
         Text(
             text = stringResource(id = R.string.designed_by),
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
         )
         Text(
             text = stringResource(id = R.string.map_details),
             style = MaterialTheme.typography.headlineSmall,
-            modifier = Modifier.padding(top = 16.dp)
+            modifier = Modifier.padding(top = 16.dp),
         )
         Text(
             text = stringResource(id = R.string.map_data),
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
         )
     }
 }

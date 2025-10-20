@@ -1,6 +1,5 @@
 package com.upwardsnorthwards.blueplaqueslondon.fragments
 
-import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -19,22 +18,23 @@ import com.upwardsnorthwards.blueplaqueslondon.R
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesSharedPreferences
 
 @Composable
-fun SettingsScreen() {
+fun settingsScreen() {
     val context = LocalContext.current
-    val analyticsEnabled = remember {
-        mutableStateOf(BluePlaquesSharedPreferences.getAnalyticsEnabled(context))
-    }
+    val analyticsEnabled =
+        remember {
+            mutableStateOf(BluePlaquesSharedPreferences.getAnalyticsEnabled(context))
+        }
 
     Column(modifier = Modifier.padding(16.dp)) {
         Text(
             text = stringResource(id = R.string.analytics),
-            style = MaterialTheme.typography.headlineSmall
+            style = MaterialTheme.typography.headlineSmall,
         )
         Row(modifier = Modifier.padding(top = 16.dp)) {
             Text(
                 text = stringResource(id = R.string.analytics_title),
                 style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             )
             Switch(
                 checked = analyticsEnabled.value,
@@ -42,13 +42,13 @@ fun SettingsScreen() {
                     analyticsEnabled.value = it
                     FirebaseAnalytics.getInstance(context).setAnalyticsCollectionEnabled(it)
                     BluePlaquesSharedPreferences.saveAnalyticsEnabled(context, it)
-                }
+                },
             )
         }
         Text(
             text = stringResource(id = R.string.analytics_note),
             style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier.padding(top = 8.dp)
+            modifier = Modifier.padding(top = 8.dp),
         )
     }
 }

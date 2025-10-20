@@ -13,22 +13,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 
 @Composable
-fun WikipediaScreen(url: String) {
+fun wikipediaScreen(url: String) {
     val isLoading = remember { mutableStateOf(true) }
 
     Box(modifier = Modifier.fillMaxSize()) {
         AndroidView(
             factory = {
                 WebView(it).apply {
-                    webViewClient = object : WebViewClient() {
-                        override fun onPageFinished(view: WebView?, url: String?) {
-                            isLoading.value = false
+                    webViewClient =
+                        object : WebViewClient() {
+                            override fun onPageFinished(
+                                view: WebView?,
+                                url: String?,
+                            ) {
+                                isLoading.value = false
+                            }
                         }
-                    }
                     loadUrl(url)
                 }
             },
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         )
         if (isLoading.value) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.compose.runtime.Composer;
 import androidx.compose.runtime.livedata.observeAsState;
 import androidx.compose.ui.platform.ComposeView;
 import androidx.fragment.app.Fragment;
@@ -21,6 +22,9 @@ import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 
 import java.util.ArrayList;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function2;
 
 public class MapDetailFragment extends Fragment {
 
@@ -45,26 +49,37 @@ public class MapDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ComposeView) view).setContent {
-            Placemark placemark = viewModel.getCurrentPlacemark().observeAsState().getValue();
-            if (placemark != null) {
-                MapDetailScreen(
-                    placemark = placemark,
-                    onStreetViewClick = () -> {
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelable(BluePlaquesConstants.PANORAMA_CLICKED_PARCLEABLE_KEY, placemark);
-                        NavHostFragment.findNavController(this).navigate(R.id.panorama_fragment, bundle);
-                    },
-                    onWikipediaClick = () -> {
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelable(BluePlaquesConstants.WIKIPEDIA_CLICKED_PARCLEABLE_KEY, placemark);
-                        NavHostFragment.findNavController(this).navigate(R.id.wikipedia_fragment, bundle);
-                    },
-                    onMoreClick = this::moreButtonClicked,
-                    isMoreButtonVisible = viewModel.getAllPlacemarks().size() > 1
-                );
+        ((ComposeView) view).setContent(new Function2<Composer, Integer, Unit>() {
+            @Override
+            public Unit invoke(Composer composer, Integer integer) {
+                Placemark placemark = viewModel.getCurrentPlacemark().observeAsState().getValue();
+                if (placemark != null) {
+                    MapDetailScreenKt.mapDetailScreen(
+                        placemark,
+                        () -> {
+                            Bundle bundle = new Bundle();
+                            bundle.putParcelable(BluePlaquesConstants.PANORAMA_CLICKED_PARCLEABLE_KEY, placemark);
+                            NavHostFragment.findNavController(MapDetailFragment.this).navigate(R.id.panorama_fragment, bundle);
+                            return Unit.INSTANCE;
+                        },
+                        () -> {
+                            Bundle bundle = new Bundle();
+                            bundle.putParcelable(BluePlaquesConstants.WIKIPEDIA_CLICKED_PARCLEABLE_KEY, placemark);
+                            NavHostFragment.findNavController(MapDetailFragment.this).navigate(R.id.wikipedia_fragment, bundle);
+                            return Unit.INSTANCE;
+                        },
+                        () -> {
+                            moreButtonClicked();
+                            return Unit.INSTANCE;
+                        },
+                        viewModel.getAllPlacemarks().size() > 1,
+                        composer,
+                        0
+                    );
+                }
+                return Unit.INSTANCE;
             }
-        };
+        });
     }
 
     private void moreButtonClicked() {

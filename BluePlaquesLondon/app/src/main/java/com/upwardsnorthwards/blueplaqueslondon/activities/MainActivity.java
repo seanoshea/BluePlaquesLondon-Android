@@ -1,4 +1,4 @@
-// Copyright (c) 2014 - 2025 Upwards Northwards Software Limited
+// Copyright (c) 2014 - 2016 Upwards Northwards Software Limited
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -39,6 +39,7 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -49,9 +50,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
 import com.upwardsnorthwards.blueplaqueslondon.R;
-import com.upwardsnorthwards.blueplaqueslondon.fragments.AboutFragment;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.BluePlaquesMapFragment;
-import com.upwardsnorthwards.blueplaqueslondon.fragments.SettingsFragment;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 import com.upwardsnorthwards.blueplaqueslondon.utils.InternetConnectivityHelper;
@@ -100,13 +99,7 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
     @Override
     public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
         updateProgressBarVisibility(View.GONE);
-        int itemId = item.getItemId();
-        if (itemId == R.id.action_about) {
-            navController.navigate(R.id.about_fragment);
-        } else if (itemId == R.id.action_settings) {
-            navController.navigate(R.id.settings_fragment);
-        }
-        return super.onOptionsItemSelected(item);
+        return NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -185,9 +178,9 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
     public void internetConnectivityUpdated(boolean hasInternetConnectivity) {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         if (navHostFragment != null) {
-            BluePlaquesMapFragment mapFragment = (BluePlaquesMapFragment) navHostFragment.getChildFragmentManager().getPrimaryNavigationFragment();
-            if (mapFragment != null) {
-                mapFragment.internetConnectivityUpdated(hasInternetConnectivity);
+            Fragment primaryFragment = navHostFragment.getChildFragmentManager().getPrimaryNavigationFragment();
+            if (primaryFragment instanceof BluePlaquesMapFragment) {
+                ((BluePlaquesMapFragment) primaryFragment).internetConnectivityUpdated(hasInternetConnectivity);
             }
         }
         if (!hasInternetConnectivity) {

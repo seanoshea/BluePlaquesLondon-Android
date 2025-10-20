@@ -1,4 +1,4 @@
-// Copyright (c) 2014 - 2025 Upwards Northwards Software Limited
+// Copyright (c) 2014 - 2016 Upwards Northwards Software Limited
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -41,6 +41,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -56,7 +57,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.squareup.leakcanary.RefWatcher;
 import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
 import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.activities.MainActivity;
@@ -107,13 +107,6 @@ public class BluePlaquesMapFragment extends MapFragment implements OnCameraChang
             executorService.shutdown();
         }
         BluePlaquesLondonApplication.bus.unregister(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        RefWatcher refWatcher = BluePlaquesLondonApplication.getRefWatcher(getActivity());
-        refWatcher.watch(this);
     }
 
     @SuppressWarnings("unused")
@@ -239,7 +232,7 @@ public class BluePlaquesMapFragment extends MapFragment implements OnCameraChang
         if (activity != null) {
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList(BluePlaquesConstants.INFO_WINDOW_CLICKED_PARCLEABLE_KEY, getListOfPlacemarksForMarker(marker));
-            NavHostFragment.findNavController(this).navigate(R.id.map_detail_fragment, bundle);
+            NavHostFragment.findNavController(BluePlaquesMapFragment.this).navigate(R.id.map_detail_fragment, bundle);
 
             final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) activity.getApplication();
             app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY, BluePlaquesConstants.MARKER_INFO_WINDOW_PRESSED_EVENT, marker.getTitle());

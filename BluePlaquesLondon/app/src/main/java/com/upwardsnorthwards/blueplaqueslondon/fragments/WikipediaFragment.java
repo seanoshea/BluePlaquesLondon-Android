@@ -7,11 +7,15 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.compose.runtime.Composer;
 import androidx.compose.ui.platform.ComposeView;
 import androidx.fragment.app.Fragment;
 
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function2;
 
 public class WikipediaFragment extends Fragment {
 
@@ -34,10 +38,14 @@ public class WikipediaFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ComposeView) view).setContent {
-            if (placemark != null) {
-                WikipediaScreen(url = placemark.getWikipediaUrl());
+        ((ComposeView) view).setContent(new Function2<Composer, Integer, Unit>() {
+            @Override
+            public Unit invoke(Composer composer, Integer integer) {
+                if (placemark != null) {
+                    WikipediaScreenKt.wikipediaScreen(placemark.getWikipediaUrl(), composer, 0);
+                }
+                return Unit.INSTANCE;
             }
-        };
+        });
     }
 }

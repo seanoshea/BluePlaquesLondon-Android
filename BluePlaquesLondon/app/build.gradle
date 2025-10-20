@@ -16,7 +16,8 @@ android {
         }
         release {
             if (localProperties.getProperty('RELEASE_STORE_FILE') != null) {
-                storeFile file(localProperties.getProperty('RELEASE_STORE_FILE'))
+                def storeFilePath = localProperties.getProperty('RELEASE_STORE_FILE')
+                storeFile file(storeFilePath.replaceFirst("~", System.getProperty("user.home")))
                 storePassword localProperties.getProperty('RELEASE_STORE_PASSWORD')
                 keyAlias localProperties.getProperty('RELEASE_KEY_ALIAS')
                 keyPassword localProperties.getProperty('RELEASE_KEY_PASSWORD')
@@ -101,6 +102,7 @@ dependencies {
     implementation "com.github.hotchemi:android-rate:1.0.1"
     implementation "androidx.lifecycle:lifecycle-livedata:2.7.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.7.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.7.0"
     implementation "org.greenrobot:eventbus:3.3.1"
     implementation "androidx.navigation:navigation-fragment:2.7.5"
     implementation "androidx.navigation:navigation-ui:2.7.5"
