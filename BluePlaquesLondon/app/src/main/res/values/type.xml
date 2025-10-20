@@ -1,53 +1,53 @@
 <resources>
-    <style name="TextAppearance.App.Headline1" parent="TextAppearance.Material3.Headline1">
+    <style name="TextAppearance.App.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
         <item name="fontFamily">sans-serif-light</item>
     </style>
 
-    <style name="TextAppearance.App.Headline2" parent="TextAppearance.Material3.Headline2">
+    <style name="TextAppearance.App.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
         <item name="fontFamily">sans-serif-light</item>
     </style>
 
-    <style name="TextAppearance.App.Headline3" parent="TextAppearance.Material3.Headline3">
+    <style name="TextAppearance.App.Headline3" parent="TextAppearance.MaterialComponents.Headline3">
         <item name="fontFamily">sans-serif</item>
     </style>
 
-    <style name="TextAppearance.App.Headline4" parent="TextAppearance.Material3.Headline4">
+    <style name="TextAppearance.App.Headline4" parent="TextAppearance.MaterialComponents.Headline4">
         <item name="fontFamily">sans-serif</item>
     </style>
 
-    <style name="TextAppearance.App.Headline5" parent="TextAppearance.Material3.Headline5">
+    <style name="TextAppearance.App.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
         <item name="fontFamily">sans-serif</item>
     </style>
 
-    <style name="TextAppearance.App.Headline6" parent="TextAppearance.Material3.Headline6">
+    <style name="TextAppearance.App.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="fontFamily">sans-serif</item>
     </style>
 
-    <style name="TextAppearance.App.Subtitle1" parent="TextAppearance.Material3.Subtitle1">
+    <style name="TextAppearance.App.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="fontFamily">sans-serif</item>
     </style>
 
-    <style name="TextAppearance.App.Subtitle2" parent="TextAppearance.Material3.Subtitle2">
+    <style name="TextAppearance.App.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
         <item name="fontFamily">sans-serif-medium</item>
     </style>
 
-    <style name="TextAppearance.App.Body1" parent="TextAppearance.Material3.Body1">
+    <style name="TextAppearance.App.Body1" parent="TextAppearance.MaterialComponents.Body1">
         <item name="fontFamily">sans-serif</item>
     </style>
 
-    <style name="TextAppearance.App.Body2" parent="TextAppearance.Material3.Body2">
+    <style name="TextAppearance.App.Body2" parent="TextAppearance.MaterialComponents.Body2">
         <item name="fontFamily">sans-serif</item>
     </style>
 
-    <style name="TextAppearance.App.Button" parent="TextAppearance.Material3.Button">
+    <style name="TextAppearance.App.Button" parent="TextAppearance.MaterialComponents.Button">
         <item name="fontFamily">sans-serif-medium</item>
     </style>
 
-    <style name="TextAppearance.App.Caption" parent="TextAppearance.Material3.Caption">
+    <style name="TextAppearance.App.Caption" parent="TextAppearance.MaterialComponents.Caption">
         <item name="fontFamily">sans-serif</item>
     </style>
 
-    <style name="TextAppearance.App.Overline" parent="TextAppearance.Material3.Overline">
+    <style name="TextAppearance.App.Overline" parent="TextAppearance.MaterialComponents.Overline">
         <item name="fontFamily">sans-serif</item>
     </style>
 </resources>
