@@ -35,9 +35,9 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 
@@ -54,8 +54,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.squareup.leakcanary.RefWatcher;
-import com.squareup.otto.Subscribe;
 import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
 import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.activities.MainActivity;
@@ -92,7 +90,6 @@ public class BluePlaquesMapFragment extends MapFragment implements OnCameraChang
     public void onResume() {
         super.onResume();
         checkForModel();
-        BluePlaquesLondonApplication.bus.register(this);
     }
 
     @Override
@@ -101,25 +98,15 @@ public class BluePlaquesMapFragment extends MapFragment implements OnCameraChang
         if (task != null) {
             task.cancel(true);
         }
-        BluePlaquesLondonApplication.bus.unregister(this);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        RefWatcher refWatcher = BluePlaquesLondonApplication.getRefWatcher(getActivity());
-        refWatcher.watch(this);
-    }
-
-    @SuppressWarnings("unused")
-    @Subscribe
+    // Called from ArrayAdapterSearchView when a placemark is selected
     public void onPlacemarkSelected(@NonNull Placemark placemark) {
         final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getActivity().getApplication();
         if (placemark.getName().equals(getString(R.string.closest))) {
-            final Location currentLocation = app.getCurrentLocation();
-            if (currentLocation != null) {
-                placemark = model.getPlacemarkClosestToPlacemark(currentLocation);
-            }
+            // TODO: Implement location services via ViewModel
+            // For now, we'll skip the closest plaque logic
+            Log.w(TAG, "Closest plaque selection not yet implemented with new architecture");
         }
         app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY, BluePlaquesConstants.TABLE_ROW_PRESSED_EVENT, placemark.getName());
         navigateToPlacemark(placemark);

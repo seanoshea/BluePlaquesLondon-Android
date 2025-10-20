@@ -29,8 +29,8 @@
 package com.upwardsnorthwards.blueplaqueslondon.views;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.SearchView;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
@@ -99,17 +99,43 @@ public class ArrayAdapterSearchView extends SearchView implements SearchView.OnQ
 
     private void navigateToPlacemarkAtIndex(final int index) {
         final Placemark placemark = searchAdapter.getFilteredPlacemarkAtPosition(index);
-        BluePlaquesLondonApplication.bus.post(placemark);
+        // Notify the MapFragment directly instead of using Otto bus
+        if (getContext() instanceof android.app.Activity) {
+            android.app.Activity activity = (android.app.Activity) getContext();
+            android.app.FragmentManager fm = activity.getFragmentManager();
+            com.upwardsnorthwards.blueplaqueslondon.fragments.BluePlaquesMapFragment mapFragment =
+                    (com.upwardsnorthwards.blueplaqueslondon.fragments.BluePlaquesMapFragment) fm.findFragmentById(R.id.map);
+            if (mapFragment != null) {
+                mapFragment.onPlacemarkSelected(placemark);
+            }
+            // Also notify MainActivity to clear the search view
+            if (activity instanceof com.upwardsnorthwards.blueplaqueslondon.activities.MainActivity) {
+                ((com.upwardsnorthwards.blueplaqueslondon.activities.MainActivity) activity).onPlacemarkSelected(placemark);
+            }
+        }
     }
 
     private void initialize(final Context context) {
-        searchAutoComplete = (SearchAutoComplete) findViewById(R.id.search_src_text);
-        searchAdapter = new SearchAdapter(context,
-                new ArrayList<Placemark>());
-        setAdapter(searchAdapter);
+        // Get SearchAutoComplete using AndroidX internal ID
+        int searchSrcTextId = getResources().getIdentifier("search_src_text", "id", context.getPackageName());
+        if (searchSrcTextId != 0) {
+            searchAutoComplete = (SearchAutoComplete) findViewById(searchSrcTextId);
+        } else {
+            // Fallback: try androidx package
+            searchSrcTextId = getResources().getIdentifier("search_src_text", "id", "androidx.appcompat");
+            if (searchSrcTextId != 0) {
+                searchAutoComplete = (SearchAutoComplete) findViewById(searchSrcTextId);
+            }
+        }
+
+        searchAdapter = new SearchAdapter(context, new ArrayList<Placemark>());
+
+        if (searchAutoComplete != null) {
+            setAdapter(searchAdapter);
+            setOnItemClickListener(this);
+        }
         setOnQueryTextListener(this);
         setOnQueryTextFocusChangeListener(this);
-        setOnItemClickListener(this);
     }
 
 }

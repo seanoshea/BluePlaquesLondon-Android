@@ -30,7 +30,7 @@ package com.upwardsnorthwards.blueplaqueslondon.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -50,6 +50,14 @@ public class BluePlaquesSharedPreferences {
     private static final String LAST_KNOWN_COORDINATE_LONGITUDE = "LAST_KNOWN_COORDINATE_LONGITUDE";
     private static final String MAP_ZOOM = "MAP_ZOOM";
     private static final String ANALYTICS_ENABLED = "ANALYTICS_ENABLED";
+    private static final String LAUNCH_COUNT = "LAUNCH_COUNT";
+    private static final String COMPLETED_REVIEW = "COMPLETED_REVIEW";
+
+    private final Context context;
+
+    public BluePlaquesSharedPreferences(@NonNull Context context) {
+        this.context = context;
+    }
 
     @NonNull
     public static LatLng getLastKnownBPLCoordinate(@NonNull final Context context) {
@@ -109,6 +117,35 @@ public class BluePlaquesSharedPreferences {
         final SharedPreferences.Editor editor = preferences.edit();
         editor.putFloat(latitudeKey, (float) latLng.latitude);
         editor.putFloat(longitudeKey, (float) latLng.longitude);
+        editor.apply();
+    }
+
+    // In-App Review tracking methods
+    public int getLaunchCount() {
+        final SharedPreferences preferences = context.getSharedPreferences(
+                PREFERENCES_KEY, Context.MODE_PRIVATE);
+        return preferences.getInt(LAUNCH_COUNT, 0);
+    }
+
+    public void incrementLaunchCount() {
+        final SharedPreferences preferences = context.getSharedPreferences(
+                PREFERENCES_KEY, Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(LAUNCH_COUNT, getLaunchCount() + 1);
+        editor.apply();
+    }
+
+    public boolean hasCompletedReview() {
+        final SharedPreferences preferences = context.getSharedPreferences(
+                PREFERENCES_KEY, Context.MODE_PRIVATE);
+        return preferences.getBoolean(COMPLETED_REVIEW, false);
+    }
+
+    public void setCompletedReview(boolean completed) {
+        final SharedPreferences preferences = context.getSharedPreferences(
+                PREFERENCES_KEY, Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(COMPLETED_REVIEW, completed);
         editor.apply();
     }
 }

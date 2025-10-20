@@ -28,8 +28,6 @@ android {
     }
 
     signingConfigs {
-        config {
-        }
         production {
             keyAlias "production"
             keyPassword "password_here"
@@ -40,7 +38,7 @@ android {
 
     buildTypes {
         debug {
-            signingConfig signingConfigs.config
+            // Debug builds use default debug signing
         }
         release {
             minifyEnabled false

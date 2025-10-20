@@ -35,9 +35,10 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.core.view.MenuItemCompat;
+import androidx.appcompat.app
+.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,7 +47,10 @@ import android.widget.ProgressBar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.squareup.otto.Subscribe;
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
+import com.google.android.gms.tasks.Task;
 import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
 import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.AboutFragment;
@@ -54,12 +58,10 @@ import com.upwardsnorthwards.blueplaqueslondon.fragments.BluePlaquesMapFragment;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.SettingsFragment;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
+import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesSharedPreferences;
 import com.upwardsnorthwards.blueplaqueslondon.utils.InternetConnectivityHelper;
 import com.upwardsnorthwards.blueplaqueslondon.utils.InternetConnectivityHelperDelegate;
 import com.upwardsnorthwards.blueplaqueslondon.views.ArrayAdapterSearchView;
-
-import hotchemi.android.rate.AppRate;
-import hotchemi.android.rate.OnClickButtonListener;
 
 /**
  * Landing activity for the application. Includes a reference to the <code>BluePlaquesMapFragment</code>
@@ -68,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
 
     private static final String TAG = "MainActivity";
     private static final int GOOGLE_PLAY_SERVICES_REQUEST = 9002;
+    private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    private static final int CONNECTION_FAILURE_NO_RESOLUTION_REQUEST = 9001;
     private ArrayAdapterSearchView searchView;
     private ProgressBar progressBar;
     private InternetConnectivityHelper internetConnectivityHelper;
@@ -96,17 +100,15 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
     public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
         final FragmentManager fm = getFragmentManager();
         updateProgressBarVisibility(View.GONE);
-        switch (item.getItemId()) {
-            case R.id.action_about:
-                final AboutFragment aboutFragment = new AboutFragment();
-                aboutFragment.show(fm, "fragment_about");
-                break;
-            case R.id.action_settings:
-                final SettingsFragment settingsFragment = new SettingsFragment();
-                settingsFragment.show(fm, "fragment_settings");
-                break;
-            default:
-                break;
+        int id = item.getItemId();
+        if (id == R.id.action_about) {
+            final AboutFragment aboutFragment = new AboutFragment();
+            aboutFragment.show(fm, "fragment_about");
+            return true;
+        } else if (id == R.id.action_settings) {
+            final SettingsFragment settingsFragment = new SettingsFragment();
+            settingsFragment.show(fm, "fragment_settings");
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -116,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
         super.onResume();
         registerForInternetConnectivity();
         progressBar = (ProgressBar) findViewById(R.id.map_progress_bar);
-        BluePlaquesLondonApplication.bus.register(this);
         checkForGooglePlayServicesAvailability();
     }
 
@@ -128,14 +129,13 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
             internetConnectivityHelper.onPause();
         }
         updateProgressBarVisibility(View.GONE);
-        BluePlaquesLondonApplication.bus.unregister(this);
     }
 
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         updateProgressBarVisibility(View.GONE);
         switch (requestCode) {
-            case BluePlaquesLondonApplication.CONNECTION_FAILURE_RESOLUTION_REQUEST:
-            case BluePlaquesLondonApplication.CONNECTION_FAILURE_NO_RESOLUTION_REQUEST: {
+            case CONNECTION_FAILURE_RESOLUTION_REQUEST:
+            case CONNECTION_FAILURE_NO_RESOLUTION_REQUEST: {
                 switch (resultCode) {
                     case Activity.RESULT_OK: {
                         Log.d(TAG, "User downloaded the correct version of Google Play Service after being prompted");
@@ -170,12 +170,13 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
         }
     }
 
-    @SuppressWarnings({"unused", "UnusedParameters"})
-    @Subscribe
+    // Called by BluePlaquesMapFragment when a placemark is selected
     public void onPlacemarkSelected(final Placemark placemark) {
-        searchView.setQuery("", false);
-        searchView.setIconified(true);
-        searchView.clearFocus();
+        if (searchView != null) {
+            searchView.setQuery("", false);
+            searchView.setIconified(true);
+            searchView.clearFocus();
+        }
     }
 
     /**
@@ -212,10 +213,10 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
                 boolean isRecoverable = true;
                 updateProgressBarVisibility(View.GONE);
                 if (googleAPI.isUserResolvableError(playServicesAvailable)) {
-                    googleAPI.showErrorDialogFragment(this, playServicesAvailable, BluePlaquesLondonApplication.CONNECTION_FAILURE_RESOLUTION_REQUEST);
+                    googleAPI.showErrorDialogFragment(this, playServicesAvailable, CONNECTION_FAILURE_RESOLUTION_REQUEST);
                 } else {
                     isRecoverable = false;
-                    googleAPI.showErrorDialogFragment(this, playServicesAvailable, BluePlaquesLondonApplication.CONNECTION_FAILURE_NO_RESOLUTION_REQUEST);
+                    googleAPI.showErrorDialogFragment(this, playServicesAvailable, CONNECTION_FAILURE_NO_RESOLUTION_REQUEST);
                 }
                 final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
                 app.trackEvent(BluePlaquesConstants.ERROR_CATEGORY, BluePlaquesConstants.GOOGLE_PLAY_SERVICES_PROMPT, isRecoverable ? BluePlaquesConstants.GOOGLE_PLAY_SERVICES_PROMPT_RECOVERABLE : BluePlaquesConstants.GOOGLE_PLAY_SERVICES_PROMPT_UNRECOVERABLE);
@@ -224,52 +225,43 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
     }
 
     /**
-     * Users are prompted to rate the application after a certain time period of usage.
-     * This method controls what criteria must be met to show the dialog.
+     * Users are prompted to rate the application using Google Play In-App Review API.
+     * This is triggered based on launch count stored in SharedPreferences.
      */
     private void initialiseAppRating() {
-        AppRate.with(this)
-                .setInstallDays(10)
-                .setLaunchTimes(10)
-                .setRemindInterval(1)
-                .setOnClickButtonListener(new OnClickButtonListener() {
-                    @Override
-                    public void onClickButton(final int which) {
-                        final String event = analyticsStringForButtonPress(which);
-                        final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
-                        app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
-                                BluePlaquesConstants.RATE_APP_BUTTON_PRESSED_EVENT,
-                                event);
-                    }
-                })
-                .monitor();
-        AppRate.showRateDialogIfMeetsConditions(this);
+        final BluePlaquesSharedPreferences prefs = new BluePlaquesSharedPreferences(this);
+
+        // Check if we should show the review prompt (after 10 launches)
+        int launchCount = prefs.getLaunchCount();
+        prefs.incrementLaunchCount();
+
+        if (launchCount >= 10 && !prefs.hasCompletedReview()) {
+            showInAppReview();
+        }
     }
 
     /**
-     * Figures out which button was pressed when the user was prompted to rate the app.
-     *
-     * @param which the index of the button pressed.
-     * @return String identifier which maps to the `which` parameter.
+     * Shows the Google Play In-App Review dialog.
      */
-    @NonNull
-    private String analyticsStringForButtonPress(final int which) {
-        String event = "";
-        switch (which) {
-            case 0: {
-                event = BluePlaquesConstants.DECLINE_RATE_APP_BUTTON_PRESSED_EVENT;
+    private void showInAppReview() {
+        ReviewManager reviewManager = ReviewManagerFactory.create(this);
+        Task<ReviewInfo> request = reviewManager.requestReviewFlow();
+        request.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                ReviewInfo reviewInfo = task.getResult();
+                Task<Void> flow = reviewManager.launchReviewFlow(this, reviewInfo);
+                flow.addOnCompleteListener(reviewTask -> {
+                    // Mark as completed regardless of whether user reviewed
+                    BluePlaquesSharedPreferences prefs = new BluePlaquesSharedPreferences(this);
+                    prefs.setCompletedReview(true);
+
+                    final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
+                    app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
+                            BluePlaquesConstants.RATE_APP_BUTTON_PRESSED_EVENT,
+                            "In-App Review Shown");
+                });
             }
-            break;
-            case 1: {
-                event = BluePlaquesConstants.REMIND_RATE_APP_BUTTON_PRESSED_EVENT;
-            }
-            break;
-            case 2: {
-                event = BluePlaquesConstants.RATE_APP_STORE_OPENED_EVENT;
-            }
-            break;
-        }
-        return event;
+        });
     }
 
     private void registerForInternetConnectivity() {

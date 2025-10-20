@@ -31,7 +31,7 @@ package com.upwardsnorthwards.blueplaqueslondon.fragments;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,14 +39,12 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.squareup.leakcanary.RefWatcher;
-import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesSharedPreferences;
 
 /**
- * Allows the user to enable/disable Google Analytics tracking
+ * Allows the user to enable/disable Firebase Analytics tracking
  */
 public class SettingsFragment extends DialogFragment implements OnCheckedChangeListener {
 
@@ -80,16 +78,8 @@ public class SettingsFragment extends DialogFragment implements OnCheckedChangeL
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        RefWatcher refWatcher = BluePlaquesLondonApplication.getRefWatcher(getActivity());
-        refWatcher.watch(this);
-    }
-
-    @Override
     public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
-        GoogleAnalytics.getInstance(getActivity()).setAppOptOut(!isChecked);
-        BluePlaquesSharedPreferences.saveAnalyticsEnabled(getActivity(),
-                isChecked);
+        FirebaseAnalytics.getInstance(getActivity()).setAnalyticsCollectionEnabled(isChecked);
+        BluePlaquesSharedPreferences.saveAnalyticsEnabled(getActivity(), isChecked);
     }
 }

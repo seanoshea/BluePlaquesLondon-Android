@@ -30,7 +30,7 @@ package com.upwardsnorthwards.blueplaqueslondon.fragments;
 
 import android.app.DialogFragment;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -38,8 +38,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.squareup.leakcanary.RefWatcher;
-import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
 import com.upwardsnorthwards.blueplaqueslondon.R;
 
 /**
@@ -48,13 +46,6 @@ import com.upwardsnorthwards.blueplaqueslondon.R;
 public class AboutFragment extends DialogFragment {
 
     public AboutFragment() {
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        RefWatcher refWatcher = BluePlaquesLondonApplication.getRefWatcher(getActivity());
-        refWatcher.watch(this);
     }
 
     @Override
