@@ -68,4 +68,10 @@ public class NetworkModule {
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build();
     }
+
+    @Provides
+    @Singleton
+    public com.upwardsnorthwards.blueplaqueslondon.data.remote.WikipediaApiService provideWikipediaApiService(@NonNull Retrofit retrofit) {
+        return retrofit.create(com.upwardsnorthwards.blueplaqueslondon.data.remote.WikipediaApiService.class);
+    }
 }
