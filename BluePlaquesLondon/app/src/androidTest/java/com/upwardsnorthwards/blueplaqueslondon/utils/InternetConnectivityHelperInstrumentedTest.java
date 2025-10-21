@@ -7,7 +7,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.SmallTest;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -93,16 +92,6 @@ public class InternetConnectivityHelperInstrumentedTest {
 
         // Then - should handle multiple cycles without crashing
         assertNotNull("Helper should survive lifecycle", helper);
-    }
-
-    @Test
-    @Ignore("Toast display requires main thread with Looper.prepare() - not critical for functional testing")
-    public void testShowConnectivityToast() {
-        // When - show toast (won't actually display in test but shouldn't crash)
-        helper.showConnectivityToast();
-
-        // Then - no exception should be thrown
-        assertNotNull("Helper should still exist after showing toast", helper);
     }
 
     @Test
