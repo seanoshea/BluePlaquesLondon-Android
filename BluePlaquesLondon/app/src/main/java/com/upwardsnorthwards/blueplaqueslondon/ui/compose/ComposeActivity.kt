@@ -91,10 +91,46 @@ fun ComposeNavigation(
                 viewModel = mainViewModel,
                 onPlacemarkSelected = { placemark ->
                     onPlacemarkSelected(placemark)
-                    // Could navigate to detail screen here
+                    navController.navigate("detail/${placemark.name ?: "plaque"}")
                 },
                 onNavigationMenuClick = {
                     // Show navigation menu with options
+                }
+            )
+        }
+
+        composable("detail/{plaqueName}") {
+            DetailScreen(
+                placemarks = emptyList(),
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onStreetViewClick = { placemark ->
+                    navController.navigate("panorama/${placemark.name ?: "street_view"}")
+                },
+                onWikipediaClick = { placemark ->
+                    navController.navigate("wikipedia/${placemark.name ?: "article"}")
+                },
+                onMultiplePlacemarksClick = {
+                    // Will be handled by detail screen state
+                }
+            )
+        }
+
+        composable("wikipedia/{plaqueName}") {
+            WikipediaScreen(
+                placemark = null,
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable("panorama/{plaqueName}") {
+            PanoramaScreen(
+                placemark = null,
+                onBackClick = {
+                    navController.popBackStack()
                 }
             )
         }
