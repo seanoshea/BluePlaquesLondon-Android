@@ -3,7 +3,6 @@ package com.upwardsnorthwards.blueplaqueslondon.adapters;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
 import android.widget.FrameLayout;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -13,14 +12,11 @@ import androidx.test.filters.SmallTest;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -121,103 +117,6 @@ public class SearchAdapterInstrumentedTest {
         assertNotNull("Placemark should be set", holder.placemark);
     }
 
-    @Test
-    @Ignore("ArrayAdapter.Filter initialization requires Looper - use unit tests instead")
-    public void testGetFilter() {
-        // When
-        Filter filter = adapter.getFilter();
-
-        // Then
-        assertNotNull("Filter should not be null", filter);
-    }
-
-    @Test
-    @Ignore("ArrayAdapter.Filter requires Looper in background thread - use unit tests instead")
-    public void testFilterPlacemarks() throws InterruptedException {
-        // Given
-        Filter filter = adapter.getFilter();
-        final CountDownLatch latch = new CountDownLatch(1);
-
-        // When - filter for "Darwin"
-        filter.filter("Darwin", new Filter.FilterListener() {
-            @Override
-            public void onFilterComplete(int count) {
-                latch.countDown();
-            }
-        });
-
-        // Wait for filter to complete (allows up to 10 seconds for background processing)
-        if (!latch.await(10, TimeUnit.SECONDS)) {
-            // If timeout occurs, it means filter callback wasn't called
-            // This is a known issue with ArrayAdapter Filter on some devices
-            // Just verify adapter state is reasonable
-            int count = adapter.getCount();
-            assertTrue("Adapter should have items even if filter callback timeout", count >= 0);
-            return;
-        }
-
-        // Then
-        int count = adapter.getCount();
-        assertTrue("Should have at least closest option", count >= 1);
-    }
-
-    @Test
-    @Ignore("ArrayAdapter.Filter requires Looper in background thread - use unit tests instead")
-    public void testFilterPlacemarksWithEmptyString() throws InterruptedException {
-        // Given
-        Filter filter = adapter.getFilter();
-        final CountDownLatch latch = new CountDownLatch(1);
-
-        // When - filter with empty string (should not filter)
-        filter.filter("", new Filter.FilterListener() {
-            @Override
-            public void onFilterComplete(int count) {
-                latch.countDown();
-            }
-        });
-
-        // Wait for filter to complete
-        if (!latch.await(10, TimeUnit.SECONDS)) {
-            // Empty constraint may not trigger filter callback on all devices
-            // Just verify count
-            int count = adapter.getCount();
-            assertTrue("Adapter should have items", count > 0);
-            return;
-        }
-
-        // Then - empty filter should show original list
-        int count = adapter.getCount();
-        assertTrue("Should have at least some items after empty filter", count >= 1);
-    }
-
-    @Test
-    @Ignore("ArrayAdapter.Filter requires Looper in background thread - use unit tests instead")
-    public void testFilterPlacemarksWithNoMatch() throws InterruptedException {
-        // Given
-        Filter filter = adapter.getFilter();
-        final CountDownLatch latch = new CountDownLatch(1);
-
-        // When - filter with text that won't match
-        filter.filter("XYZNONEXISTENT", new Filter.FilterListener() {
-            @Override
-            public void onFilterComplete(int count) {
-                latch.countDown();
-            }
-        });
-
-        // Wait for filter to complete
-        if (!latch.await(10, TimeUnit.SECONDS)) {
-            // Filter callback might not be called in all scenarios
-            // Verify adapter is still in a valid state
-            int count = adapter.getCount();
-            assertTrue("Adapter should still be valid even if filter callback timeout", count >= 0);
-            return;
-        }
-
-        // Then - should still have closest option or no results
-        int count = adapter.getCount();
-        assertTrue("Should have valid count after filter with no match", count >= 0);
-    }
 
     @Test
     public void testSetPlacemarks() {
