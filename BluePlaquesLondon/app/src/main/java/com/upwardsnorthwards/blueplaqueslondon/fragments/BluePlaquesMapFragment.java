@@ -351,16 +351,22 @@ public class BluePlaquesMapFragment extends MapFragment implements OnCameraChang
     public void onInfoWindowClick(@NonNull final Marker marker) {
         final Activity activity = getActivity();
         if (activity != null) {
-            final Intent intent = new Intent(activity, MapDetailActivity.class);
-            intent.putParcelableArrayListExtra(
+            final Bundle args = new Bundle();
+            args.putParcelableArrayList(
                     BluePlaquesConstants.INFO_WINDOW_CLICKED_PARCLEABLE_KEY,
                     getListOfPlacemarksForMarker(marker));
+
             final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) activity
                     .getApplication();
             app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
                     BluePlaquesConstants.MARKER_INFO_WINDOW_PRESSED_EVENT,
                     marker.getTitle());
-            startActivity(intent);
+
+            View view = getView();
+            if (view != null) {
+                androidx.navigation.NavController navController = androidx.navigation.Navigation.findNavController(view);
+                navController.navigate(R.id.action_mapFragment_to_mapDetailFragment, args);
+            }
         }
     }
 

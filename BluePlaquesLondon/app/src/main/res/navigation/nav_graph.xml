@@ -10,6 +10,13 @@
         android:name="com.upwardsnorthwards.blueplaqueslondon.fragments.BluePlaquesMapFragment"
         android:label="Blue Plaques London">
         <action
+            android:id="@+id/action_mapFragment_to_mapDetailFragment"
+            app:destination="@id/mapDetailFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <action
             android:id="@+id/action_mapFragment_to_aboutFragment"
             app:destination="@id/aboutFragment"
             app:enterAnim="@android:anim/fade_in"
@@ -24,6 +31,39 @@
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
+
+    <!-- Map detail screen - shows plaque details -->
+    <fragment
+        android:id="@+id/mapDetailFragment"
+        android:name="com.upwardsnorthwards.blueplaqueslondon.fragments.MapDetailFragment"
+        android:label="Plaque Details">
+        <action
+            android:id="@+id/action_mapDetailFragment_to_wikipediaFragment"
+            app:destination="@id/wikipediaFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_mapDetailFragment_to_panoramaFragment"
+            app:destination="@id/panoramaFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+
+    <!-- Wikipedia fragment - shows article -->
+    <fragment
+        android:id="@+id/wikipediaFragment"
+        android:name="com.upwardsnorthwards.blueplaqueslondon.fragments.WikipediaFragment"
+        android:label="Wikipedia" />
+
+    <!-- Panorama fragment - shows Street View -->
+    <fragment
+        android:id="@+id/panoramaFragment"
+        android:name="com.upwardsnorthwards.blueplaqueslondon.fragments.PanoramaFragment"
+        android:label="Street View" />
 
     <!-- About screen -->
     <fragment
