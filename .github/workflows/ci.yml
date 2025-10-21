@@ -35,7 +35,7 @@ jobs:
       run: cd BluePlaquesLondon && ./gradlew assembleDebug
 
     - name: Run unit tests
-      run: cd BluePlaquesLondon && ./gradlew test
+      run: cd BluePlaquesLondon && ./gradlew testDebugUnitTest --no-daemon
 
     - name: Run instrumented tests
       uses: reactivecircus/android-emulator-runner@v2
@@ -46,11 +46,17 @@ jobs:
         profile: pixel_6
         disable-animations: true
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-        script: cd BluePlaquesLondon && ./gradlew :app:connectedAndroidTest
+        script: cd BluePlaquesLondon && ./gradlew connectedDebugAndroidTest --no-daemon --continue
+
+    - name: Generate coverage report
+      if: always()
+      run: cd BluePlaquesLondon && ./gradlew jacocoTestReport --no-daemon --continue
 
     - name: Upload coverage to Codecov
+      if: always()
       uses: codecov/codecov-action@v4
       with:
+        files: ./BluePlaquesLondon/app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
         fail_ci_if_error: false
         verbose: true
 

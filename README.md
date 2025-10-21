@@ -1,8 +1,9 @@
 [![Twitter: @seanoshea](https://img.shields.io/badge/contact-@seanoshea-blue.svg?style=flat)](https://twitter.com/seanoshea)
 [![License](http://img.shields.io/badge/license-BSD-green.svg?style=flat)](https://github.com/seanoshea/BluePlaquesLondon-Android/blob/master/LICENSE)
-[![Build Status](https://circleci.com/gh/seanoshea/BluePlaquesLondon-Android.svg?style=svg)](https://circleci.com/gh/seanoshea/BluePlaquesLondon-Android.svg?style=svg)
+[![CI](https://github.com/seanoshea/BluePlaquesLondon-Android/workflows/CI/badge.svg)](https://github.com/seanoshea/BluePlaquesLondon-Android/actions)
 [![codecov](https://codecov.io/gh/seanoshea/BluePlaquesLondon-Android/branch/develop/graph/badge.svg)](https://codecov.io/gh/seanoshea/BluePlaquesLondon-Android)
 [![PRs Welcome](https://img.shields.io/badge/prs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
 ## BluePlaquesLondon Android
 Android Application for finding Blue Plaques through London. [Google Play Store Link](https://play.google.com/store/apps/details?id=com.upwardsnorthwards.blueplaqueslondon)
 
@@ -11,6 +12,45 @@ Android Application for finding Blue Plaques through London. [Google Play Store 
 <a href="http://imgur.com/L6TKtZW"><img src="http://i.imgur.com/L6TKtZW.png" title="source: imgur.com" /></a>
 <a href="http://imgur.com/tsyVF9L"><img src="http://i.imgur.com/tsyVF9L.png" title="source: imgur.com" /></a>
 <a href="http://imgur.com/crwJFqh"><img src="http://i.imgur.com/crwJFqh.png" title="source: imgur.com" /></a>
+
+## Testing
+
+The project includes comprehensive test coverage with both unit and instrumented tests.
+
+### Running Tests Locally
+
+From the `BluePlaquesLondon` subfolder:
+
+**Unit Tests (70+ tests, ~40% coverage)**
+```bash
+./gradlew testDebugUnitTest
+```
+
+**Instrumented Tests (95 tests on device/emulator)**
+```bash
+# Start an emulator first, then:
+./gradlew connectedDebugAndroidTest
+```
+
+**Generate Coverage Report**
+```bash
+# Run both unit and instrumented tests first, then:
+./gradlew jacocoTestReport
+
+# View report at:
+# app/build/reports/jacoco/jacocoTestReport/html/index.html
+```
+
+### Test Coverage
+
+Current coverage: **~40%** overall
+- **Data Layer**: 85%+ (DAO, Repository, Entity, Utils)
+- **Adapters**: 66%
+- **ViewModels**: 28%
+- **Models**: 33%
+- **Activities/Fragments**: Limited (Google Maps testing constraints)
+
+See [MODERNIZATION_PROGRESS.md](MODERNIZATION_PROGRESS.md) for detailed testing status.
 
 ## Static Code Analysis
 Android linting, PMD and findbugs can all be run from the `BluePlaquesLondon` subfolder with commands like:

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mapFragment">
+
+    <!-- Main map screen - shows all blue plaques on map -->
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.upwardsnorthwards.blueplaqueslondon.fragments.BluePlaquesMapFragment"
+        android:label="Blue Plaques London" />
+
+    <!-- Note: MapDetailActivity will remain as an Activity for now since it uses legacy fragments.
+         We can migrate it to a Fragment in a future iteration. -->
+
+</navigation>

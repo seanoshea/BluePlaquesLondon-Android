@@ -17,7 +17,7 @@ android {
         versionCode 16
         versionName "3.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.upwardsnorthwards.blueplaqueslondon.HiltTestRunner"
 
         // Room schema export
         javaCompileOptions {
@@ -39,6 +39,7 @@ android {
     buildTypes {
         debug {
             // Debug builds use default debug signing
+            testCoverageEnabled true
         }
         release {
             minifyEnabled false
@@ -99,11 +100,13 @@ dependencies {
     // WorkManager
     def work_version = "2.10.0"
     implementation "androidx.work:work-runtime:$work_version"
+    implementation "androidx.work:work-rxjava3:$work_version"
     implementation "androidx.hilt:hilt-work:1.2.0"
     annotationProcessor "androidx.hilt:hilt-compiler:1.2.0"
 
     // DataStore (modern SharedPreferences)
     implementation "androidx.datastore:datastore-preferences:1.1.1"
+    implementation "androidx.datastore:datastore-preferences-rxjava3:1.1.1"
 
     // Networking - Retrofit & OkHttp
     def retrofit_version = "2.11.0"
@@ -136,10 +139,75 @@ dependencies {
     // LeakCanary for memory leak detection
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.14'
 
-    // Testing
+    // Testing - Unit Tests
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.mockito:mockito-core:5.8.0'
+    testImplementation 'org.mockito:mockito-inline:5.2.0'
+    testImplementation 'androidx.arch.core:core-testing:2.2.0'
+    testImplementation 'androidx.test:core:1.6.1'
+    testImplementation 'org.robolectric:robolectric:4.11.1'
+
+    // Testing - Instrumented Tests
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
     androidTestImplementation 'androidx.test:runner:1.6.2'
     androidTestImplementation 'androidx.test:rules:1.6.1'
+    androidTestImplementation 'org.mockito:mockito-android:5.8.0'
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    androidTestAnnotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"
+    androidTestImplementation "androidx.room:room-testing:$room_version"
+    androidTestImplementation 'androidx.arch.core:core-testing:2.2.0'
+    androidTestImplementation "androidx.work:work-testing:$work_version"
 }
+
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = "0.8.11"
+}
+
+tasks.register('jacocoTestReport', JacocoReport) {
+    dependsOn 'testDebugUnitTest'
+
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
+    }
+
+    def fileFilter = [
+            '**/R.class',
+            '**/R$*.class',
+            '**/BuildConfig.*',
+            '**/Manifest*.*',
+            '**/*Test*.*',
+            'android/**/*.*',
+            '**/*$ViewInjector*.*',
+            '**/*$ViewBinder*.*',
+            '**/databinding/*',
+            '**/android/databinding/*',
+            '**/androidx/databinding/*',
+            '**/di/module/*',
+            '**/*MapperImpl*.*',
+            '**/*$Lambda$*.*',
+            '**/*Module.*',
+            '**/*Dagger*.*',
+            '**/*MembersInjector*.*',
+            '**/*_Factory.*',
+            '**/*_Provide*Factory*.*',
+            '**/*_HiltModules*.*',
+            '**/*Hilt_*.*'
+    ]
+
+    def debugTree = fileTree(dir: "${project.buildDir}/intermediates/javac/debug/compileDebugJavaWithJavac/classes", excludes: fileFilter)
+    def mainSrc = "${project.projectDir}/src/main/java"
+
+    sourceDirectories.setFrom(files([mainSrc]))
+    classDirectories.setFrom(files([debugTree]))
+    executionData.setFrom(fileTree(dir: project.buildDir, includes: [
+            'jacoco/testDebugUnitTest.exec',
+            'outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec',
+            'outputs/code_coverage/debugAndroidTest/connected/**/*.ec'
+    ]))
+}
+

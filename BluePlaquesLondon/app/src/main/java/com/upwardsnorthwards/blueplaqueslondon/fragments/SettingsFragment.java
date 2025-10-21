@@ -31,6 +31,8 @@ package com.upwardsnorthwards.blueplaqueslondon.fragments;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,12 +43,17 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.upwardsnorthwards.blueplaqueslondon.R;
-import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesSharedPreferences;
+import com.upwardsnorthwards.blueplaqueslondon.activities.MainActivity;
+import com.upwardsnorthwards.blueplaqueslondon.data.preferences.AppPreferencesDataStore;
 
 /**
  * Allows the user to enable/disable Firebase Analytics tracking
  */
 public class SettingsFragment extends DialogFragment implements OnCheckedChangeListener {
+
+    private static final String TAG = "SettingsFragment";
+    private AppPreferencesDataStore preferencesDataStore;
+    private CheckBox analyticsCheckBox;
 
     public SettingsFragment() {
     }
@@ -71,15 +78,41 @@ public class SettingsFragment extends DialogFragment implements OnCheckedChangeL
     @Override
     public void onResume() {
         super.onResume();
-        final CheckBox checkBox = (CheckBox) getView().findViewById(R.id.fragment_settings_analytics_checkbox);
-        checkBox.setOnCheckedChangeListener(this);
-        checkBox.setChecked(BluePlaquesSharedPreferences
-                .getAnalyticsEnabled(getActivity()));
+
+        // Get DataStore from MainActivity
+        if (getActivity() instanceof MainActivity) {
+            preferencesDataStore = ((MainActivity) getActivity()).getPreferencesDataStore();
+        }
+
+        analyticsCheckBox = (CheckBox) getView().findViewById(R.id.fragment_settings_analytics_checkbox);
+        analyticsCheckBox.setOnCheckedChangeListener(this);
+
+        // Load analytics enabled state from DataStore
+        if (preferencesDataStore != null) {
+            preferencesDataStore.getAnalyticsEnabledSingle()
+                    .subscribe(
+                            enabled -> {
+                                // Temporarily remove listener to avoid triggering onCheckedChanged
+                                analyticsCheckBox.setOnCheckedChangeListener(null);
+                                analyticsCheckBox.setChecked(enabled);
+                                analyticsCheckBox.setOnCheckedChangeListener(this);
+                            },
+                            error -> Log.e(TAG, "Error loading analytics preference: " + error.getMessage())
+                    );
+        }
     }
 
     @Override
     public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
         FirebaseAnalytics.getInstance(getActivity()).setAnalyticsCollectionEnabled(isChecked);
-        BluePlaquesSharedPreferences.saveAnalyticsEnabled(getActivity(), isChecked);
+
+        // Save analytics enabled state to DataStore
+        if (preferencesDataStore != null) {
+            preferencesDataStore.saveAnalyticsEnabled(isChecked)
+                    .subscribe(
+                            prefs -> Log.d(TAG, "Analytics preference saved: " + isChecked),
+                            error -> Log.e(TAG, "Error saving analytics preference: " + error.getMessage())
+                    );
+        }
     }
 }

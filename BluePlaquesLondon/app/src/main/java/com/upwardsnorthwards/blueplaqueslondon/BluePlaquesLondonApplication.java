@@ -39,6 +39,9 @@ import androidx.annotation.NonNull;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.upwardsnorthwards.blueplaqueslondon.workers.WorkManagerInitializer;
+
+import javax.inject.Inject;
 
 import dagger.hilt.android.HiltAndroidApp;
 
@@ -54,6 +57,9 @@ public class BluePlaquesLondonApplication extends Application {
 
     private FirebaseAnalytics firebaseAnalytics;
 
+    @Inject
+    WorkManagerInitializer workManagerInitializer;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -61,6 +67,9 @@ public class BluePlaquesLondonApplication extends Application {
         // Initialize Firebase
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+
+        // Schedule periodic background work
+        workManagerInitializer.schedulePeriodicPlaquesSync();
 
         trackApplicationLoadedEvent();
     }

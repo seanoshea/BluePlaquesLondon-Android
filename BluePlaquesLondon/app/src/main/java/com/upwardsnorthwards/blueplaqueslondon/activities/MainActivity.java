@@ -37,8 +37,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.view.MenuItemCompat;
-import androidx.appcompat.app
-.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,19 +53,26 @@ import com.google.android.play.core.review.ReviewManagerFactory;
 import com.google.android.gms.tasks.Task;
 import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
 import com.upwardsnorthwards.blueplaqueslondon.R;
+import com.upwardsnorthwards.blueplaqueslondon.data.preferences.AppPreferencesDataStore;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.AboutFragment;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.BluePlaquesMapFragment;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.SettingsFragment;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
+import com.upwardsnorthwards.blueplaqueslondon.ui.viewmodel.LocationViewModel;
+import com.upwardsnorthwards.blueplaqueslondon.ui.viewmodel.MainViewModel;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
-import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesSharedPreferences;
 import com.upwardsnorthwards.blueplaqueslondon.utils.InternetConnectivityHelper;
 import com.upwardsnorthwards.blueplaqueslondon.utils.InternetConnectivityHelperDelegate;
 import com.upwardsnorthwards.blueplaqueslondon.views.ArrayAdapterSearchView;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
 /**
  * Landing activity for the application. Includes a reference to the <code>BluePlaquesMapFragment</code>
  */
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity implements InternetConnectivityHelperDelegate {
 
     private static final String TAG = "MainActivity";
@@ -75,12 +82,78 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
     private ArrayAdapterSearchView searchView;
     private ProgressBar progressBar;
     private InternetConnectivityHelper internetConnectivityHelper;
+    private MainViewModel mainViewModel;
+    private LocationViewModel locationViewModel;
+
+    @Inject
+    AppPreferencesDataStore preferencesDataStore;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Initialize ViewModels
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        locationViewModel = new ViewModelProvider(this).get(LocationViewModel.class);
+
+        // Observe ViewModel LiveData
+        observeViewModel();
+        observeLocationViewModel();
+
+        // Load plaques
+        mainViewModel.loadPlaques();
+
         initialiseAppRating();
+    }
+
+    /**
+     * Observe LocationViewModel LiveData.
+     */
+    private void observeLocationViewModel() {
+        locationViewModel.getClosestPlaque().observe(this, closestPlaque -> {
+            if (closestPlaque != null) {
+                // Select the closest plaque in the main view model
+                mainViewModel.selectPlaque(closestPlaque);
+                // Notify the map fragment
+                BluePlaquesMapFragment mapFragment = getMapFragment();
+                if (mapFragment != null) {
+                    mapFragment.onPlacemarkSelected(closestPlaque);
+                }
+            }
+        });
+
+        locationViewModel.getError().observe(this, error -> {
+            if (error != null && !error.isEmpty()) {
+                Log.e(TAG, "Location error: " + error);
+            }
+        });
+    }
+
+    /**
+     * Observe MainViewModel LiveData.
+     */
+    private void observeViewModel() {
+        mainViewModel.getLoading().observe(this, isLoading -> {
+            if (isLoading != null && isLoading) {
+                updateProgressBarVisibility(View.VISIBLE);
+            } else {
+                updateProgressBarVisibility(View.GONE);
+            }
+        });
+
+        mainViewModel.getError().observe(this, error -> {
+            if (error != null && !error.isEmpty()) {
+                Log.e(TAG, "Error: " + error);
+                // You can show a Toast or Snackbar here if needed
+            }
+        });
+
+        mainViewModel.getPlaques().observe(this, plaques -> {
+            if (plaques != null && searchView != null) {
+                searchView.notifyAdapterOfPlacemarks(plaques);
+            }
+        });
     }
 
     @Override
@@ -92,7 +165,12 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
         searchView = (ArrayAdapterSearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
-        searchView.notifyAdapterOfPlacemarks(getMapFragment().getModel().getMassagedPlacemarks());
+
+        // Populate search view with plaques from ViewModel
+        if (mainViewModel.getPlaques().getValue() != null) {
+            searchView.notifyAdapterOfPlacemarks(mainViewModel.getPlaques().getValue());
+        }
+
         return true;
     }
 
@@ -197,6 +275,22 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
     }
 
     /**
+     * Get the LocationViewModel for use by fragments.
+     */
+    @NonNull
+    public LocationViewModel getLocationViewModel() {
+        return locationViewModel;
+    }
+
+    /**
+     * Get the AppPreferencesDataStore for use by fragments.
+     */
+    @NonNull
+    public AppPreferencesDataStore getPreferencesDataStore() {
+        return preferencesDataStore;
+    }
+
+    /**
      * Before showing the map, we need to make sure that the user has the correct version of Google Play Services installed.
      * If they do, the user is shown the map and they can continue to use the application. Otherwise, they are prompted to
      * update their version of Google Play Services on the Play Store.
@@ -226,18 +320,27 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
 
     /**
      * Users are prompted to rate the application using Google Play In-App Review API.
-     * This is triggered based on launch count stored in SharedPreferences.
+     * This is triggered based on launch count stored in DataStore.
      */
     private void initialiseAppRating() {
-        final BluePlaquesSharedPreferences prefs = new BluePlaquesSharedPreferences(this);
-
-        // Check if we should show the review prompt (after 10 launches)
-        int launchCount = prefs.getLaunchCount();
-        prefs.incrementLaunchCount();
-
-        if (launchCount >= 10 && !prefs.hasCompletedReview()) {
-            showInAppReview();
-        }
+        // Increment launch count and check if we should show review
+        preferencesDataStore.incrementLaunchCount()
+                .flatMap(prefs -> preferencesDataStore.getLaunchCountSingle())
+                .flatMap(launchCount -> {
+                    if (launchCount >= 10) {
+                        return preferencesDataStore.hasCompletedReviewSingle()
+                                .map(hasCompleted -> !hasCompleted);
+                    }
+                    return io.reactivex.rxjava3.core.Single.just(false);
+                })
+                .subscribe(
+                        shouldShowReview -> {
+                            if (shouldShowReview) {
+                                showInAppReview();
+                            }
+                        },
+                        error -> Log.e(TAG, "Error initializing app rating: " + error.getMessage())
+                );
     }
 
     /**
@@ -252,13 +355,16 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
                 Task<Void> flow = reviewManager.launchReviewFlow(this, reviewInfo);
                 flow.addOnCompleteListener(reviewTask -> {
                     // Mark as completed regardless of whether user reviewed
-                    BluePlaquesSharedPreferences prefs = new BluePlaquesSharedPreferences(this);
-                    prefs.setCompletedReview(true);
-
-                    final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
-                    app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
-                            BluePlaquesConstants.RATE_APP_BUTTON_PRESSED_EVENT,
-                            "In-App Review Shown");
+                    preferencesDataStore.setCompletedReview(true)
+                            .subscribe(
+                                    prefs -> {
+                                        final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
+                                        app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
+                                                BluePlaquesConstants.RATE_APP_BUTTON_PRESSED_EVENT,
+                                                "In-App Review Shown");
+                                    },
+                                    error -> Log.e(TAG, "Error saving review completion: " + error.getMessage())
+                            );
                 });
             }
         });
