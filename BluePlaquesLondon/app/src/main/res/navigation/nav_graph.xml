@@ -8,9 +8,45 @@
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.upwardsnorthwards.blueplaqueslondon.fragments.BluePlaquesMapFragment"
-        android:label="Blue Plaques London" />
+        android:label="Blue Plaques London">
+        <action
+            android:id="@+id/action_mapFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_mapFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
 
-    <!-- Note: MapDetailActivity will remain as an Activity for now since it uses legacy fragments.
-         We can migrate it to a Fragment in a future iteration. -->
+    <!-- About screen -->
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.upwardsnorthwards.blueplaqueslondon.fragments.AboutFragment"
+        android:label="About Blue Plaques London">
+        <action
+            android:id="@+id/action_aboutFragment_pop_to_mapFragment"
+            app:destination="@id/mapFragment"
+            app:popUpTo="@id/mapFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+    <!-- Settings screen -->
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.upwardsnorthwards.blueplaqueslondon.fragments.SettingsFragment"
+        android:label="Settings">
+        <action
+            android:id="@+id/action_settingsFragment_pop_to_mapFragment"
+            app:destination="@id/mapFragment"
+            app:popUpTo="@id/mapFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
 
 </navigation>

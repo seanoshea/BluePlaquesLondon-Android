@@ -100,18 +100,26 @@ public class ArrayAdapterSearchView extends SearchView implements SearchView.OnQ
     private void navigateToPlacemarkAtIndex(final int index) {
         final Placemark placemark = searchAdapter.getFilteredPlacemarkAtPosition(index);
         // Notify the MapFragment directly instead of using Otto bus
-        if (getContext() instanceof android.app.Activity) {
-            android.app.Activity activity = (android.app.Activity) getContext();
-            android.app.FragmentManager fm = activity.getFragmentManager();
-            com.upwardsnorthwards.blueplaqueslondon.fragments.BluePlaquesMapFragment mapFragment =
-                    (com.upwardsnorthwards.blueplaqueslondon.fragments.BluePlaquesMapFragment) fm.findFragmentById(R.id.map);
-            if (mapFragment != null) {
-                mapFragment.onPlacemarkSelected(placemark);
+        try {
+            if (getContext() instanceof androidx.appcompat.app.AppCompatActivity) {
+                androidx.appcompat.app.AppCompatActivity activity = (androidx.appcompat.app.AppCompatActivity) getContext();
+                androidx.fragment.app.Fragment navHostFragment = activity.getSupportFragmentManager()
+                        .findFragmentById(R.id.nav_host_fragment);
+                if (navHostFragment != null) {
+                    androidx.fragment.app.Fragment mapFragment = navHostFragment.getChildFragmentManager()
+                            .getPrimaryNavigationFragment();
+                    if (mapFragment != null && mapFragment.getClass().getSimpleName().equals("BluePlaquesMapFragment")) {
+                        ((com.upwardsnorthwards.blueplaqueslondon.fragments.BluePlaquesMapFragment) (Object) mapFragment)
+                                .onPlacemarkSelected(placemark);
+                    }
+                }
+                // Also notify MainActivity to clear the search view
+                if (activity instanceof com.upwardsnorthwards.blueplaqueslondon.activities.MainActivity) {
+                    ((com.upwardsnorthwards.blueplaqueslondon.activities.MainActivity) activity).onPlacemarkSelected(placemark);
+                }
             }
-            // Also notify MainActivity to clear the search view
-            if (activity instanceof com.upwardsnorthwards.blueplaqueslondon.activities.MainActivity) {
-                ((com.upwardsnorthwards.blueplaqueslondon.activities.MainActivity) activity).onPlacemarkSelected(placemark);
-            }
+        } catch (Exception e) {
+            android.util.Log.e("ArrayAdapterSearchView", "Error navigating to placemark", e);
         }
     }
 

@@ -91,8 +91,8 @@ public class MainActivityInstrumentedTest {
         // When
         scenario = ActivityScenario.launch(intent);
 
-        // Then - verify key UI elements are present
-        onView(withId(R.id.map))
+        // Then - verify key UI elements are present (NavHostFragment)
+        onView(withId(R.id.nav_host_fragment))
                 .check(matches(isDisplayed()));
     }
 

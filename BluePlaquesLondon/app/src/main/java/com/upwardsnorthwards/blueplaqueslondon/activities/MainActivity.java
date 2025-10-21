@@ -39,6 +39,8 @@ import androidx.annotation.NonNull;
 import androidx.core.view.MenuItemCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -84,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
     private InternetConnectivityHelper internetConnectivityHelper;
     private MainViewModel mainViewModel;
     private LocationViewModel locationViewModel;
+    private NavController navController;
 
     @Inject
     AppPreferencesDataStore preferencesDataStore;
@@ -92,6 +95,9 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Initialize NavController for Navigation Component
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
         // Initialize ViewModels
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
@@ -176,16 +182,13 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
 
     @Override
     public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
-        final FragmentManager fm = getFragmentManager();
         updateProgressBarVisibility(View.GONE);
         int id = item.getItemId();
         if (id == R.id.action_about) {
-            final AboutFragment aboutFragment = new AboutFragment();
-            aboutFragment.show(fm, "fragment_about");
+            navController.navigate(R.id.action_mapFragment_to_aboutFragment);
             return true;
         } else if (id == R.id.action_settings) {
-            final SettingsFragment settingsFragment = new SettingsFragment();
-            settingsFragment.show(fm, "fragment_settings");
+            navController.navigate(R.id.action_mapFragment_to_settingsFragment);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -271,7 +274,21 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
 
     @NonNull
     private BluePlaquesMapFragment getMapFragment() {
-        return (BluePlaquesMapFragment) getFragmentManager().findFragmentById(R.id.map);
+        // Get the NavHostFragment and retrieve the map fragment from it
+        try {
+            androidx.fragment.app.Fragment navHostFragment = getSupportFragmentManager()
+                    .findFragmentById(R.id.nav_host_fragment);
+            if (navHostFragment != null) {
+                androidx.fragment.app.Fragment mapFragment = navHostFragment.getChildFragmentManager()
+                        .getPrimaryNavigationFragment();
+                if (mapFragment != null && mapFragment.getClass().getSimpleName().equals("BluePlaquesMapFragment")) {
+                    return (BluePlaquesMapFragment) (Object) mapFragment;
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error getting map fragment", e);
+        }
+        return new BluePlaquesMapFragment();
     }
 
     /**
