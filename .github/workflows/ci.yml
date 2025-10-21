@@ -40,14 +40,13 @@ jobs:
     - name: Run instrumented tests
       uses: reactivecircus/android-emulator-runner@v2
       with:
-        api-level: 34
+        api-level: 31
         arch: x86_64
-        target: google_apis
-        profile: pixel_6
+        target: default
+        profile: pixel_4a
         disable-animations: true
-        emulator-build: 11173022
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-        script: cd BluePlaquesLondon && timeout 600 ./gradlew connectedDebugAndroidTest --no-daemon --continue || true
+        script: cd BluePlaquesLondon && ./gradlew connectedDebugAndroidTest --no-daemon --continue
 
     - name: Generate coverage report
       if: always()
