@@ -6,6 +6,7 @@ plugins {
     id 'androidx.navigation.safeargs'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -241,3 +242,15 @@ tasks.register('jacocoTestReport', JacocoReport) {
     ]))
 }
 
+// Secrets Gradle Plugin configuration
+secrets {
+    // Defines the location of the secrets.properties file
+    propertiesFileName = "local.properties"
+
+    // A list of keys to ignore when reading from the secrets.properties file
+    // This is useful for keys that are not meant to be accessed at build time
+    ignoreList.addAll(['sdk.dir'])
+
+    // Define the default value for keys that are not found in secrets.properties
+    defaultPropertiesFileName = "local.defaults.properties"
+}

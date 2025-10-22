@@ -43,22 +43,43 @@ Or manually open Android Studio and select this project directory.
 
 ## API Configuration
 
+### Overview
+
+The app uses the **Android Secrets Gradle Plugin** for secure API key management. API keys are stored in `local.properties` (git-ignored) and injected at build time.
+
 ### Google Maps API Key
 
-The app uses Google Maps for displaying plaques on an interactive map. A public API key is already configured in the AndroidManifest.xml for development.
+The app uses Google Maps for displaying plaques on an interactive map.
 
-**For production builds, you'll need to:**
+**Setup:**
 
-1. Create a Firebase project in the Google Cloud Console
-2. Enable the Google Maps Android API
-3. Create an API key with Android app restrictions
-4. Add your app's signing key fingerprint to the key restrictions
-5. Update the API key in `app/src/main/AndroidManifest.xml`:
+1. **Locate your API key**: The project has an existing Google Maps API key
+2. **Add to `local.properties`**:
 
+   Open or create `BluePlaquesLondon/local.properties`:
+
+   ```properties
+   sdk.dir=/path/to/android/sdk
+   GOOGLE_MAPS_API_KEY=YOUR_API_KEY_HERE
+   ```
+
+3. **For development**: Use the existing key from the project maintainers
+
+4. **For production**: Create a new restricted API key:
+   - Go to [Google Cloud Console](https://console.cloud.google.com)
+   - Enable Maps SDK for Android
+   - Create an API key with Android app restrictions
+   - Add your app's SHA-1 certificate fingerprint:
+     ```bash
+     ./gradlew signingReport
+     ```
+   - Use this key in `local.properties`
+
+The key is automatically injected into `AndroidManifest.xml` at build time via:
 ```xml
 <meta-data
     android:name="com.google.android.geo.API_KEY"
-    android:value="YOUR_API_KEY_HERE" />
+    android:value="${GOOGLE_MAPS_API_KEY}" />
 ```
 
 ### Firebase Configuration
@@ -67,21 +88,37 @@ The app uses Firebase for analytics and error tracking.
 
 **Setup:**
 
-1. Create a Firebase project at [firebase.google.com](https://firebase.google.com)
-2. Add an Android app to your Firebase project
-3. Download the `google-services.json` file
-4. Place it in `app/src/` directory:
+1. **Check for existing configuration**: `app/google-services.json`
+   - If present, Firebase is already configured
+   - If missing, follow step 2
 
-```
-app/
-└── src/
-    ├── google-services.json
-    ├── main/
-    ├── test/
-    └── androidTest/
-```
+2. **Get your own Firebase credentials** (if needed):
+   - Create a Firebase project at [firebase.google.com](https://firebase.google.com)
+   - Project ID should be: `blue-plaques-london-android`
+   - Add an Android app to your Firebase project
+   - Download the `google-services.json` file
 
-The build system will automatically integrate the Firebase configuration.
+3. **Place the file**:
+   ```
+   app/
+   └── google-services.json
+   ```
+
+   This file is git-ignored for security and won't be committed.
+
+4. **Build**: The build system automatically integrates Firebase configuration
+
+### Default Values
+
+If you don't have API keys, the project provides sensible defaults in `local.defaults.properties`. Copy values from there to `local.properties` to get started (though Maps functionality won't work until you provide a real key).
+
+### Security Notes
+
+- **local.properties**: Git-ignored, stores real keys (never commit)
+- **local.defaults.properties**: Git-tracked, provides placeholder values
+- **google-services.json**: Git-ignored, contains Firebase credentials
+- **Secrets Plugin**: Automatically injects keys at build time
+- Pre-commit hooks prevent accidental key commits
 
 ## Building and Running
 
