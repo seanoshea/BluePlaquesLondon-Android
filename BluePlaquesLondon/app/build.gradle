@@ -1,25 +1,40 @@
-buildscript {
-    repositories {
-        maven { url "https://maven.fabric.io/public" }
-    }
-
-    dependencies {
-        classpath "io.fabric.tools:gradle:1.21.6"
-    }
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'org.jetbrains.kotlin.plugin.compose'
+    id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
-apply plugin: "com.android.application"
-apply plugin: "io.fabric"
-repositories {
-    maven { url "https://maven.fabric.io/public" }
-}
-apply plugin: "pmd"
-apply plugin: "findbugs"
 
 android {
-    signingConfigs {
-        //noinspection GroovyMissingReturnStatement
-        config {
+    namespace 'com.upwardsnorthwards.blueplaqueslondon'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.upwardsnorthwards.blueplaqueslondon"
+        minSdk 30
+        targetSdk 35
+        versionCode 16
+        versionName "3.0"
+
+        testInstrumentationRunner "com.upwardsnorthwards.blueplaqueslondon.HiltTestRunner"
+
+        // Inject Google Maps API key from local.properties
+        def googleMapsApiKey = findProperty('GOOGLE_MAPS_API_KEY') ?: "YOUR_GOOGLE_MAPS_API_KEY_HERE"
+        buildConfigField "String", "GOOGLE_MAPS_API_KEY", "\"$googleMapsApiKey\""
+        manifestPlaceholders = [GOOGLE_MAPS_API_KEY: googleMapsApiKey]
+
+        // Room schema export
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
         }
+    }
+
+    signingConfigs {
         production {
             keyAlias "production"
             keyPassword "password_here"
@@ -27,109 +42,207 @@ android {
             storePassword "password_here"
         }
     }
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
-    lintOptions {
-        abortOnError false
-        lintConfig file("${project.rootDir}/config/lint/lint.xml")
-        htmlReport true
-        htmlOutput file("$project.buildDir/reports/lint/lint.html")
-    }
-    defaultConfig {
-        applicationId "com.upwardsnorthwards.blueplaqueslondon"
-        minSdkVersion 15
-        targetSdkVersion 25
-        versionCode 15
-        versionName "2.1"
-        multiDexEnabled true
-        testInstrumentationRunner "com.android.test.runner.MultiDexTestRunner"
-        //noinspection GroovyAssignabilityCheck
-        signingConfig signingConfigs.config
-    }
+
     buildTypes {
         debug {
+            // Debug builds use default debug signing
             testCoverageEnabled true
         }
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            //noinspection GroovyAssignabilityCheck
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.production
         }
     }
-    productFlavors {
-    }
-}
 
-task pmd(type: Pmd, dependsOn: "assembleDebug") {
-    ruleSetFiles = files("${project.rootDir}/config/pmd/pmd-ruleset.xml")
-    ignoreFailures = false
-    ruleSets = []
-
-    source "src"
-    include "**/*.java"
-    exclude "**/gen/**"
-
-    reports {
-        xml.enabled = false
-        html.enabled = true
-        //noinspection GroovyAssignabilityCheck
-        xml {
-            destination "$project.buildDir/reports/pmd/pmd.xml"
-        }
-        html {
-            destination "$project.buildDir/reports/pmd/pmd.html"
-        }
-    }
-}
-
-task findbugs(type: FindBugs) {
-    ignoreFailures = false
-    effort = "max"
-    reportLevel = "high"
-    excludeFilter = new File("${project.rootDir}/config/findbugs/findbugs-filter.xml")
-    classes = files("${project.rootDir}/app/build/intermediates/classes")
-
-    source "src"
-    include "**/*.java"
-    exclude "**/gen/**"
-
-    reports {
-        xml.enabled = false
-        html.enabled = true
-        //noinspection GroovyAssignabilityCheck
-        xml {
-            destination "$project.buildDir/reports/findbugs/findbugs.xml"
-        }
-        html {
-            destination "$project.buildDir/reports/findbugs/findbugs.html"
-        }
+    buildFeatures {
+        viewBinding true
+        buildConfig true
+        compose true
     }
 
-    classpath = files()
-}
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
 
-check.doLast {
-    project.tasks.getByName("pmd").execute()
-    project.tasks.getByName("findbugs").execute()
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
+    lint {
+        abortOnError false
+        htmlReport true
+        htmlOutput file("$project.buildDir/reports/lint/lint.html")
+    }
 }
 
 dependencies {
-    ext.googlePlayServicesVersion = "10.2.1"
-    ext.androidBuildToolsVersion = "25.0.0"
-    compile fileTree(dir: "libs", include: ["*.jar"])
-    debugCompile "com.squareup.leakcanary:leakcanary-android:1.5"
-    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:1.5"
-    compile("com.crashlytics.sdk.android:crashlytics:2.6.7@aar") {
-        transitive = true;
+    // AndroidX Core
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.core:core:1.15.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'androidx.core:core-splashscreen:1.0.1'
+
+    // Lifecycle components (ViewModel, LiveData)
+    def lifecycle_version = "2.8.7"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-reactivestreams:$lifecycle_version"
+
+    // Navigation Component
+    def nav_version = "2.8.5"
+    implementation "androidx.navigation:navigation-fragment:$nav_version"
+    implementation "androidx.navigation:navigation-ui:$nav_version"
+    implementation "androidx.navigation:navigation-compose:$nav_version"
+
+    // Jetpack Compose
+
+    def compose_bom_version = "2024.06.00" // A recent stable version
+    implementation platform("androidx.compose:compose-bom:$compose_bom_version")
+    androidTestImplementation platform("androidx.compose:compose-bom:$compose_bom_version")
+
+    implementation "androidx.compose.ui:ui"
+    implementation "androidx.compose.material3:material3:1.3.1"
+    implementation "androidx.compose.material:material-icons-extended"
+    implementation "androidx.compose.foundation:foundation"
+    implementation "androidx.compose.runtime:runtime"
+    implementation "androidx.compose.runtime:runtime-livedata"
+    implementation "androidx.activity:activity-compose:1.10.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7"
+    implementation "androidx.hilt:hilt-navigation-compose:1.2.0"
+
+    // Room Database
+    def room_version = "2.6.1"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-rxjava3:$room_version"
+
+    // Hilt Dependency Injection
+    def hilt_version = "2.57.2"
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    annotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"
+
+    // WorkManager
+    def work_version = "2.10.0"
+    implementation "androidx.work:work-runtime:$work_version"
+    implementation "androidx.work:work-rxjava3:$work_version"
+    implementation "androidx.hilt:hilt-work:1.2.0"
+    annotationProcessor "androidx.hilt:hilt-compiler:1.2.0"
+
+    // DataStore (modern SharedPreferences)
+    implementation "androidx.datastore:datastore-preferences:1.1.1"
+    implementation "androidx.datastore:datastore-preferences-rxjava3:1.1.1"
+
+    // Networking - Retrofit & OkHttp
+    def retrofit_version = "2.11.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava3:$retrofit_version"
+    implementation "com.squareup.okhttp3:okhttp:4.12.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.12.0"
+
+    // RxJava 3 (for Java-based reactive programming)
+    implementation "io.reactivex.rxjava3:rxjava:3.1.10"
+    implementation "io.reactivex.rxjava3:rxandroid:3.0.2"
+
+    // Google Play Services (modular)
+    implementation 'com.google.android.gms:play-services-maps:19.0.0'
+    implementation 'com.google.android.gms:play-services-location:21.3.0'
+
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:33.7.0')
+    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-analytics'
+
+    // Google Play Core (In-App Review)
+    implementation 'com.google.android.play:review:2.0.2'
+    implementation 'com.google.android.play:review-ktx:2.0.2'
+
+    // Gson for JSON parsing
+    implementation 'com.google.code.gson:gson:2.11.0'
+
+    // Kotlin
+    // implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.9.25'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-rx3:1.8.0'
+
+    // LeakCanary for memory leak detection
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.14'
+
+    // Testing - Unit Tests
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.mockito:mockito-core:5.8.0'
+    testImplementation 'org.mockito:mockito-inline:5.2.0'
+    testImplementation 'androidx.arch.core:core-testing:2.2.0'
+    testImplementation 'androidx.test:core:1.6.1'
+    testImplementation 'org.robolectric:robolectric:4.11.1'
+
+    // Testing - Instrumented Tests
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
+    androidTestImplementation 'androidx.test:runner:1.6.2'
+    androidTestImplementation 'androidx.test:rules:1.6.1'
+    androidTestImplementation 'org.mockito:mockito-android:5.8.0'
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    androidTestAnnotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"
+    androidTestImplementation "androidx.room:room-testing:$room_version"
+    androidTestImplementation 'androidx.arch.core:core-testing:2.2.0'
+    androidTestImplementation "androidx.work:work-testing:$work_version"
+}
+
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = "0.8.11"
+}
+
+tasks.register('jacocoTestReport', JacocoReport) {
+    dependsOn 'testDebugUnitTest'
+
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
     }
-    compile "com.android.support:appcompat-v7:$androidBuildToolsVersion"
-    compile "com.google.android.gms:play-services:$googlePlayServicesVersion"
-    compile "com.github.hotchemi:android-rate:1.0.1"
-    compile "com.squareup:otto:1.3.8"
-    compile "com.android.support:support-annotations:$androidBuildToolsVersion"
-    compile "com.google.android.gms:play-services-ads:$googlePlayServicesVersion"
-    compile "com.google.android.gms:play-services-auth:$googlePlayServicesVersion"
-    compile "com.google.android.gms:play-services-gcm:$googlePlayServicesVersion"
-    compile "com.android.support:multidex:1.0.1"
+
+    def fileFilter = [
+            '**/R.class',
+            '**/R$*.class',
+            '**/BuildConfig.*',
+            '**/Manifest*.*',
+            '**/*Test*.*',
+            'android/**/*.*',
+            '**/*$ViewInjector*.*',
+            '**/*$ViewBinder*.*',
+            '**/databinding/*',
+            '**/android/databinding/*',
+            '**/androidx/databinding/*',
+            '**/di/module/*',
+            '**/*MapperImpl*.*',
+            '**/*$Lambda$*.*',
+            '**/*Module.*',
+            '**/*Dagger*.*',
+            '**/*MembersInjector*.*',
+            '**/*_Factory.*',
+            '**/*_Provide*Factory*.*',
+            '**/*_HiltModules*.*',
+            '**/*Hilt_*.*'
+    ]
+
+    def debugTree = fileTree(dir: "${project.buildDir}/intermediates/javac/debug/compileDebugJavaWithJavac/classes", excludes: fileFilter)
+    def mainSrc = "${project.projectDir}/src/main/java"
+
+    sourceDirectories.setFrom(files([mainSrc]))
+    classDirectories.setFrom(files([debugTree]))
+    executionData.setFrom(fileTree(dir: project.buildDir, includes: [
+            'jacoco/testDebugUnitTest.exec',
+            'outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec',
+            'outputs/code_coverage/debugAndroidTest/connected/**/*.ec'
+    ]))
 }

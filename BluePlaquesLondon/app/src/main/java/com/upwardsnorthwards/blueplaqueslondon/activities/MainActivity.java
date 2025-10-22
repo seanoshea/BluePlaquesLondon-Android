@@ -35,9 +35,12 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.core.view.MenuItemCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,37 +49,116 @@ import android.widget.ProgressBar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.squareup.otto.Subscribe;
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
+import com.google.android.gms.tasks.Task;
 import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
 import com.upwardsnorthwards.blueplaqueslondon.R;
+import com.upwardsnorthwards.blueplaqueslondon.data.preferences.AppPreferencesDataStore;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.AboutFragment;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.BluePlaquesMapFragment;
-import com.upwardsnorthwards.blueplaqueslondon.fragments.SettingsFragment;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
+import com.upwardsnorthwards.blueplaqueslondon.ui.viewmodel.LocationViewModel;
+import com.upwardsnorthwards.blueplaqueslondon.ui.viewmodel.MainViewModel;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 import com.upwardsnorthwards.blueplaqueslondon.utils.InternetConnectivityHelper;
 import com.upwardsnorthwards.blueplaqueslondon.utils.InternetConnectivityHelperDelegate;
 import com.upwardsnorthwards.blueplaqueslondon.views.ArrayAdapterSearchView;
 
-import hotchemi.android.rate.AppRate;
-import hotchemi.android.rate.OnClickButtonListener;
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 
 /**
  * Landing activity for the application. Includes a reference to the <code>BluePlaquesMapFragment</code>
  */
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity implements InternetConnectivityHelperDelegate {
 
     private static final String TAG = "MainActivity";
     private static final int GOOGLE_PLAY_SERVICES_REQUEST = 9002;
+    private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    private static final int CONNECTION_FAILURE_NO_RESOLUTION_REQUEST = 9001;
     private ArrayAdapterSearchView searchView;
     private ProgressBar progressBar;
     private InternetConnectivityHelper internetConnectivityHelper;
+    private MainViewModel mainViewModel;
+    private LocationViewModel locationViewModel;
+    private NavController navController;
+
+    @Inject
+    AppPreferencesDataStore preferencesDataStore;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Initialize ViewModels
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        locationViewModel = new ViewModelProvider(this).get(LocationViewModel.class);
+
+        // Observe ViewModel LiveData
+        observeViewModel();
+        observeLocationViewModel();
+
+        // Load plaques
+        mainViewModel.loadPlaques();
+
+        // Initialize NavController for Navigation Component (deferred to ensure View is ready)
+        // NavController will be initialized lazily when first needed
+
         initialiseAppRating();
+    }
+
+    /**
+     * Observe LocationViewModel LiveData.
+     */
+    private void observeLocationViewModel() {
+        locationViewModel.getClosestPlaque().observe(this, closestPlaque -> {
+            if (closestPlaque != null) {
+                // Select the closest plaque in the main view model
+                mainViewModel.selectPlaque(closestPlaque);
+                // Notify the map fragment
+                BluePlaquesMapFragment mapFragment = getMapFragment();
+                if (mapFragment != null) {
+                    mapFragment.onPlacemarkSelected(closestPlaque);
+                }
+            }
+        });
+
+        locationViewModel.getError().observe(this, error -> {
+            if (error != null && !error.isEmpty()) {
+                Log.e(TAG, "Location error: " + error);
+            }
+        });
+    }
+
+    /**
+     * Observe MainViewModel LiveData.
+     */
+    private void observeViewModel() {
+        mainViewModel.getLoading().observe(this, isLoading -> {
+            if (isLoading != null && isLoading) {
+                updateProgressBarVisibility(View.VISIBLE);
+            } else {
+                updateProgressBarVisibility(View.GONE);
+            }
+        });
+
+        mainViewModel.getError().observe(this, error -> {
+            if (error != null && !error.isEmpty()) {
+                Log.e(TAG, "Error: " + error);
+                // You can show a Toast or Snackbar here if needed
+            }
+        });
+
+        mainViewModel.getPlaques().observe(this, plaques -> {
+            if (plaques != null && searchView != null) {
+                searchView.notifyAdapterOfPlacemarks(plaques);
+            }
+        });
     }
 
     @Override
@@ -88,25 +170,27 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
         searchView = (ArrayAdapterSearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
-        searchView.notifyAdapterOfPlacemarks(getMapFragment().getModel().getMassagedPlacemarks());
+
+        // Populate search view with plaques from ViewModel
+        if (mainViewModel.getPlaques().getValue() != null) {
+            searchView.notifyAdapterOfPlacemarks(mainViewModel.getPlaques().getValue());
+        }
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
-        final FragmentManager fm = getFragmentManager();
         updateProgressBarVisibility(View.GONE);
-        switch (item.getItemId()) {
-            case R.id.action_about:
-                final AboutFragment aboutFragment = new AboutFragment();
-                aboutFragment.show(fm, "fragment_about");
-                break;
-            case R.id.action_settings:
-                final SettingsFragment settingsFragment = new SettingsFragment();
-                settingsFragment.show(fm, "fragment_settings");
-                break;
-            default:
-                break;
+        int id = item.getItemId();
+        NavController controller = getNavController();
+        if (controller == null) {
+            Log.w(TAG, "NavController not available");
+            return false;
+        }
+        if (id == R.id.action_about) {
+            controller.navigate(R.id.action_mapFragment_to_aboutFragment);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -116,7 +200,6 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
         super.onResume();
         registerForInternetConnectivity();
         progressBar = (ProgressBar) findViewById(R.id.map_progress_bar);
-        BluePlaquesLondonApplication.bus.register(this);
         checkForGooglePlayServicesAvailability();
     }
 
@@ -128,14 +211,13 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
             internetConnectivityHelper.onPause();
         }
         updateProgressBarVisibility(View.GONE);
-        BluePlaquesLondonApplication.bus.unregister(this);
     }
 
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         updateProgressBarVisibility(View.GONE);
         switch (requestCode) {
-            case BluePlaquesLondonApplication.CONNECTION_FAILURE_RESOLUTION_REQUEST:
-            case BluePlaquesLondonApplication.CONNECTION_FAILURE_NO_RESOLUTION_REQUEST: {
+            case CONNECTION_FAILURE_RESOLUTION_REQUEST:
+            case CONNECTION_FAILURE_NO_RESOLUTION_REQUEST: {
                 switch (resultCode) {
                     case Activity.RESULT_OK: {
                         Log.d(TAG, "User downloaded the correct version of Google Play Service after being prompted");
@@ -170,12 +252,13 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
         }
     }
 
-    @SuppressWarnings({"unused", "UnusedParameters"})
-    @Subscribe
+    // Called by BluePlaquesMapFragment when a placemark is selected
     public void onPlacemarkSelected(final Placemark placemark) {
-        searchView.setQuery("", false);
-        searchView.setIconified(true);
-        searchView.clearFocus();
+        if (searchView != null) {
+            searchView.setQuery("", false);
+            searchView.setIconified(true);
+            searchView.clearFocus();
+        }
     }
 
     /**
@@ -192,7 +275,37 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
 
     @NonNull
     private BluePlaquesMapFragment getMapFragment() {
-        return (BluePlaquesMapFragment) getFragmentManager().findFragmentById(R.id.map);
+        // Get the NavHostFragment and retrieve the map fragment from it
+        try {
+            androidx.fragment.app.Fragment navHostFragment = getSupportFragmentManager()
+                    .findFragmentById(R.id.nav_host_fragment);
+            if (navHostFragment != null) {
+                androidx.fragment.app.Fragment mapFragment = navHostFragment.getChildFragmentManager()
+                        .getPrimaryNavigationFragment();
+                if (mapFragment != null && mapFragment.getClass().getSimpleName().equals("BluePlaquesMapFragment")) {
+                    return (BluePlaquesMapFragment) (Object) mapFragment;
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error getting map fragment", e);
+        }
+        return new BluePlaquesMapFragment();
+    }
+
+    /**
+     * Get the LocationViewModel for use by fragments.
+     */
+    @NonNull
+    public LocationViewModel getLocationViewModel() {
+        return locationViewModel;
+    }
+
+    /**
+     * Get the AppPreferencesDataStore for use by fragments.
+     */
+    @NonNull
+    public AppPreferencesDataStore getPreferencesDataStore() {
+        return preferencesDataStore;
     }
 
     /**
@@ -212,10 +325,10 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
                 boolean isRecoverable = true;
                 updateProgressBarVisibility(View.GONE);
                 if (googleAPI.isUserResolvableError(playServicesAvailable)) {
-                    googleAPI.showErrorDialogFragment(this, playServicesAvailable, BluePlaquesLondonApplication.CONNECTION_FAILURE_RESOLUTION_REQUEST);
+                    googleAPI.showErrorDialogFragment(this, playServicesAvailable, CONNECTION_FAILURE_RESOLUTION_REQUEST);
                 } else {
                     isRecoverable = false;
-                    googleAPI.showErrorDialogFragment(this, playServicesAvailable, BluePlaquesLondonApplication.CONNECTION_FAILURE_NO_RESOLUTION_REQUEST);
+                    googleAPI.showErrorDialogFragment(this, playServicesAvailable, CONNECTION_FAILURE_NO_RESOLUTION_REQUEST);
                 }
                 final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
                 app.trackEvent(BluePlaquesConstants.ERROR_CATEGORY, BluePlaquesConstants.GOOGLE_PLAY_SERVICES_PROMPT, isRecoverable ? BluePlaquesConstants.GOOGLE_PLAY_SERVICES_PROMPT_RECOVERABLE : BluePlaquesConstants.GOOGLE_PLAY_SERVICES_PROMPT_UNRECOVERABLE);
@@ -224,52 +337,59 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
     }
 
     /**
-     * Users are prompted to rate the application after a certain time period of usage.
-     * This method controls what criteria must be met to show the dialog.
+     * Users are prompted to rate the application using Google Play In-App Review API.
+     * This is triggered based on launch count stored in DataStore.
      */
     private void initialiseAppRating() {
-        AppRate.with(this)
-                .setInstallDays(10)
-                .setLaunchTimes(10)
-                .setRemindInterval(1)
-                .setOnClickButtonListener(new OnClickButtonListener() {
-                    @Override
-                    public void onClickButton(final int which) {
-                        final String event = analyticsStringForButtonPress(which);
-                        final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
-                        app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
-                                BluePlaquesConstants.RATE_APP_BUTTON_PRESSED_EVENT,
-                                event);
+        // Increment launch count and check if we should show review
+        preferencesDataStore.incrementLaunchCount()
+                .flatMap(prefs -> preferencesDataStore.getLaunchCountSingle())
+                .flatMap(launchCount -> {
+                    if (launchCount >= 10) {
+                        return preferencesDataStore.hasCompletedReviewSingle()
+                                .map(hasCompleted -> !hasCompleted);
                     }
+                    return io.reactivex.rxjava3.core.Single.just(false);
                 })
-                .monitor();
-        AppRate.showRateDialogIfMeetsConditions(this);
+                .subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
+                .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread())
+                .subscribe(
+                        shouldShowReview -> {
+                            if (shouldShowReview) {
+                                showInAppReview();
+                            }
+                        },
+                        error -> Log.e(TAG, "Error initializing app rating: " + error.getMessage())
+                );
     }
 
     /**
-     * Figures out which button was pressed when the user was prompted to rate the app.
-     *
-     * @param which the index of the button pressed.
-     * @return String identifier which maps to the `which` parameter.
+     * Shows the Google Play In-App Review dialog.
      */
-    @NonNull
-    private String analyticsStringForButtonPress(final int which) {
-        String event = "";
-        switch (which) {
-            case 0: {
-                event = BluePlaquesConstants.DECLINE_RATE_APP_BUTTON_PRESSED_EVENT;
+    private void showInAppReview() {
+        ReviewManager reviewManager = ReviewManagerFactory.create(this);
+        Task<ReviewInfo> request = reviewManager.requestReviewFlow();
+        request.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                ReviewInfo reviewInfo = task.getResult();
+                Task<Void> flow = reviewManager.launchReviewFlow(this, reviewInfo);
+                flow.addOnCompleteListener(reviewTask -> {
+                    // Mark as completed regardless of whether user reviewed
+                    preferencesDataStore.setCompletedReview(true)
+                            .subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
+                            .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread())
+                            .subscribe(
+                                    prefs -> {
+                                        final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
+                                        app.trackEvent(BluePlaquesConstants.UI_ACTION_CATEGORY,
+                                                BluePlaquesConstants.RATE_APP_BUTTON_PRESSED_EVENT,
+                                                "In-App Review Shown");
+                                    },
+                                    error -> Log.e(TAG, "Error saving review completion: " + error.getMessage())
+                            );
+                });
             }
-            break;
-            case 1: {
-                event = BluePlaquesConstants.REMIND_RATE_APP_BUTTON_PRESSED_EVENT;
-            }
-            break;
-            case 2: {
-                event = BluePlaquesConstants.RATE_APP_STORE_OPENED_EVENT;
-            }
-            break;
-        }
-        return event;
+        });
     }
 
     private void registerForInternetConnectivity() {
@@ -299,5 +419,28 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
     @Override
     public void regainedInternetConnectivity() {
         Log.v(TAG, "Regained Internet Connectivity");
+    }
+
+    /**
+     * Get the NavController, initializing it lazily if needed.
+     */
+    private NavController getNavController() {
+        if (navController == null) {
+            try {
+                // Ensure the view hierarchy is ready before finding NavController
+                androidx.fragment.app.Fragment navHostFragment = getSupportFragmentManager()
+                        .findFragmentById(R.id.nav_host_fragment);
+                if (navHostFragment != null) {
+                    navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+                } else {
+                    Log.w(TAG, "NavHostFragment not found, deferring NavController initialization");
+                    return null;
+                }
+            } catch (IllegalStateException e) {
+                Log.w(TAG, "Unable to find NavController, view hierarchy may not be ready", e);
+                return null;
+            }
+        }
+        return navController;
     }
 }

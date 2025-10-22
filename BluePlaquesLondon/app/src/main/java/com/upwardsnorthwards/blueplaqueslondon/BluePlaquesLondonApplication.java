@@ -29,170 +29,71 @@
 
 package com.upwardsnorthwards.blueplaqueslondon;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.IntentSender;
+import android.app.Application;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.location.Location;
 import android.os.Build;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
-import com.squareup.otto.Bus;
-import com.squareup.otto.ThreadEnforcer;
-import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
+import androidx.annotation.NonNull;
 
-import java.util.HashMap;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.upwardsnorthwards.blueplaqueslondon.workers.WorkManagerInitializer;
 
-import io.fabric.sdk.android.Fabric;
+import javax.inject.Inject;
+
+import dagger.hilt.android.HiltAndroidApp;
 
 /**
- * Application class. Initialises Google Play Services and location services.
+ * Application class with Hilt dependency injection.
+ * Initializes Firebase Analytics and Crashlytics.
  */
-public class BluePlaquesLondonApplication extends MultiDexApplication implements
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener {
+@HiltAndroidApp
+public class BluePlaquesLondonApplication extends Application {
 
-    public final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-    public final static int CONNECTION_FAILURE_NO_RESOLUTION_REQUEST = 9001;
-    public static final Bus bus = new Bus(ThreadEnforcer.MAIN);
-    private final static String TAG = "BluePlaquesLondonApp";
-    private final static String TRACKER_ID = "UA-46153093-3";
-    @NonNull
-    private final HashMap<TrackerName, Tracker> trackers = new HashMap<>();
-    private RefWatcher refWatcher;
-    private GoogleApiClient locationClient;
-    private Location currentLocation;
+    private static final String TAG = "BluePlaquesLondonApp";
+    private static final String APPLICATION_LOADED = "ApplicationLoaded";
 
-    public static RefWatcher getRefWatcher(@NonNull Context context) {
-        BluePlaquesLondonApplication application = (BluePlaquesLondonApplication) context.getApplicationContext();
-        return application.refWatcher;
-    }
+    private FirebaseAnalytics firebaseAnalytics;
 
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        MultiDex.install(this);
-    }
+    @Inject
+    WorkManagerInitializer workManagerInitializer;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        locationClient = new GoogleApiClient.Builder(getApplicationContext())
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
-        if (!Build.HARDWARE.contains("vbox")) {
-            locationClient.connect();
-        } else {
-            // dummy the current location
-            currentLocation = new Location("");
-            currentLocation.setLatitude(BluePlaquesConstants.DEFAULT_LATITUDE);
-            currentLocation
-                    .setLongitude(BluePlaquesConstants.DEFAULT_LONGITUDE);
-        }
-        refWatcher = LeakCanary.install(this);
+
+        // Initialize Firebase
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+
+        // Schedule periodic background work
+        // TODO: Fix WorkManager Hilt integration - currently disabled due to worker instantiation issues
+        // workManagerInitializer.schedulePeriodicPlaquesSync();
+
         trackApplicationLoadedEvent();
-        Fabric.with(this, new Crashlytics());
     }
 
-    @Override
-    public void onConnectionFailed(@NonNull final ConnectionResult connectionResult) {
-        Log.e(TAG, "onConnectionFailed " + connectionResult);
-        try {
-            if (connectionResult.hasResolution()) {
-                connectionResult.startResolutionForResult(null,
-                        CONNECTION_FAILURE_RESOLUTION_REQUEST);
-            } else {
-                Log.e(TAG, "The connection result did not have a resolution");
-            }
-        } catch (IntentSender.SendIntentException e) {
-            Log.e(TAG, "An error occurred when trying to resolve the Google Maps issue", e);
-        }
-    }
-
-    @Override
-    public void onConnected(final Bundle connectionHint) {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            currentLocation = LocationServices.FusedLocationApi.getLastLocation(
-                    locationClient);
-            final LocationRequest locationRequest = new LocationRequest();
-            locationRequest.setInterval(10000);
-            locationRequest.setFastestInterval(5000);
-            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-            LocationServices.FusedLocationApi.requestLocationUpdates(
-                    locationClient, locationRequest, this);
-        }
-    }
-
-    @Override
-    public void onConnectionSuspended(final int i) {
-        Log.w(TAG, "onConnectionSuspended " + i);
-    }
-
-    @Override
-    public void onLocationChanged(final Location location) {
-        currentLocation = location;
-    }
-
-    public void trackEvent(final String category, final String action, final String label) {
-        final Tracker tracker = getTracker(TrackerName.APP_TRACKER);
-        tracker.send(new HitBuilders.EventBuilder().setCategory(category)
-                .setAction(action).setLabel(label).build());
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    private synchronized Tracker getTracker(final TrackerName trackerId) {
-        if (!trackers.containsKey(trackerId)) {
-            final GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            // ideally, this would be loaded from the configuration file, but it's causing ANRs with the 6.5.87 version of Play Services
-            // https://github.com/seanoshea/BluePlaquesLondon-Android/issues/62 has the details.
-            final Tracker t = analytics.newTracker(TRACKER_ID);
-            t.setSessionTimeout(300);
-            t.enableExceptionReporting(true);
-            t.enableAutoActivityTracking(true);
-            trackers.put(trackerId, t);
-        }
-        return trackers.get(trackerId);
+    public void trackEvent(@NonNull final String category, @NonNull final String action, @NonNull final String label) {
+        // Log event to Firebase Analytics
+        android.os.Bundle bundle = new android.os.Bundle();
+        bundle.putString("category", category);
+        bundle.putString("action", action);
+        bundle.putString("label", label);
+        firebaseAnalytics.logEvent("app_event", bundle);
     }
 
     private void trackApplicationLoadedEvent() {
-        final PackageInfo pInfo;
         try {
-            pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            final PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             trackEvent(
-                    BluePlaquesConstants.APPLICATION_LOADED,
+                    APPLICATION_LOADED,
                     String.format("Application Version: %s", pInfo.versionName),
-                    String.format("Android Version %s", Build.VERSION.RELEASE));
+                    "Android 11+");
         } catch (NameNotFoundException e) {
             Log.e(TAG, "An error occurred when requesting the package information from the app", e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
-    }
-
-    public Location getCurrentLocation() {
-        return currentLocation;
-    }
-
-    public enum TrackerName {
-        APP_TRACKER,
     }
 }

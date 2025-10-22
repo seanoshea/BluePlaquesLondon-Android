@@ -47,17 +47,6 @@
         android:text="@string/developed_by" />
 
     <TextView
-        android:id="@+id/fragment_about_designer_details"
-        style="@style/PrimaryHeader"
-        android:text="@string/designer_details" />
-
-    <TextView
-        android:id="@+id/fragment_about_designed_by"
-        style="@style/SecondaryText"
-        android:linksClickable="true"
-        android:text="@string/designed_by" />
-
-    <TextView
         android:id="@+id/fragment_about_map_details"
         style="@style/PrimaryHeader"
         android:text="@string/map_details" />

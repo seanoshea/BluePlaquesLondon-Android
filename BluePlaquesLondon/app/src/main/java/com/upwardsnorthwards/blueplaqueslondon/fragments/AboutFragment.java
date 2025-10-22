@@ -28,9 +28,9 @@
 
 package com.upwardsnorthwards.blueplaqueslondon.fragments;
 
-import android.app.DialogFragment;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -38,44 +38,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.squareup.leakcanary.RefWatcher;
-import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
 import com.upwardsnorthwards.blueplaqueslondon.R;
 
 /**
  * Shows some information about how the application was developed and some of the contributors to the app.
  */
-public class AboutFragment extends DialogFragment {
+public class AboutFragment extends Fragment {
 
     public AboutFragment() {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        RefWatcher refWatcher = BluePlaquesLondonApplication.getRefWatcher(getActivity());
-        refWatcher.watch(this);
-    }
-
-    @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 
-        final View view = inflater.inflate(R.layout.fragment_about, container);
+        final View view = inflater.inflate(R.layout.fragment_about, container, false);
 
         // allow users click on the links in the text views
         final TextView developedByTextView = (TextView) view.findViewById(R.id.fragment_about_developed_by);
-        final TextView designedByTextView = (TextView) view.findViewById(R.id.fragment_about_designed_by);
         final TextView mapDataTextView = (TextView) view.findViewById(R.id.fragment_about_map_data);
 
-        developedByTextView.setText(Html.fromHtml(getResources().getString(R.string.developed_by)));
-        designedByTextView.setText(Html.fromHtml(getResources().getString(R.string.designed_by)));
-        mapDataTextView.setText(Html.fromHtml(getResources().getString(R.string.map_data)));
+        developedByTextView.setText(Html.fromHtml(getResources().getString(R.string.developed_by), Html.FROM_HTML_MODE_LEGACY));
+        mapDataTextView.setText(Html.fromHtml(getResources().getString(R.string.map_data), Html.FROM_HTML_MODE_LEGACY));
 
         developedByTextView.setMovementMethod(LinkMovementMethod.getInstance());
-        designedByTextView.setMovementMethod(LinkMovementMethod.getInstance());
         mapDataTextView.setMovementMethod(LinkMovementMethod.getInstance());
-
-        getDialog().setTitle(getString(R.string.action_about));
 
         return view;
     }

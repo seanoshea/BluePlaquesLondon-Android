@@ -28,20 +28,20 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.upwardsnorthwards.blueplaqueslondon">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
-    <uses-feature android:name="android.hardware.location.gps" />
+    <uses-feature android:name="android.hardware.location.gps"
+        android:required="false" />
 
     <application
         android:name=".BluePlaquesLondonApplication"
@@ -49,56 +49,62 @@
         android:label="@string/app_name"
         android:allowBackup="false"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="false"
+        android:enableOnBackInvokedCallback="true"
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:targetApi="31">
 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyDqMX5XwX13lIgTrNq4p61rXzy3ntDmpr8" />
-        <meta-data
-            android:name="com.google.android.gms.analytics.globalConfigResource"
-            android:resource="@xml/app_tracker" />
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${GOOGLE_MAPS_API_KEY}" />
+
+        <activity
+            android:name=".activities.SplashActivity"
+            android:theme="@style/SplashTheme"
+            android:screenOrientation="portrait"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".activities.MainActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat">
+            android:theme="@style/Theme.AppCompat"
+            android:exported="false">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity
             android:name=".activities.MapDetailActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:exported="false" />
 
         <activity
             android:name=".activities.WikipediaActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:exported="false" />
 
         <activity
             android:name=".activities.PanoramaActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" />
-
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="8aa2986353e21d6181e23a9360cd528dca68aafb" />
+            android:screenOrientation="portrait"
+            android:exported="false" />
 
     </application>
 

@@ -30,7 +30,7 @@ package com.upwardsnorthwards.blueplaqueslondon.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.Html;
 
 /**
@@ -92,7 +92,10 @@ public class Placemark implements Parcelable {
         return Double.toString(latitude) + Double.toString(longitude);
     }
 
-    private static String trimWhitespaceFromString(@NonNull String string) {
+    private static String trimWhitespaceFromString(String string) {
+        if (string == null || string.isEmpty()) {
+            return "";
+        }
         return string.replaceAll("\t", "").replaceAll("^\\s*", "");
     }
 
@@ -294,7 +297,10 @@ public class Placemark implements Parcelable {
         return inputWithNoteRemoved;
     }
 
-    private String trimWhitespaceAndHTMLDecode(@NonNull String string) {
+    private String trimWhitespaceAndHTMLDecode(String string) {
+        if (string == null || string.isEmpty()) {
+            return "";
+        }
         // TODO: Need to use a faster fromHTML implementation.
         return Html.fromHtml(Placemark.trimWhitespaceFromString(string)).toString();
     }

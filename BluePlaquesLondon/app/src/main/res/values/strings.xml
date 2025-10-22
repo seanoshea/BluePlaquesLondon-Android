@@ -37,9 +37,7 @@
     <string name="search_title">Search</string>
     <string name="search_hint">Search for a Blue Plaque</string>
     <string name="developed_details">Developer Details</string>
-    <string name="developed_by">Developed by &lt;a href="http://www.twitter.com/seanoshea"&gt;Sean O\'Shea&lt;/a&gt;</string>
-    <string name="designer_details">Designer Details</string>
-    <string name="designed_by">Application designed by &lt;a href="http://www.andydale.info"&gt;Andy Dale&lt;/a&gt;</string>
+    <string name="developed_by">Developed by &lt;a href="http://www.giuthub.com/seanoshea"&gt;Sean O\'Shea&lt;/a&gt;</string>
     <string name="map_details">Map Data Details</string>
     <string name="map_data">Map Data for this application is maintained by &lt;a href="http://www.reeddesign.co.uk"&gt;Roy Reed&lt;/a&gt;</string>
     <string name="street_view">Street View</string>
@@ -51,10 +49,7 @@
     <string name="install_google_maps">You need to install Google Maps to view Street View</string>
     <string name="ok">OK</string>
     <string name="closest">Find the Plaque closest to me</string>
-    <string name="action_settings">Settings</string>
-    <string name="analytics">Analytics</string>
-    <string name="analytics_title">Allow analytics to be collected</string>
-    <string name="analytics_note">Blue Plaques London does not collect any personal information.</string>
+
     <string name="internet_connectivity_message">Please check your internet connection.</string>
 
 </resources>

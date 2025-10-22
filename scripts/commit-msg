@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Commit message validation hook
+
+commit_regex='^(feat|fix|docs|style|refactor|test|chore|security)(\(.+\))?: .{1,50}'
+
+error_msg="Invalid commit message format. Use: type(scope): description
+Examples:
+  feat: add Wikipedia search functionality
+  fix(maps): resolve marker clustering issue
+  docs: update README with build instructions"
+
+if ! grep -qE "$commit_regex" "$1"; then
+    echo "❌ $error_msg" >&2
+    exit 1
+fi
+
+echo "✅ Commit message format valid"

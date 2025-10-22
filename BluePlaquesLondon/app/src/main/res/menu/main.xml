@@ -36,11 +36,6 @@
         bpl:showAsAction="never" />
 
     <item
-        android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        bpl:showAsAction="never" />
-
-    <item
         android:id="@+id/action_search"
         android:icon="@android:drawable/ic_menu_search"
         android:title="@string/app_name"
