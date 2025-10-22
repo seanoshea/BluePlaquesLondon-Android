@@ -24,6 +24,15 @@ build/
 gradle-app.setting
 !gradle-wrapper.jar
 
+# Gradle Wrapper caches and runtime files
+BluePlaquesLondon/gradle/wrapper/android/
+BluePlaquesLondon/gradle/wrapper/caches/
+BluePlaquesLondon/gradle/wrapper/daemon/
+BluePlaquesLondon/gradle/wrapper/kotlin-profile/
+BluePlaquesLondon/gradle/wrapper/native/
+BluePlaquesLondon/gradle/wrapper/wrapper/
+BluePlaquesLondon/gradle/wrapper/.tmp/
+
 # Local configuration file (sdk path, etc)
 local.properties
 gradle.properties
