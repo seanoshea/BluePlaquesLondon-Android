@@ -2,7 +2,7 @@
 
 # Commit message validation hook
 
-commit_regex='^(feat|fix|docs|style|refactor|test|chore)(\(.+\))?: .{1,50}'
+commit_regex='^(feat|fix|docs|style|refactor|test|chore|security)(\(.+\))?: .{1,50}'
 
 error_msg="Invalid commit message format. Use: type(scope): description
 Examples:

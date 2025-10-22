@@ -12,6 +12,7 @@ jobs:
 
     env:
       GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"'
+      GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
 
     steps:
     - name: Checkout code
@@ -30,6 +31,10 @@ jobs:
 
     - name: Make gradlew executable
       run: chmod +x BluePlaquesLondon/gradlew
+
+    - name: Create google-services.json
+      run: |
+        echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > BluePlaquesLondon/app/google-services.json
 
     - name: Check for exposed API keys
       run: |
