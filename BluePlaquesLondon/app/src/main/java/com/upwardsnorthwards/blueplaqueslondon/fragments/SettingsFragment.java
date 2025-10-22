@@ -28,12 +28,11 @@
 
 package com.upwardsnorthwards.blueplaqueslondon.fragments;
 
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +48,7 @@ import com.upwardsnorthwards.blueplaqueslondon.data.preferences.AppPreferencesDa
 /**
  * Allows the user to enable/disable Firebase Analytics tracking
  */
-public class SettingsFragment extends DialogFragment implements OnCheckedChangeListener {
+public class SettingsFragment extends Fragment implements OnCheckedChangeListener {
 
     private static final String TAG = "SettingsFragment";
     private AppPreferencesDataStore preferencesDataStore;
@@ -60,18 +59,8 @@ public class SettingsFragment extends DialogFragment implements OnCheckedChangeL
 
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_settings, container);
-        getDialog().setTitle(getString(R.string.action_settings));
+        final View view = inflater.inflate(R.layout.fragment_settings, container, false);
         return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        final Dialog dialog = getDialog();
-        if (dialog != null) {
-            dialog.setCanceledOnTouchOutside(true);
-        }
     }
 
     @SuppressWarnings("ConstantConditions")

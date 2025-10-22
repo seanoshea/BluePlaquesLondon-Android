@@ -108,11 +108,7 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
         mainViewModel.loadPlaques();
 
         // Initialize NavController for Navigation Component (deferred to ensure View is ready)
-        try {
-            navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        } catch (IllegalStateException e) {
-            Log.w(TAG, "NavController not yet available, will be initialized on first navigation request", e);
-        }
+        // NavController will be initialized lazily when first needed
 
         initialiseAppRating();
     }
@@ -359,6 +355,8 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
                     }
                     return io.reactivex.rxjava3.core.Single.just(false);
                 })
+                .subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
+                .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread())
                 .subscribe(
                         shouldShowReview -> {
                             if (shouldShowReview) {
@@ -382,6 +380,8 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
                 flow.addOnCompleteListener(reviewTask -> {
                     // Mark as completed regardless of whether user reviewed
                     preferencesDataStore.setCompletedReview(true)
+                            .subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
+                            .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread())
                             .subscribe(
                                     prefs -> {
                                         final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
@@ -431,9 +431,17 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
     private NavController getNavController() {
         if (navController == null) {
             try {
-                navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+                // Ensure the view hierarchy is ready before finding NavController
+                androidx.fragment.app.Fragment navHostFragment = getSupportFragmentManager()
+                        .findFragmentById(R.id.nav_host_fragment);
+                if (navHostFragment != null) {
+                    navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+                } else {
+                    Log.w(TAG, "NavHostFragment not found, deferring NavController initialization");
+                    return null;
+                }
             } catch (IllegalStateException e) {
-                Log.w(TAG, "Unable to find NavController", e);
+                Log.w(TAG, "Unable to find NavController, view hierarchy may not be ready", e);
                 return null;
             }
         }

@@ -53,6 +53,7 @@
         android:theme="@style/AppTheme"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="false"
+        android:enableOnBackInvokedCallback="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="31">
 
@@ -61,7 +62,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDqMX5XwX13lIgTrNq4p61rXzy3ntDmpr8" />
+            android:value="AIzaSyBYmrcXv36JnYS7Jth29_nWpL88xjU9GJ8" />
 
         <activity
             android:name=".activities.MainActivity"

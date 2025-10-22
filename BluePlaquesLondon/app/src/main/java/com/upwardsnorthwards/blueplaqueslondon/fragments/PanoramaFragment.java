@@ -1,6 +1,7 @@
 package com.upwardsnorthwards.blueplaqueslondon.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
+import com.google.android.gms.maps.StreetViewPanorama;
+import com.google.android.gms.maps.StreetViewPanoramaFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
 import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
@@ -16,11 +21,12 @@ import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 
 /**
  * Fragment for displaying Street View panoramas for plaque locations.
- * Note: In a real implementation, this would use the Google Maps Street View API.
  */
-public class PanoramaFragment extends Fragment {
+public class PanoramaFragment extends Fragment implements OnStreetViewPanoramaReadyCallback {
 
+    private static final String TAG = "PanoramaFragment";
     private Placemark placemark;
+    private StreetViewPanoramaFragment streetViewFragment;
 
     @Nullable
     @Override
@@ -39,7 +45,9 @@ public class PanoramaFragment extends Fragment {
                     BluePlaquesConstants.STREETVIEW_BUTTON_PRESSED_EVENT,
                     placemark.getTrimmedName());
 
-            setupStreetView(view);
+            setupStreetView();
+        } else {
+            Log.w(TAG, "No placemark found in arguments");
         }
     }
 
@@ -49,16 +57,40 @@ public class PanoramaFragment extends Fragment {
         }
     }
 
-    private void setupStreetView(View view) {
+    private void setupStreetView() {
         if (placemark == null) {
+            Log.w(TAG, "Cannot setup StreetView: placemark is null");
             return;
         }
-        // The actual StreetViewPanoramaFragment would be loaded here
-        // For now, the layout provides the container for Street View display
+
+        try {
+            streetViewFragment = (StreetViewPanoramaFragment) requireActivity().getFragmentManager()
+                    .findFragmentById(R.id.street_view_panorama);
+            
+            if (streetViewFragment != null) {
+                streetViewFragment.getStreetViewPanoramaAsync(this);
+            } else {
+                Log.e(TAG, "StreetViewPanoramaFragment not found in layout");
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error setting up StreetView", e);
+        }
+    }
+
+    @Override
+    public void onStreetViewPanoramaReady(@NonNull StreetViewPanorama streetViewPanorama) {
+        if (placemark != null) {
+            LatLng position = new LatLng(placemark.getLatitude(), placemark.getLongitude());
+            streetViewPanorama.setPosition(position);
+            Log.d(TAG, "StreetView positioned at: " + position.latitude + ", " + position.longitude);
+        } else {
+            Log.w(TAG, "Cannot position StreetView: placemark is null");
+        }
     }
 
     @Override
     public void onDestroyView() {
+        streetViewFragment = null;
         super.onDestroyView();
     }
 }

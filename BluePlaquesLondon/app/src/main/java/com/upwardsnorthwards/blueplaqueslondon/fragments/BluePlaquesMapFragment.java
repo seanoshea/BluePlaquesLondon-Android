@@ -252,11 +252,15 @@ public class BluePlaquesMapFragment extends SupportMapFragment implements OnCame
                     preferencesDataStore.getLastKnownBPLCoordinateSingle(),
                     preferencesDataStore.getMapZoomSingle(),
                     (coordinate, zoom) -> new Object[]{coordinate, zoom}
-            ).subscribe(
+            ).subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
+            .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread())
+            .subscribe(
                     result -> {
                         LatLng coordinate = (LatLng) result[0];
                         Float zoom = (Float) result[1];
-                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinate, zoom));
+                        if (googleMap != null) {
+                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinate, zoom));
+                        }
                         setProgressBarVisibility(View.GONE);
                     },
                     error -> {
@@ -300,6 +304,8 @@ public class BluePlaquesMapFragment extends SupportMapFragment implements OnCame
         if (activity != null && preferencesDataStore != null && googleMap != null) {
             // Save last known coordinate
             preferencesDataStore.saveLastKnownCoordinate(position.target)
+                    .subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
+                    .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread())
                     .subscribe(
                             prefs -> Log.v(TAG, "Saved last known coordinate"),
                             error -> Log.e(TAG, "Error saving coordinate: " + error.getMessage())
@@ -307,6 +313,8 @@ public class BluePlaquesMapFragment extends SupportMapFragment implements OnCame
 
             // Save map zoom
             preferencesDataStore.saveMapZoom(position.zoom, googleMap.getMinZoomLevel(), googleMap.getMaxZoomLevel())
+                    .subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
+                    .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread())
                     .subscribe(
                             prefs -> Log.v(TAG, "Saved map zoom"),
                             error -> Log.e(TAG, "Error saving zoom: " + error.getMessage())
@@ -334,6 +342,8 @@ public class BluePlaquesMapFragment extends SupportMapFragment implements OnCame
                 // Save last known BPL coordinate using DataStore
                 if (preferencesDataStore != null) {
                     preferencesDataStore.saveLastKnownBPLCoordinate(latLng)
+                            .subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
+                            .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread())
                             .subscribe(
                                     prefs -> Log.v(TAG, "Saved BPL coordinate"),
                                     error -> Log.e(TAG, "Error saving BPL coordinate: " + error.getMessage())
@@ -377,12 +387,18 @@ public class BluePlaquesMapFragment extends SupportMapFragment implements OnCame
 
             // Get map zoom and navigate
             preferencesDataStore.getMapZoomSingle()
+                    .subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
+                    .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread())
                     .subscribe(
                             zoom -> {
-                                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+                                if (googleMap != null) {
+                                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+                                }
 
                                 // Save last known BPL coordinate
                                 preferencesDataStore.saveLastKnownBPLCoordinate(latLng)
+                                        .subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
+                                        .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread())
                                         .subscribe(
                                                 prefs -> Log.v(TAG, "Saved BPL coordinate"),
                                                 error -> Log.e(TAG, "Error saving BPL coordinate: " + error.getMessage())
