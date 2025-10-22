@@ -7,7 +7,6 @@ import androidx.hilt.work.HiltWorkerFactory;
 import androidx.work.Configuration;
 import androidx.work.WorkManager;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -27,16 +26,5 @@ public class WorkManagerModule {
     @Singleton
     public WorkManager provideWorkManager(@NonNull @ApplicationContext Context context) {
         return WorkManager.getInstance(context);
-    }
-
-    /**
-     * Configuration provider for WorkManager with Hilt-enabled worker factory.
-     */
-    @Provides
-    @Singleton
-    public Configuration.Provider provideWorkerConfiguration(@NonNull HiltWorkerFactory hiltWorkerFactory) {
-        return () -> new Configuration.Builder()
-                .setWorkerFactory(hiltWorkerFactory)
-                .build();
     }
 }

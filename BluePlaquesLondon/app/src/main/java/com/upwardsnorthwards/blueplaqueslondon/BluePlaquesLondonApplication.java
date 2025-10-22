@@ -69,7 +69,8 @@ public class BluePlaquesLondonApplication extends Application {
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
 
         // Schedule periodic background work
-        workManagerInitializer.schedulePeriodicPlaquesSync();
+        // TODO: Fix WorkManager Hilt integration - currently disabled due to worker instantiation issues
+        // workManagerInitializer.schedulePeriodicPlaquesSync();
 
         trackApplicationLoadedEvent();
     }

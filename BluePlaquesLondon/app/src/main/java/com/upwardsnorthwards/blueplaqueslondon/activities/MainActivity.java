@@ -96,9 +96,6 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize NavController for Navigation Component
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-
         // Initialize ViewModels
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         locationViewModel = new ViewModelProvider(this).get(LocationViewModel.class);
@@ -109,6 +106,13 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
 
         // Load plaques
         mainViewModel.loadPlaques();
+
+        // Initialize NavController for Navigation Component (deferred to ensure View is ready)
+        try {
+            navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        } catch (IllegalStateException e) {
+            Log.w(TAG, "NavController not yet available, will be initialized on first navigation request", e);
+        }
 
         initialiseAppRating();
     }
@@ -184,11 +188,16 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
     public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
         updateProgressBarVisibility(View.GONE);
         int id = item.getItemId();
+        NavController controller = getNavController();
+        if (controller == null) {
+            Log.w(TAG, "NavController not available");
+            return false;
+        }
         if (id == R.id.action_about) {
-            navController.navigate(R.id.action_mapFragment_to_aboutFragment);
+            controller.navigate(R.id.action_mapFragment_to_aboutFragment);
             return true;
         } else if (id == R.id.action_settings) {
-            navController.navigate(R.id.action_mapFragment_to_settingsFragment);
+            controller.navigate(R.id.action_mapFragment_to_settingsFragment);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -414,5 +423,20 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
     @Override
     public void regainedInternetConnectivity() {
         Log.v(TAG, "Regained Internet Connectivity");
+    }
+
+    /**
+     * Get the NavController, initializing it lazily if needed.
+     */
+    private NavController getNavController() {
+        if (navController == null) {
+            try {
+                navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+            } catch (IllegalStateException e) {
+                Log.w(TAG, "Unable to find NavController", e);
+                return null;
+            }
+        }
+        return navController;
     }
 }
