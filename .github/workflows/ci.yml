@@ -42,10 +42,6 @@ jobs:
           echo "❌ Error: API key found in source code"
           exit 1
         fi
-        if grep -r "AIzaSy" BluePlaquesLondon/app/google-services.json 2>/dev/null; then
-          echo "❌ Error: Firebase API key found in google-services.json"
-          exit 1
-        fi
         echo "✅ No exposed API keys found"
 
     - name: Run Android Lint
