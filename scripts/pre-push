@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Pre-push hook for additional checks
+
+set -e
+
+echo "Running pre-push checks..."
+
+cd BluePlaquesLondon
+
+# Run full test suite
+echo "🧪 Running full test suite..."
+./gradlew test --quiet
+if [ $? -ne 0 ]; then
+    echo "❌ Tests failed"
+    exit 1
+fi
+
+# Check for TODO/FIXME in committed code
+echo "🔍 Checking for TODO/FIXME..."
+if git log --oneline origin/$(git branch --show-current)..HEAD | grep -i "todo\|fixme" >/dev/null 2>&1; then
+    echo "⚠️  Warning: TODO/FIXME found in recent commits"
+fi
+
+# Verify build passes
+echo "🔨 Verifying build..."
+./gradlew assembleDebug --quiet
+if [ $? -ne 0 ]; then
+    echo "❌ Build failed"
+    exit 1
+fi
+
+echo "✅ Pre-push checks passed"

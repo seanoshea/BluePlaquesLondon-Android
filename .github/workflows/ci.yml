@@ -31,6 +31,23 @@ jobs:
     - name: Make gradlew executable
       run: chmod +x BluePlaquesLondon/gradlew
 
+    - name: Check for exposed API keys
+      run: |
+        if grep -r "AIzaSy" BluePlaquesLondon/app/src/ --include="*.java" --include="*.xml" --include="*.gradle" --include="*.properties" 2>/dev/null; then
+          echo "❌ Error: Google Maps API key found in source code"
+          exit 1
+        fi
+        echo "✅ No exposed API keys found"
+
+    - name: Run Android Lint
+      run: cd BluePlaquesLondon && ./gradlew lintDebug
+
+    - name: Check for TODO/FIXME
+      run: |
+        if find BluePlaquesLondon/app/src/main -name "*.java" -exec grep -l "TODO\|FIXME" {} \; | head -5; then
+          echo "⚠️ Warning: TODO/FIXME found in source code"
+        fi
+
     - name: Build debug APK
       run: cd BluePlaquesLondon && ./gradlew assembleDebug
 

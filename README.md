@@ -1,8 +1,10 @@
-[![Twitter: @seanoshea](https://img.shields.io/badge/contact-@seanoshea-blue.svg?style=flat)](https://twitter.com/seanoshea)
-[![License](http://img.shields.io/badge/license-BSD-green.svg?style=flat)](https://github.com/seanoshea/BluePlaquesLondon-Android/blob/master/LICENSE)
 [![CI](https://github.com/seanoshea/BluePlaquesLondon-Android/workflows/CI/badge.svg)](https://github.com/seanoshea/BluePlaquesLondon-Android/actions)
-[![codecov](https://codecov.io/gh/seanoshea/BluePlaquesLondon-Android/branch/develop/graph/badge.svg)](https://codecov.io/gh/seanoshea/BluePlaquesLondon-Android)
 [![PRs Welcome](https://img.shields.io/badge/prs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![License](http://img.shields.io/badge/license-BSD-green.svg?style=flat)](https://github.com/seanoshea/BluePlaquesLondon-Android/blob/master/LICENSE)
+[![Languages](https://img.shields.io/github/languages/count/seanoshea/BluePlaquesLondon-Android)](https://img.shields.io/github/languages/count/seanoshea/BluePlaquesLondon-Android)
+[![Open Issues](https://img.shields.io/github/issues/seanoshea/BluePlaquesLondon-Android)](https://img.shields.io/github/issues/seanoshea/BluePlaquesLondon-Android)
+[![Closed Issues](https://img.shields.io/github/issues-closed/seanoshea/BluePlaquesLondon-Android)](https://img.shields.io/github/issues-closed/seanoshea/BluePlaquesLondon-Android)
+[![Twitter: @seanoshea](https://img.shields.io/badge/contact-@seanoshea-blue.svg?style=flat)](https://twitter.com/seanoshea)
 
 ## BluePlaquesLondon Android
 Android Application for finding Blue Plaques through London. **Requires Android 11+**. [Google Play Store Link](https://play.google.com/store/apps/details?id=com.upwardsnorthwards.blueplaqueslondon)
@@ -17,75 +19,27 @@ Android Application for finding Blue Plaques through London. **Requires Android 
 <a href="http://imgur.com/tsyVF9L"><img src="http://i.imgur.com/tsyVF9L.png" title="source: imgur.com" /></a>
 <a href="http://imgur.com/crwJFqh"><img src="http://i.imgur.com/crwJFqh.png" title="source: imgur.com" /></a>
 
-## Testing
+## Features
 
-The project includes comprehensive test coverage with both unit and instrumented tests.
+- **Interactive Map**: Explore 900+ blue plaques across London
+- **Search**: Find plaques by person, location, or occupation
+- **Details**: View plaque information, Wikipedia articles, and Street View
+- **Modern UI**: Material Design 3 with smooth animations
+- **Offline Support**: Core functionality works without internet
 
-### Running Tests Locally
+## Development
 
-From the `BluePlaquesLondon` subfolder:
-
-**Unit Tests (70+ tests, ~40% coverage)**
-```bash
-./gradlew testDebugUnitTest
-```
-
-**Instrumented Tests (95 tests on device/emulator)**
-```bash
-# Start an Android 11+ emulator first, then:
-./gradlew connectedDebugAndroidTest
-```
-
-**Generate Coverage Report**
-```bash
-# Run both unit and instrumented tests first, then:
-./gradlew jacocoTestReport
-
-# View report at:
-# app/build/reports/jacoco/jacocoTestReport/html/index.html
-```
-
-### Test Coverage
-
-Current coverage: **~40%** overall
-- **Data Layer**: 85%+ (DAO, Repository, Entity, Utils)
-- **Adapters**: 66%
-- **ViewModels**: 28%
-- **Models**: 33%
-- **Activities/Fragments**: Limited (Google Maps testing constraints)
-
-See [MODERNIZATION_PROGRESS.md](MODERNIZATION_PROGRESS.md) for detailed testing status.
-
-## Static Code Analysis
-Android linting, PMD and findbugs can all be run from the `BluePlaquesLondon` subfolder with commands like:
-```
-gradlew lint
-gradlew pmd
-gradlew findbugs
-```
+For development setup, building, testing, and contributing guidelines, see [DEVELOPMENT.md](DEVELOPMENT.md).
 
 ## Contributing
-Suggestions and bug reports for the application are always welcome. Open an issue on github if you'd like to see an addition to the application or if you spot a bug. Pull requests are especially welcome (and most likely to get merged if you have some unit tests associated with the merge request).
 
-## Building a Release
-- Alter the `gradle.properties` file to look like:
-```
-RELEASE_STORE_FILE=~/production.keystore
-RELEASE_STORE_PASSWORD=password_here
-RELEASE_KEY_ALIAS=production
-RELEASE_KEY_PASSWORD=password_here
-```
-- Ensure the `production.keystore` file includes the `AB:47:6B:2C:00:7E:00:35:3C:CA:58:5F:43:89:6F:8D:2F:F6:EB:B3` SHA by executing:
-```
-keytool -list -v -keystore ~/production.keystore
-```
-- Navigate to https://console.developers.google.com/apis/credentials?project=blue-plaques-london
-- Alter the `com.google.android.maps.v2.API_KEY` property in `AndroidManifest.xml` to include the production key for Google Maps. The Google Developer Console lists it as a production key.
-- Execute `./gradlew assembleRelease` to build.
-- Execute `adb install app/build/outputs/apk/app-release.apk` while having a device attached.
+We welcome contributions! Please see [DEVELOPMENT.md](DEVELOPMENT.md) for setup instructions and contribution guidelines.
 
-## iPhone/iPad Version
-The original idea behind an application for showing historical blue plaques around London was implemented in Objective-C for iOS devices. The source code for that version of the application is available [here](http://github.com/seanoshea/BluePlaquesLondon). It is downloadable from the Apple's [AppStore](http://www.appstore.com/seanoshea)
+## Related Projects
 
-## Beta Builds
-If you're interested in access to beta-builds of the application, there's a Google Group available [here](http://groups.google.com/forum/#!groupsettings/blue-plaques-london-android-beta-testers/information)
+- **iOS Version**: [BluePlaquesLondon iOS](http://github.com/seanoshea/BluePlaquesLondon) - Available on the [App Store](http://www.appstore.com/seanoshea)
+- **Beta Testing**: Join our [Google Group](http://groups.google.com/forum/#!groupsettings/blue-plaques-london-android-beta-testers/information) for early access
+
+## License
+
+This project is licensed under the BSD License - see the [LICENSE](LICENSE) file for details.

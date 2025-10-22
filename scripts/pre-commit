@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Android Pre-commit Hook for Blue Plaques London
+
+set -e
+
+echo "Running pre-commit checks..."
+
+# Check for API keys in committed files
+if git diff --cached --name-only | grep -E "\.(java|xml|gradle|properties)$" | xargs grep -l "AIzaSy" 2>/dev/null; then
+    echo "❌ Error: Google Maps API key found in staged files"
+    echo "Please remove API keys before committing"
+    exit 1
+fi
+
+# Run lint checks
+echo "🔍 Running Android lint..."
+cd BluePlaquesLondon
+./gradlew lintDebug --quiet
+if [ $? -ne 0 ]; then
+    echo "❌ Lint checks failed"
+    exit 1
+fi
+
+# Run unit tests
+echo "🧪 Running unit tests..."
+./gradlew testDebugUnitTest --quiet
+if [ $? -ne 0 ]; then
+    echo "❌ Unit tests failed"
+    exit 1
+fi
+
+# Check code formatting
+echo "📝 Checking code formatting..."
+if git diff --cached --name-only | grep -E "\.java$" | xargs grep -l "	" 2>/dev/null; then
+    echo "⚠️  Warning: Tabs found in Java files, consider using spaces"
+fi
+
+echo "✅ Pre-commit checks passed"
