@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'org.jetbrains.kotlin.plugin.compose'
     id 'dagger.hilt.android.plugin'
     id 'androidx.navigation.safeargs'
     id 'com.google.gms.google-services'
@@ -55,10 +56,6 @@ android {
         compose true
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.15"
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -99,13 +96,17 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
     // Jetpack Compose
-    def compose_version = "1.7.5"
-    implementation "androidx.compose.ui:ui:$compose_version"
+
+    def compose_bom_version = "2024.06.00" // A recent stable version
+    implementation platform("androidx.compose:compose-bom:$compose_bom_version")
+    androidTestImplementation platform("androidx.compose:compose-bom:$compose_bom_version")
+
+    implementation "androidx.compose.ui:ui"
     implementation "androidx.compose.material3:material3:1.3.1"
-    implementation "androidx.compose.material:material-icons-extended:$compose_version"
-    implementation "androidx.compose.foundation:foundation:$compose_version"
-    implementation "androidx.compose.runtime:runtime:$compose_version"
-    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
+    implementation "androidx.compose.material:material-icons-extended"
+    implementation "androidx.compose.foundation:foundation"
+    implementation "androidx.compose.runtime:runtime"
+    implementation "androidx.compose.runtime:runtime-livedata"
     implementation "androidx.activity:activity-compose:1.10.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7"
     implementation "androidx.hilt:hilt-navigation-compose:1.2.0"
@@ -117,7 +118,7 @@ dependencies {
     implementation "androidx.room:room-rxjava3:$room_version"
 
     // Hilt Dependency Injection
-    def hilt_version = "2.51.1"
+    def hilt_version = "2.57.2"
     implementation "com.google.dagger:hilt-android:$hilt_version"
     annotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"
 
@@ -161,7 +162,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.11.0'
 
     // Kotlin
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.9.25'
+    // implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.9.25'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-rx3:1.8.0'
 
