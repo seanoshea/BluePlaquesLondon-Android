@@ -7,9 +7,16 @@ set -e
 echo "Running pre-commit checks..."
 
 # Check for API keys in committed files
-if git diff --cached --name-only | grep -E "\.(java|xml|gradle|properties)$" | xargs grep -l "AIzaSy" 2>/dev/null; then
-    echo "❌ Error: Google Maps API key found in staged files"
+if git diff --cached --name-only | grep -E "\.(java|xml|gradle|properties|json)$" | xargs grep -l "AIzaSy" 2>/dev/null; then
+    echo "❌ Error: API key found in staged files"
     echo "Please remove API keys before committing"
+    exit 1
+fi
+
+# Check for Firebase project numbers/IDs
+if git diff --cached --name-only | grep "google-services.json" | xargs grep -l "[0-9]\{10,\}" 2>/dev/null; then
+    echo "❌ Error: Firebase configuration with real project data found"
+    echo "Use google-services.json.sample as template"
     exit 1
 fi
 

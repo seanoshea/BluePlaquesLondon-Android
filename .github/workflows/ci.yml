@@ -34,7 +34,11 @@ jobs:
     - name: Check for exposed API keys
       run: |
         if grep -r "AIzaSy" BluePlaquesLondon/app/src/ --include="*.java" --include="*.xml" --include="*.gradle" --include="*.properties" 2>/dev/null; then
-          echo "❌ Error: Google Maps API key found in source code"
+          echo "❌ Error: API key found in source code"
+          exit 1
+        fi
+        if grep -r "AIzaSy" BluePlaquesLondon/app/google-services.json 2>/dev/null; then
+          echo "❌ Error: Firebase API key found in google-services.json"
           exit 1
         fi
         echo "✅ No exposed API keys found"

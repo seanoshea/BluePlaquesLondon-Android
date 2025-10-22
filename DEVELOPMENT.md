@@ -34,6 +34,8 @@ git config core.hooksPath scripts
 - **Build Tools**: 35.0.0+
 
 ### 4. API Keys Configuration
+
+**Google Maps API Key**
 Create `local.properties` in the `BluePlaquesLondon/` directory:
 ```properties
 # Google Maps API Key (get from Google Cloud Console)
@@ -43,7 +45,12 @@ GOOGLE_MAPS_API_KEY=your_api_key_here
 sdk.dir=/path/to/android/sdk
 ```
 
-**⚠️ Never commit API keys to version control**
+**Firebase Configuration**
+1. Download `google-services.json` from Firebase Console
+2. Replace `BluePlaquesLondon/app/google-services.json` with your file
+3. Use `google-services.json.sample` as reference
+
+**⚠️ Never commit API keys or real Firebase config to version control**
 
 ## Development Environment
 

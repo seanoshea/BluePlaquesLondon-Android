@@ -21,9 +21,10 @@ android {
 
         testInstrumentationRunner "com.upwardsnorthwards.blueplaqueslondon.HiltTestRunner"
 
-        // Inject Google Maps API key from local.properties into BuildConfig for programmatic access
+        // Inject Google Maps API key from local.properties
         def googleMapsApiKey = findProperty('GOOGLE_MAPS_API_KEY') ?: "YOUR_GOOGLE_MAPS_API_KEY_HERE"
         buildConfigField "String", "GOOGLE_MAPS_API_KEY", "\"$googleMapsApiKey\""
+        manifestPlaceholders = [GOOGLE_MAPS_API_KEY: googleMapsApiKey]
 
         // Room schema export
         javaCompileOptions {
