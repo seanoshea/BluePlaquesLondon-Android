@@ -47,7 +47,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
-import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -74,11 +74,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Main fragment in the application. Shows the plaques on a <code>com.google.android.gms.maps.MapFragment</code>
- * Note: This fragment cannot use @AndroidEntryPoint because it extends the old android.app.MapFragment.
+ * Main fragment in the application. Shows the plaques on a <code>com.google.android.gms.maps.SupportMapFragment</code>
+ * Note: This fragment cannot use @AndroidEntryPoint because it extends SupportMapFragment.
  * The ViewModel is obtained from the parent activity instead.
  */
-public class BluePlaquesMapFragment extends MapFragment implements OnCameraChangeListener, OnMarkerClickListener, OnInfoWindowClickListener {
+public class BluePlaquesMapFragment extends SupportMapFragment implements OnCameraChangeListener, OnMarkerClickListener, OnInfoWindowClickListener {
 
     private static final String TAG = "MapFragment";
     @NonNull
