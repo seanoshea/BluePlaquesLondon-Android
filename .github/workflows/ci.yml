@@ -34,7 +34,7 @@ jobs:
     - name: Build debug APK
       run: cd BluePlaquesLondon && ./gradlew assembleDebug
 
-    - name: Run unit tests
+    - name: Run unit tests (Android 11+ compatible)
       run: cd BluePlaquesLondon && ./gradlew testDebugUnitTest --no-daemon
 
     - name: Generate coverage report

@@ -90,7 +90,7 @@ public class BluePlaquesLondonApplication extends Application {
             trackEvent(
                     APPLICATION_LOADED,
                     String.format("Application Version: %s", pInfo.versionName),
-                    String.format("Android Version %s", Build.VERSION.RELEASE));
+                    "Android 11+");
         } catch (NameNotFoundException e) {
             Log.e(TAG, "An error occurred when requesting the package information from the app", e);
             FirebaseCrashlytics.getInstance().recordException(e);

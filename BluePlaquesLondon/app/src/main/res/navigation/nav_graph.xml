@@ -23,13 +23,7 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
-        <action
-            android:id="@+id/action_mapFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
+
     </fragment>
 
     <!-- Map detail screen - shows plaque details -->
@@ -77,16 +71,6 @@
             app:popUpToInclusive="false" />
     </fragment>
 
-    <!-- Settings screen -->
-    <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.upwardsnorthwards.blueplaqueslondon.fragments.SettingsFragment"
-        android:label="Settings">
-        <action
-            android:id="@+id/action_settingsFragment_pop_to_mapFragment"
-            app:destination="@id/mapFragment"
-            app:popUpTo="@id/mapFragment"
-            app:popUpToInclusive="false" />
-    </fragment>
+
 
 </navigation>

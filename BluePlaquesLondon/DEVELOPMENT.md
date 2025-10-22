@@ -6,8 +6,8 @@
 - **JDK**: Version 17 or higher
 - **Gradle**: 8.11+ (included with Android Studio)
 - **Android SDK**:
-  - Min SDK: 24
-  - Target SDK: 35
+  - Min SDK: 30 (Android 11)
+  - Target SDK: 35 (Android 15)
   - Compile SDK: 35
 
 ## Initial Setup
@@ -163,7 +163,7 @@ Unit tests use JUnit 4, Mockito, and Robolectric for Android framework mocking.
 ./gradlew connectedDebugAndroidTest
 ```
 
-Instrumented tests require an Android device or emulator to be connected. These tests include:
+Instrumented tests require an Android 11+ device or emulator to be connected. These tests include:
 - Database integration tests with Room
 - Repository layer tests
 - UI component tests with Espresso

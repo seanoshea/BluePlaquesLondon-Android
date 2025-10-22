@@ -57,8 +57,8 @@ public class AboutFragment extends Fragment {
         final TextView developedByTextView = (TextView) view.findViewById(R.id.fragment_about_developed_by);
         final TextView mapDataTextView = (TextView) view.findViewById(R.id.fragment_about_map_data);
 
-        developedByTextView.setText(Html.fromHtml(getResources().getString(R.string.developed_by)));
-        mapDataTextView.setText(Html.fromHtml(getResources().getString(R.string.map_data)));
+        developedByTextView.setText(Html.fromHtml(getResources().getString(R.string.developed_by), Html.FROM_HTML_MODE_LEGACY));
+        mapDataTextView.setText(Html.fromHtml(getResources().getString(R.string.map_data), Html.FROM_HTML_MODE_LEGACY));
 
         developedByTextView.setMovementMethod(LinkMovementMethod.getInstance());
         mapDataTextView.setMovementMethod(LinkMovementMethod.getInstance());

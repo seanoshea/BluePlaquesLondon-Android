@@ -58,7 +58,6 @@ import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.data.preferences.AppPreferencesDataStore;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.AboutFragment;
 import com.upwardsnorthwards.blueplaqueslondon.fragments.BluePlaquesMapFragment;
-import com.upwardsnorthwards.blueplaqueslondon.fragments.SettingsFragment;
 import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import com.upwardsnorthwards.blueplaqueslondon.ui.viewmodel.LocationViewModel;
 import com.upwardsnorthwards.blueplaqueslondon.ui.viewmodel.MainViewModel;
@@ -191,9 +190,6 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
         }
         if (id == R.id.action_about) {
             controller.navigate(R.id.action_mapFragment_to_aboutFragment);
-            return true;
-        } else if (id == R.id.action_settings) {
-            controller.navigate(R.id.action_mapFragment_to_settingsFragment);
             return true;
         }
         return super.onOptionsItemSelected(item);

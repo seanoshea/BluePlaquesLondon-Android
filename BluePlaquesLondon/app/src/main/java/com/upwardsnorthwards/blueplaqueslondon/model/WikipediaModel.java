@@ -29,6 +29,7 @@
 package com.upwardsnorthwards.blueplaqueslondon.model;
 
 import android.os.AsyncTask;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -46,10 +47,12 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 /**
- * Used by the <code>WikipediaActivity</code> to reteieve the URL associated with a placemark.
+ * Used by the <code>WikipediaActivity</code> to retrieve the URL associated with a placemark.
  */
+@SuppressWarnings("deprecation")
 public class WikipediaModel extends AsyncTask<String, String, WikipediaModelSearchResult> {
 
+    private static final String TAG = "WikipediaModel";
     private static final String WIKIPEDIA_SEARCH_URL_FORMAT = "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=%s&srprop=timestamp&format=json";
     private static final String WIKIPEDIA_MODEL_ENCODING = "UTF-8";
     private static final String WIKIPEDIA_MODEL_LOCATION_STRING = "Location";
@@ -63,6 +66,11 @@ public class WikipediaModel extends AsyncTask<String, String, WikipediaModelSear
     @Nullable
     @Override
     protected WikipediaModelSearchResult doInBackground(final String... params) {
+        if (params.length < 2) {
+            Log.e(TAG, "Insufficient parameters provided");
+            return new WikipediaModelSearchResult(null, null);
+        }
+        
         final String name = params[0];
         responseUrl = params[1];
         StringBuilder result = new StringBuilder();
@@ -74,12 +82,17 @@ public class WikipediaModel extends AsyncTask<String, String, WikipediaModelSear
                     URLEncoder.encode(name, WIKIPEDIA_MODEL_ENCODING)));
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setInstanceFollowRedirects(true);
+            urlConnection.setConnectTimeout(10000); // 10 seconds
+            urlConnection.setReadTimeout(15000); // 15 seconds
+            
             int status = urlConnection.getResponseCode();
             if (status != HttpURLConnection.HTTP_OK && (status == HttpURLConnection.HTTP_MOVED_TEMP
                     || status == HttpURLConnection.HTTP_MOVED_PERM
                     || status == HttpURLConnection.HTTP_SEE_OTHER)) {
                 String newUrl = urlConnection.getHeaderField(WIKIPEDIA_MODEL_LOCATION_STRING);
-                urlConnection = (HttpURLConnection) new URL(newUrl).openConnection();
+                if (newUrl != null) {
+                    urlConnection = (HttpURLConnection) new URL(newUrl).openConnection();
+                }
             }
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(in, WIKIPEDIA_MODEL_ENCODING));
@@ -88,8 +101,13 @@ public class WikipediaModel extends AsyncTask<String, String, WikipediaModelSear
                 result.append(line);
             }
             responseString = result.toString();
+            Log.d(TAG, "Wikipedia search successful for: " + name);
         } catch (IOException e) {
-            delegate.onRetriveWikipediaUrlFailure();
+            Log.e(TAG, "IOException during Wikipedia search for: " + name, e);
+            return new WikipediaModelSearchResult(null, name);
+        } catch (Exception e) {
+            Log.e(TAG, "Unexpected error during Wikipedia search for: " + name, e);
+            return new WikipediaModelSearchResult(null, name);
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -101,6 +119,11 @@ public class WikipediaModel extends AsyncTask<String, String, WikipediaModelSear
     @Override
     protected void onPostExecute(@NonNull final WikipediaModelSearchResult searchResult) {
         super.onPostExecute(searchResult);
+        if (delegate == null) {
+            Log.w(TAG, "Delegate is null, cannot process Wikipedia search result");
+            return;
+        }
+        
         try {
             if (searchResult.hasResult()) {
                 final JSONObject jObject = new JSONObject(searchResult.getResult());
@@ -108,14 +131,27 @@ public class WikipediaModel extends AsyncTask<String, String, WikipediaModelSear
                 final JSONArray search = query.getJSONArray("search");
                 if (search.length() > 0) {
                     final String title = this.findTitleInSearchResults(search, searchResult.getName());
-                    delegate.onRetriveWikipediaUrlSuccess(String.format(responseUrl, title != null ? title.replace(" ", "_") : null));
+                    if (title != null) {
+                        String wikipediaUrl = String.format(responseUrl, title.replace(" ", "_"));
+                        Log.d(TAG, "Wikipedia URL found: " + wikipediaUrl);
+                        delegate.onRetriveWikipediaUrlSuccess(wikipediaUrl);
+                    } else {
+                        Log.w(TAG, "No suitable title found in search results");
+                        delegate.onRetriveWikipediaUrlFailure();
+                    }
                 } else {
+                    Log.w(TAG, "No search results found");
                     delegate.onRetriveWikipediaUrlFailure();
                 }
             } else {
+                Log.w(TAG, "No result in search response");
                 delegate.onRetriveWikipediaUrlFailure();
             }
         } catch (JSONException e) {
+            Log.e(TAG, "JSON parsing error", e);
+            delegate.onRetriveWikipediaUrlFailure();
+        } catch (Exception e) {
+            Log.e(TAG, "Unexpected error processing Wikipedia search result", e);
             delegate.onRetriveWikipediaUrlFailure();
         }
     }

@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [3.0.0] - 2024-10-21
+## [3.0.0]
 
 ### Added
 - **Jetpack Compose UI** - Complete migration to modern declarative UI framework with Material Design 3
@@ -36,7 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Set up code coverage with JaCoCo
 - Added git hooks for pre-commit validation
 
-## [2.3.0] - 2024-10-15
+## [2.3.0]
 
 ### Added
 - Dependency Injection framework setup
@@ -46,17 +46,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Began modernization of legacy Android codebase
 
-## [2.2.0] - 2024-10-01
+## [2.2.0]
 
 ### Fixed
 - Build system compatibility with modern Android toolchain
 
-## [2.1.0] - 2024-09-15
+## [2.1.0]
 
 ### Added
 - Initial project structure for modernization
 
-## [2.0.0] - 2024-01-01
+## [2.0.0]
 
 ### Added
 - Google Maps integration for plaque visualization
@@ -68,7 +68,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Major architectural improvements
 - Updated UI/UX design
 
-## [1.0.0] - 2014-01-01
+## [1.0.0]
 
 ### Added
 - Initial release

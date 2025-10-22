@@ -5,7 +5,11 @@
 [![PRs Welcome](https://img.shields.io/badge/prs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 ## BluePlaquesLondon Android
-Android Application for finding Blue Plaques through London. [Google Play Store Link](https://play.google.com/store/apps/details?id=com.upwardsnorthwards.blueplaqueslondon)
+Android Application for finding Blue Plaques through London. **Requires Android 11+**. [Google Play Store Link](https://play.google.com/store/apps/details?id=com.upwardsnorthwards.blueplaqueslondon)
+
+## Requirements
+- **Minimum Android Version**: Android 11 (API 30)
+- **Target Android Version**: Android 15 (API 35)
 
 ## Screenshots
 <a href="http://imgur.com/NXis7Ui"><img src="http://i.imgur.com/NXis7Ui.png" title="source: imgur.com" /></a>
@@ -28,7 +32,7 @@ From the `BluePlaquesLondon` subfolder:
 
 **Instrumented Tests (95 tests on device/emulator)**
 ```bash
-# Start an emulator first, then:
+# Start an Android 11+ emulator first, then:
 ./gradlew connectedDebugAndroidTest
 ```
 

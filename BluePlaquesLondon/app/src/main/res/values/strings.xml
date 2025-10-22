@@ -49,10 +49,7 @@
     <string name="install_google_maps">You need to install Google Maps to view Street View</string>
     <string name="ok">OK</string>
     <string name="closest">Find the Plaque closest to me</string>
-    <string name="action_settings">Settings</string>
-    <string name="analytics">Analytics</string>
-    <string name="analytics_title">Allow analytics to be collected</string>
-    <string name="analytics_note">Blue Plaques London does not collect any personal information.</string>
+
     <string name="internet_connectivity_message">Please check your internet connection.</string>
 
 </resources>
