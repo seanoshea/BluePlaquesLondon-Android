@@ -45,16 +45,24 @@ Or manually open Android Studio and select this project directory.
 
 ### Overview
 
-The app uses the **Android Secrets Gradle Plugin** for secure API key management. API keys are stored in `local.properties` (git-ignored) and injected at build time.
+The app uses secure API key management with:
+- API keys stored in `local.properties` (git-ignored)
+- Keys read at build time and injected into BuildConfig
+- Firebase configuration via `google-services.json` (git-ignored)
 
 ### Google Maps API Key
 
 The app uses Google Maps for displaying plaques on an interactive map.
 
-**Setup:**
+**Current Setup:**
 
-1. **Locate your API key**: The project has an existing Google Maps API key
-2. **Add to `local.properties`**:
+- The project has an existing Google Maps API key configured in `AndroidManifest.xml`
+- For development, this key works out of the box
+- API key is also available in `BuildConfig.GOOGLE_MAPS_API_KEY` for programmatic access
+
+**To use a different API key:**
+
+1. **Add to `local.properties`**:
 
    Open or create `BluePlaquesLondon/local.properties`:
 
@@ -63,9 +71,7 @@ The app uses Google Maps for displaying plaques on an interactive map.
    GOOGLE_MAPS_API_KEY=YOUR_API_KEY_HERE
    ```
 
-3. **For development**: Use the existing key from the project maintainers
-
-4. **For production**: Create a new restricted API key:
+2. **For production**: Create a new restricted API key:
    - Go to [Google Cloud Console](https://console.cloud.google.com)
    - Enable Maps SDK for Android
    - Create an API key with Android app restrictions
@@ -73,14 +79,8 @@ The app uses Google Maps for displaying plaques on an interactive map.
      ```bash
      ./gradlew signingReport
      ```
-   - Use this key in `local.properties`
-
-The key is automatically injected into `AndroidManifest.xml` at build time via:
-```xml
-<meta-data
-    android:name="com.google.android.geo.API_KEY"
-    android:value="${GOOGLE_MAPS_API_KEY}" />
-```
+   - Add this key to `local.properties` as shown above
+   - The key will be automatically injected into `BuildConfig` at build time
 
 ### Firebase Configuration
 
@@ -89,12 +89,12 @@ The app uses Firebase for analytics and error tracking.
 **Setup:**
 
 1. **Check for existing configuration**: `app/google-services.json`
-   - If present, Firebase is already configured
+   - If present with correct `blue-plaques-london-android` project ID, Firebase is ready
    - If missing, follow step 2
 
-2. **Get your own Firebase credentials** (if needed):
+2. **Set up your own Firebase project** (if needed):
    - Create a Firebase project at [firebase.google.com](https://firebase.google.com)
-   - Project ID should be: `blue-plaques-london-android`
+   - Project ID: `blue-plaques-london-android`
    - Add an Android app to your Firebase project
    - Download the `google-services.json` file
 
@@ -110,15 +110,18 @@ The app uses Firebase for analytics and error tracking.
 
 ### Default Values
 
-If you don't have API keys, the project provides sensible defaults in `local.defaults.properties`. Copy values from there to `local.properties` to get started (though Maps functionality won't work until you provide a real key).
+The project provides reference values in `local.defaults.properties`. If you need different keys:
+- Copy the format from `local.defaults.properties`
+- Create your own `local.properties` with your actual keys
+- Never commit `local.properties`
 
 ### Security Notes
 
-- **local.properties**: Git-ignored, stores real keys (never commit)
-- **local.defaults.properties**: Git-tracked, provides placeholder values
+- **local.properties**: Git-ignored, stores real API keys per developer (never commit)
+- **local.defaults.properties**: Git-tracked, provides placeholder reference values
 - **google-services.json**: Git-ignored, contains Firebase credentials
-- **Secrets Plugin**: Automatically injects keys at build time
-- Pre-commit hooks prevent accidental key commits
+- **BuildConfig**: API keys available as `BuildConfig.GOOGLE_MAPS_API_KEY` for programmatic use
+- `.gitignore` and pre-commit hooks prevent accidental key commits
 
 ## Building and Running
 

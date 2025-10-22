@@ -6,7 +6,6 @@ plugins {
     id 'androidx.navigation.safeargs'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
-    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -21,6 +20,10 @@ android {
         versionName "3.0"
 
         testInstrumentationRunner "com.upwardsnorthwards.blueplaqueslondon.HiltTestRunner"
+
+        // Inject Google Maps API key from local.properties into BuildConfig for programmatic access
+        def googleMapsApiKey = findProperty('GOOGLE_MAPS_API_KEY') ?: "YOUR_GOOGLE_MAPS_API_KEY_HERE"
+        buildConfigField "String", "GOOGLE_MAPS_API_KEY", "\"$googleMapsApiKey\""
 
         // Room schema export
         javaCompileOptions {
@@ -240,17 +243,4 @@ tasks.register('jacocoTestReport', JacocoReport) {
             'outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec',
             'outputs/code_coverage/debugAndroidTest/connected/**/*.ec'
     ]))
-}
-
-// Secrets Gradle Plugin configuration
-secrets {
-    // Defines the location of the secrets.properties file
-    propertiesFileName = "local.properties"
-
-    // A list of keys to ignore when reading from the secrets.properties file
-    // This is useful for keys that are not meant to be accessed at build time
-    ignoreList.addAll(['sdk.dir'])
-
-    // Define the default value for keys that are not found in secrets.properties
-    defaultPropertiesFileName = "local.defaults.properties"
 }
