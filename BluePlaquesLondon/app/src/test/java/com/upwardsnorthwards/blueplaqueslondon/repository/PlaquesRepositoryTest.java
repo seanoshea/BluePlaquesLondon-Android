@@ -178,19 +178,17 @@ public class PlaquesRepositoryTest {
     }
 
     @Test
-    public void insertPlaques_success() {
+    public void refreshPlaques_success() {
         // Given
-        List<PlaqueEntity> entities = Arrays.asList(
-            createTestEntity("1", "Plaque 1"),
-            createTestEntity("2", "Plaque 2")
-        );
+        when(plaqueDao.deleteAllPlaques()).thenReturn(Completable.complete());
         when(plaqueDao.insertPlaques(anyList())).thenReturn(Completable.complete());
 
         // When
-        repository.insertPlaques(entities).blockingAwait();
+        repository.refreshPlaques().blockingAwait();
 
         // Then
-        verify(plaqueDao).insertPlaques(entities);
+        verify(plaqueDao).deleteAllPlaques();
+        verify(plaqueDao).insertPlaques(anyList());
     }
 
     @Test
