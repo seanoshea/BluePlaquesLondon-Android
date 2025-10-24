@@ -71,7 +71,44 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 /**
- * Landing activity for the application. Includes a reference to the <code>BluePlaquesMapFragment</code>
+ * Main activity for the Blue Plaques London application.
+ * 
+ * <p>This activity serves as the primary entry point and navigation hub for the application.
+ * It manages the map display, search functionality, location services, and user interactions
+ * with blue plaques across London.</p>
+ * 
+ * <h3>Key Responsibilities:</h3>
+ * <ul>
+ *   <li>Hosts the {@link BluePlaquesMapFragment} for displaying blue plaques on Google Maps</li>
+ *   <li>Manages search functionality through {@link ArrayAdapterSearchView}</li>
+ *   <li>Coordinates location services via {@link LocationViewModel}</li>
+ *   <li>Handles navigation between fragments using Navigation Component</li>
+ *   <li>Monitors internet connectivity and provides user feedback</li>
+ *   <li>Manages Google Play Services availability</li>
+ *   <li>Implements in-app review prompts based on usage patterns</li>
+ * </ul>
+ * 
+ * <h3>Architecture:</h3>
+ * <p>Follows MVVM pattern with:</p>
+ * <ul>
+ *   <li>{@link MainViewModel} - Manages plaque data and UI state</li>
+ *   <li>{@link LocationViewModel} - Handles location services and closest plaque detection</li>
+ *   <li>{@link AppPreferencesDataStore} - Persists user preferences and app state</li>
+ * </ul>
+ * 
+ * <h3>Usage Example:</h3>
+ * <pre>{@code
+ * // Activity is launched automatically as the main launcher activity
+ * // No direct instantiation required
+ * }</pre>
+ * 
+ * @see BluePlaquesMapFragment
+ * @see MainViewModel
+ * @see LocationViewModel
+ * @see InternetConnectivityHelperDelegate
+ * 
+ * @author Blue Plaques London Team
+ * @since 1.0
  */
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity implements InternetConnectivityHelperDelegate {
@@ -113,7 +150,16 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
     }
 
     /**
-     * Observe LocationViewModel LiveData.
+     * Observes LocationViewModel LiveData for location updates and closest plaque detection.
+     * 
+     * <p>Sets up observers for:</p>
+     * <ul>
+     *   <li>Closest plaque updates - automatically selects and displays the nearest plaque</li>
+     *   <li>Location errors - logs errors for debugging purposes</li>
+     * </ul>
+     * 
+     * <p>When a closest plaque is found, it updates both the MainViewModel selection
+     * and notifies the map fragment to highlight the plaque.</p>
      */
     private void observeLocationViewModel() {
         locationViewModel.getClosestPlaque().observe(this, closestPlaque -> {
@@ -136,7 +182,17 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
     }
 
     /**
-     * Observe MainViewModel LiveData.
+     * Observes MainViewModel LiveData for UI state and data updates.
+     * 
+     * <p>Sets up observers for:</p>
+     * <ul>
+     *   <li>Loading state - shows/hides progress bar during data operations</li>
+     *   <li>Error messages - logs errors for debugging and user feedback</li>
+     *   <li>Plaques data - updates search view with available plaques</li>
+     * </ul>
+     * 
+     * <p>This method ensures the UI stays synchronized with the ViewModel state
+     * and provides appropriate user feedback during data loading operations.</p>
      */
     private void observeViewModel() {
         mainViewModel.getLoading().observe(this, isLoading -> {
@@ -252,7 +308,15 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
         }
     }
 
-    // Called by BluePlaquesMapFragment when a placemark is selected
+    /**
+     * Handles placemark selection events from the map fragment.
+     * 
+     * <p>Called by {@link BluePlaquesMapFragment} when a user selects a blue plaque
+     * on the map. This method clears and collapses the search view to provide
+     * a clean user experience when viewing plaque details.</p>
+     * 
+     * @param placemark The selected {@link Placemark} object containing plaque information
+     */
     public void onPlacemarkSelected(final Placemark placemark) {
         if (searchView != null) {
             searchView.setQuery("", false);
@@ -293,7 +357,14 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
     }
 
     /**
-     * Get the LocationViewModel for use by fragments.
+     * Provides access to the LocationViewModel for fragments and other components.
+     * 
+     * <p>The LocationViewModel manages location services, GPS permissions,
+     * and closest plaque detection functionality. Fragments can use this
+     * to access location-related data and operations.</p>
+     * 
+     * @return The activity-scoped {@link LocationViewModel} instance
+     * @see LocationViewModel
      */
     @NonNull
     public LocationViewModel getLocationViewModel() {
@@ -301,7 +372,14 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
     }
 
     /**
-     * Get the AppPreferencesDataStore for use by fragments.
+     * Provides access to the application preferences DataStore.
+     * 
+     * <p>The AppPreferencesDataStore handles persistent storage of user preferences,
+     * app launch counts, review completion status, and other application state.
+     * Fragments can use this to read and write user preferences.</p>
+     * 
+     * @return The injected {@link AppPreferencesDataStore} instance
+     * @see AppPreferencesDataStore
      */
     @NonNull
     public AppPreferencesDataStore getPreferencesDataStore() {
@@ -309,9 +387,21 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
     }
 
     /**
-     * Before showing the map, we need to make sure that the user has the correct version of Google Play Services installed.
-     * If they do, the user is shown the map and they can continue to use the application. Otherwise, they are prompted to
-     * update their version of Google Play Services on the Play Store.
+     * Verifies Google Play Services availability and prompts user for updates if needed.
+     * 
+     * <p>Google Maps functionality requires Google Play Services to be installed and up-to-date.
+     * This method checks the current installation status and handles various scenarios:</p>
+     * 
+     * <ul>
+     *   <li><strong>SUCCESS:</strong> Google Play Services is available and up-to-date</li>
+     *   <li><strong>RECOVERABLE ERROR:</strong> User can update/install Google Play Services</li>
+     *   <li><strong>UNRECOVERABLE ERROR:</strong> Device doesn't support Google Play Services</li>
+     * </ul>
+     * 
+     * <p>Analytics events are tracked for error scenarios to monitor compatibility issues.</p>
+     * 
+     * @see GoogleApiAvailability
+     * @see ConnectionResult
      */
     private void checkForGooglePlayServicesAvailability() {
         GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
@@ -337,8 +427,22 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
     }
 
     /**
-     * Users are prompted to rate the application using Google Play In-App Review API.
-     * This is triggered based on launch count stored in DataStore.
+     * Initializes the in-app review system based on user engagement metrics.
+     * 
+     * <p>Uses Google Play In-App Review API to prompt users for app ratings at appropriate times.
+     * The review prompt is triggered when:</p>
+     * 
+     * <ul>
+     *   <li>User has launched the app 10 or more times</li>
+     *   <li>User hasn't already completed a review</li>
+     * </ul>
+     * 
+     * <p>This approach follows Google's best practices for in-app reviews by ensuring
+     * users are engaged before requesting feedback. The system uses RxJava for
+     * asynchronous preference checking and UI updates.</p>
+     * 
+     * @see ReviewManager
+     * @see AppPreferencesDataStore
      */
     private void initialiseAppRating() {
         // Increment launch count and check if we should show review
@@ -364,7 +468,23 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
     }
 
     /**
-     * Shows the Google Play In-App Review dialog.
+     * Displays the Google Play In-App Review dialog to the user.
+     * 
+     * <p>Initiates the Google Play In-App Review flow which allows users to rate
+     * the app without leaving the application. The process involves:</p>
+     * 
+     * <ol>
+     *   <li>Requesting a ReviewInfo object from Google Play</li>
+     *   <li>Launching the review flow if the request succeeds</li>
+     *   <li>Marking the review as completed regardless of user action</li>
+     *   <li>Tracking analytics events for monitoring purposes</li>
+     * </ol>
+     * 
+     * <p>The review completion is marked immediately to prevent repeated prompts,
+     * following Google's recommendation to respect user choice.</p>
+     * 
+     * @see ReviewManager#requestReviewFlow()
+     * @see ReviewManager#launchReviewFlow(Activity, ReviewInfo)
      */
     private void showInAppReview() {
         ReviewManager reviewManager = ReviewManagerFactory.create(this);
@@ -422,7 +542,22 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
     }
 
     /**
-     * Get the NavController, initializing it lazily if needed.
+     * Retrieves the Navigation Component NavController with lazy initialization.
+     * 
+     * <p>The NavController is initialized lazily to avoid IllegalStateException
+     * that can occur if accessed before the view hierarchy is fully established.
+     * This method safely handles the initialization process and provides appropriate
+     * error handling.</p>
+     * 
+     * <p><strong>Error Handling:</strong></p>
+     * <ul>
+     *   <li>Returns null if NavHostFragment is not found</li>
+     *   <li>Returns null if view hierarchy is not ready</li>
+     *   <li>Logs warnings for debugging purposes</li>
+     * </ul>
+     * 
+     * @return The {@link NavController} instance, or null if not available
+     * @see Navigation#findNavController(Activity, int)
      */
     private NavController getNavController() {
         if (navController == null) {

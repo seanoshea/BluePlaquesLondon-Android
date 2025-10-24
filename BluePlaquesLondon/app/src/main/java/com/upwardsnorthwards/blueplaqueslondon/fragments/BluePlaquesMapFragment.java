@@ -74,9 +74,65 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Main fragment in the application. Shows the plaques on a <code>com.google.android.gms.maps.SupportMapFragment</code>
- * Note: This fragment cannot use @AndroidEntryPoint because it extends SupportMapFragment.
- * The ViewModel is obtained from the parent activity instead.
+ * Primary map fragment displaying blue plaques across London using Google Maps.
+ * 
+ * <p>This fragment serves as the core component of the application, presenting an interactive
+ * Google Maps interface with markers representing historical blue plaques throughout London.
+ * It integrates with the MVVM architecture through ViewModels and provides comprehensive
+ * user interaction capabilities.</p>
+ * 
+ * <h3>Key Features:</h3>
+ * <ul>
+ *   <li><strong>Interactive Map:</strong> Google Maps with 900+ blue plaque markers</li>
+ *   <li><strong>Location Services:</strong> GPS integration for finding closest plaques</li>
+ *   <li><strong>Search Integration:</strong> Responds to search selections from MainActivity</li>
+ *   <li><strong>Persistent State:</strong> Saves map position and zoom level via DataStore</li>
+ *   <li><strong>Multiple Plaques:</strong> Handles multiple plaques at the same location</li>
+ *   <li><strong>Navigation:</strong> Integrates with Navigation Component for detail views</li>
+ *   <li><strong>Analytics:</strong> Tracks user interactions for insights</li>
+ * </ul>
+ * 
+ * <h3>Architecture Integration:</h3>
+ * <p><strong>Note:</strong> This fragment cannot use {@code @AndroidEntryPoint} because it extends
+ * {@link SupportMapFragment}. ViewModels are obtained from the parent {@link MainActivity}.</p>
+ * 
+ * <ul>
+ *   <li>{@link MainViewModel} - Manages plaque data and loading states</li>
+ *   <li>{@link LocationViewModel} - Handles GPS and closest plaque detection</li>
+ *   <li>{@link AppPreferencesDataStore} - Persists map state and user preferences</li>
+ * </ul>
+ * 
+ * <h3>Map Interactions:</h3>
+ * <ul>
+ *   <li><strong>Marker Click:</strong> Shows plaque information in info window</li>
+ *   <li><strong>Info Window Click:</strong> Navigates to detailed plaque view</li>
+ *   <li><strong>Camera Changes:</strong> Automatically saves map position and zoom</li>
+ *   <li><strong>Search Selection:</strong> Animates to selected plaque location</li>
+ * </ul>
+ * 
+ * <h3>Data Management:</h3>
+ * <p>The fragment manages two data sources:</p>
+ * <ul>
+ *   <li><strong>Legacy:</strong> {@link MapModel} with AsyncTask-based XML parsing</li>
+ *   <li><strong>Modern:</strong> Room database via {@link MainViewModel} (primary)</li>
+ * </ul>
+ * 
+ * <h3>Usage Example:</h3>
+ * <pre>{@code
+ * // Fragment is automatically instantiated by Navigation Component
+ * // No direct instantiation required
+ * 
+ * // To programmatically select a plaque:
+ * mapFragment.onPlacemarkSelected(placemark);
+ * }</pre>
+ * 
+ * @see MainActivity
+ * @see MainViewModel
+ * @see LocationViewModel
+ * @see SupportMapFragment
+ * 
+ * @author Blue Plaques London Team
+ * @since 1.0
  */
 public class BluePlaquesMapFragment extends SupportMapFragment implements OnCameraChangeListener, OnMarkerClickListener, OnInfoWindowClickListener {
 

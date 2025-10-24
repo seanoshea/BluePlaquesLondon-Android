@@ -49,6 +49,47 @@ import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import com.upwardsnorthwards.blueplaqueslondon.model.WikipediaModel;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 
+/**
+ * Legacy Wikipedia article display activity using WebView.
+ * 
+ * <p><strong>Note:</strong> This activity is part of the legacy architecture and is being
+ * replaced by {@link com.upwardsnorthwards.blueplaqueslondon.fragments.WikipediaFragment}
+ * in the Navigation Component architecture. It remains for backward compatibility.</p>
+ * 
+ * <p>This activity displays Wikipedia articles about blue plaque subjects using a WebView.
+ * It implements intelligent Wikipedia URL resolution through the Wikipedia Search API
+ * to find the most relevant article for each plaque subject.</p>
+ * 
+ * <h3>Key Features:</h3>
+ * <ul>
+ *   <li>Wikipedia Search API integration via {@link WikipediaModel}</li>
+ *   <li>Fallback to direct Wikipedia URLs if search fails</li>
+ *   <li>WebView navigation with back button support</li>
+ *   <li>Custom title bar showing plaque subject name</li>
+ *   <li>Internet connectivity monitoring and retry logic</li>
+ *   <li>Analytics tracking for page load success/failure</li>
+ * </ul>
+ * 
+ * <h3>Architecture:</h3>
+ * <p>Uses the delegate pattern with {@link IWikipediaModelDelegate} to handle
+ * asynchronous Wikipedia URL resolution. The {@link WikipediaModel} performs
+ * API calls on a background thread and reports results via delegate callbacks.</p>
+ * 
+ * <h3>Usage:</h3>
+ * <pre>{@code
+ * Intent intent = new Intent(context, WikipediaActivity.class);
+ * intent.putExtra(BluePlaquesConstants.WIKIPEDIA_CLICKED_PARCLEABLE_KEY, placemark);
+ * startActivity(intent);
+ * }</pre>
+ * 
+ * @see WikipediaModel
+ * @see IWikipediaModelDelegate
+ * @see com.upwardsnorthwards.blueplaqueslondon.fragments.WikipediaFragment
+ * 
+ * @author Blue Plaques London Team
+ * @since 1.0
+ * @deprecated Use {@link com.upwardsnorthwards.blueplaqueslondon.fragments.WikipediaFragment} with Navigation Component
+ */
 public class WikipediaActivity extends BaseActivity implements IWikipediaModelDelegate {
 
     private static final String TAG = "WikipediaActivity";
@@ -98,6 +139,23 @@ public class WikipediaActivity extends BaseActivity implements IWikipediaModelDe
         return super.onKeyDown(keyCode, event);
     }
 
+    /**
+     * Handles successful Wikipedia URL resolution from the search API.
+     * 
+     * <p>Called by {@link WikipediaModel} when a Wikipedia article URL is successfully
+     * resolved for the plaque subject. This method configures the WebView with
+     * appropriate clients and loads the resolved URL.</p>
+     * 
+     * <p>WebView configuration includes:</p>
+     * <ul>
+     *   <li>Progress tracking via {@link WebChromeClient}</li>
+     *   <li>Error handling via {@link WebViewClient}</li>
+     *   <li>Support for both legacy and modern error handling APIs</li>
+     * </ul>
+     * 
+     * @param url The resolved Wikipedia article URL to display
+     * @see IWikipediaModelDelegate#onRetriveWikipediaUrlSuccess(String)
+     */
     public void onRetriveWikipediaUrlSuccess(final String url) {
         final Activity activity = this;
         webView.setWebChromeClient(new WebChromeClient() {
@@ -121,6 +179,18 @@ public class WikipediaActivity extends BaseActivity implements IWikipediaModelDe
         webView.loadUrl(url);
     }
 
+    /**
+     * Handles Wikipedia URL resolution failures.
+     * 
+     * <p>Called by {@link WikipediaModel} when the Wikipedia search API fails
+     * to resolve a URL for the plaque subject. This method updates the internal
+     * state and tracks the failure event for analytics purposes.</p>
+     * 
+     * <p>The failure is tracked with the specific plaque name to help identify
+     * subjects that consistently fail to resolve Wikipedia articles.</p>
+     * 
+     * @see IWikipediaModelDelegate#onRetriveWikipediaUrlFailure()
+     */
     public void onRetriveWikipediaUrlFailure() {
         state = WikipediaActivityWebViewLoadedState.WikipediaActivityWebViewLoadedStateError;
         final BluePlaquesLondonApplication app = (BluePlaquesLondonApplication) getApplication();
@@ -137,6 +207,21 @@ public class WikipediaActivity extends BaseActivity implements IWikipediaModelDe
         }
     }
 
+    /**
+     * Initiates the Wikipedia article search and loading process.
+     * 
+     * <p>This method creates a new {@link WikipediaModel} instance and starts
+     * the asynchronous Wikipedia search process. The search uses the plaque
+     * subject's name to find the most relevant Wikipedia article.</p>
+     * 
+     * <p>The process involves:</p>
+     * <ol>
+     *   <li>Creating a new WikipediaModel instance</li>
+     *   <li>Setting this activity as the delegate for callbacks</li>
+     *   <li>Executing the search with the plaque name and URL template</li>
+     *   <li>Updating the internal state to indicate loading</li>
+     * </ol>
+     */
     private void initiateWebViewRequest() {
         wikipediaModel = new WikipediaModel();
         state = WikipediaActivityWebViewLoadedState.WikipediaActivityWebViewLoadedStateOK;
@@ -145,7 +230,13 @@ public class WikipediaActivity extends BaseActivity implements IWikipediaModelDe
     }
 
     /**
-     * Used to see whether the web view has loaded ok or not
+     * Represents the current state of the WebView loading process.
+     * 
+     * <p>This enum tracks whether the Wikipedia article has loaded successfully
+     * or encountered an error. It's used to determine whether to retry loading
+     * when internet connectivity is restored.</p>
+     * 
+     * @see #regainedInternetConnectivity()
      */
     private enum WikipediaActivityWebViewLoadedState {
         WikipediaActivityWebViewLoadedStateOK,
