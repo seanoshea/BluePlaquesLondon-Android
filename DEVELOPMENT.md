@@ -35,7 +35,9 @@ git config core.hooksPath scripts
 
 ### 4. API Keys Configuration
 
-**Google Maps API Key**
+#### Google Maps API Key Setup
+
+**Step 1: Create local.properties**
 Create `local.properties` in the `BluePlaquesLondon/` directory:
 ```properties
 # Google Maps API Key (get from Google Cloud Console)
@@ -45,12 +47,47 @@ GOOGLE_MAPS_API_KEY=your_api_key_here
 sdk.dir=/path/to/android/sdk
 ```
 
-**Firebase Configuration**
-1. Download `google-services.json` from Firebase Console
-2. Replace `BluePlaquesLondon/app/google-services.json` with your file
-3. Use `google-services.json.sample` as reference
+**Step 2: Configure Google Cloud Console**
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Select your project or create a new one
+3. Navigate to **APIs & Services** > **Credentials**
+4. Create or select your API key
 
-**⚠️ Never commit API keys or real Firebase config to version control**
+**Step 3: Enable Maps SDK for Android**
+1. In the API key details, under **API restrictions**
+2. Select **Restrict key** and add **Maps SDK for Android**
+3. Save the changes
+
+**Step 4: Configure Android App Restrictions**
+1. Under **Application restrictions**, select **Android apps**
+2. Add package name: `com.upwardsnorthwards.blueplaqueslondon`
+3. Add SHA-1 certificate fingerprint:
+
+   **For Debug Builds:**
+   ```bash
+   # Get debug keystore fingerprint
+   keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android | grep SHA1
+   ```
+
+   **For Release Builds:**
+   ```bash
+   # Get release keystore fingerprint
+   keytool -list -v -keystore path/to/production.keystore -alias your_alias | grep SHA1
+   ```
+
+#### Firebase Configuration
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Create or select your project
+3. Add Android app with package name: `com.upwardsnorthwards.blueplaqueslondon`
+4. Download `google-services.json`
+5. Replace `BluePlaquesLondon/app/google-services.json` with your file
+6. Use `google-services.json.sample` as reference for structure
+
+#### Security Notes
+- **⚠️ Never commit API keys or real Firebase config to version control**
+- API keys should only be in `local.properties` (gitignored)
+- Use placeholder values in `google-services.json.sample`
+- Real Firebase config should be in CI/CD secrets for automated builds
 
 ## Development Environment
 
@@ -168,9 +205,11 @@ docs: update README with build instructions
 - Verify API keys are not in source code
 
 **Maps Not Loading**
-- Verify Google Maps API key is valid
+- Verify Google Maps API key is valid and in `local.properties`
 - Check API key restrictions in Google Cloud Console
-- Ensure Maps SDK is enabled
+- Ensure Maps SDK for Android is enabled
+- Verify package name and SHA-1 fingerprint match exactly
+- Check logcat for authorization errors: `adb logcat | grep -i "google\|maps\|authorization"`
 
 **Memory Issues**
 - Increase Gradle heap size: `org.gradle.jvmargs=-Xmx4g`
