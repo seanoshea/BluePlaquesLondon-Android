@@ -1,0 +1,57 @@
+version: 2
+updates:
+  # Enable version updates for Gradle dependencies
+  - package-ecosystem: "gradle"
+    directory: "/BluePlaquesLondon"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "seanoshea"
+    assignees:
+      - "seanoshea"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "gradle"
+    # Group Android and Google dependencies
+    groups:
+      android-dependencies:
+        patterns:
+          - "androidx.*"
+          - "com.android.*"
+          - "com.google.android.*"
+      google-dependencies:
+        patterns:
+          - "com.google.*"
+          - "com.google.firebase.*"
+          - "com.google.dagger.*"
+      testing-dependencies:
+        patterns:
+          - "*junit*"
+          - "*mockito*"
+          - "*espresso*"
+          - "*robolectric*"
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "seanoshea"
+    assignees:
+      - "seanoshea"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "github-actions"

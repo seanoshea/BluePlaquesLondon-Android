@@ -6,6 +6,8 @@ plugins {
     id 'androidx.navigation.safeargs'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
+    id 'org.owasp.dependencycheck' version '8.4.0'
+    id 'io.gitlab.arturbosch.detekt' version '1.23.4'
 }
 
 android {
@@ -245,4 +247,35 @@ tasks.register('jacocoTestReport', JacocoReport) {
             'outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec',
             'outputs/code_coverage/debugAndroidTest/connected/**/*.ec'
     ]))
+}
+
+// OWASP Dependency Check configuration
+dependencyCheck {
+    format = 'ALL'
+    suppressionFile = 'dependency-check-suppressions.xml'
+    failBuildOnCVSS = 7.0
+    analyzers {
+        assemblyEnabled = false
+        nuspecEnabled = false
+        nugetconfEnabled = false
+    }
+}
+
+// Detekt configuration
+detekt {
+    toolVersion = '1.23.4'
+    config = files('detekt.yml')
+    buildUponDefaultConfig = true
+    allRules = false
+    baseline = file('detekt-baseline.xml')
+    reports {
+        html.required = true
+        xml.required = true
+        txt.required = true
+        sarif.required = true
+    }
+}
+
+dependencies {
+    detektPlugins 'io.gitlab.arturbosch.detekt:detekt-formatting:1.23.4'
 }

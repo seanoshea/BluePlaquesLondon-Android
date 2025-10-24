@@ -47,11 +47,21 @@ jobs:
     - name: Run Android Lint
       run: cd BluePlaquesLondon && ./gradlew lintDebug
 
+    - name: Run Detekt code analysis
+      run: |
+        cd BluePlaquesLondon
+        ./gradlew detekt --continue || echo "⚠️ Detekt analysis completed with issues"
+
     - name: Check for TODO/FIXME
       run: |
         if find BluePlaquesLondon/app/src/main -name "*.java" -exec grep -l "TODO\|FIXME" {} \; | head -5; then
           echo "⚠️ Warning: TODO/FIXME found in source code"
         fi
+
+    - name: Dependency vulnerability scan
+      run: |
+        cd BluePlaquesLondon
+        ./gradlew dependencyCheckAnalyze --info || echo "⚠️ Dependency check completed with warnings"
 
     - name: Build debug APK
       run: cd BluePlaquesLondon && ./gradlew assembleDebug
