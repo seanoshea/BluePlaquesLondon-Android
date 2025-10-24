@@ -13,8 +13,8 @@ if git diff --cached --name-only | grep -E "\.(java|xml|gradle|properties|json)$
     exit 1
 fi
 
-# Check for Firebase project numbers/IDs
-if git diff --cached --name-only | grep "google-services.json" | xargs grep -l "[0-9]\{10,\}" 2>/dev/null; then
+# Check for Firebase project numbers/IDs (but allow placeholder values)
+if git diff --cached --name-only | grep "google-services.json$" | xargs grep -l "[0-9]\{10,\}" 2>/dev/null | xargs grep -v "YOUR_PROJECT_NUMBER_HERE" 2>/dev/null; then
     echo "❌ Error: Firebase configuration with real project data found"
     echo "Use google-services.json.sample as template"
     exit 1

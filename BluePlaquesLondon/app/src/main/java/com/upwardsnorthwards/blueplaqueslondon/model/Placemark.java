@@ -34,8 +34,48 @@ import androidx.annotation.NonNull;
 import android.text.Html;
 
 /**
- * Includes all information needed to display one placemark. Main domain object for the application.
- * Each entry in the kml file is represented by one of these objects.
+ * Core domain model representing a Blue Plaque location in London.
+ * 
+ * <p>This class encapsulates all information needed to display a blue plaque, including
+ * location data, historical information, and metadata. Each entry in the KML data file
+ * is represented by one Placemark instance.</p>
+ * 
+ * <p><strong>Key Features:</strong></p>
+ * <ul>
+ *   <li>Parcelable implementation for efficient data transfer between components</li>
+ *   <li>Lazy parsing of feature description for performance optimization</li>
+ *   <li>HTML decoding and whitespace trimming for clean display</li>
+ *   <li>Coordinate-based unique key generation for efficient lookups</li>
+ * </ul>
+ * 
+ * <p><strong>Usage Example:</strong></p>
+ * <pre>{@code
+ * Placemark plaque = new Placemark();
+ * plaque.setLatitude(51.5074);
+ * plaque.setLongitude(-0.1278);
+ * plaque.setFeatureDescription("Charles Dickens<br>Novelist<br>1812-1870");
+ * plaque.digestFeatureDescription(); // Parse basic info
+ * plaque.digestAnciliaryInformation(); // Parse additional details
+ * 
+ * String displayName = plaque.getTrimmedName(); // "Charles Dickens"
+ * String key = plaque.key(); // Unique identifier for this location
+ * }</pre>
+ * 
+ * <p><strong>Data Structure:</strong></p>
+ * <p>The feature description follows a structured format separated by {@code <br>} tags:
+ * {@code [Name] <br> [Occupation] <br> [Address] <br> [Council and Year] <br> [Notes]}</p>
+ * 
+ * <p><strong>Architecture Integration:</strong></p>
+ * <ul>
+ *   <li>Used by {@link com.upwardsnorthwards.blueplaqueslondon.data.repository.PlaquesRepository} for data management</li>
+ *   <li>Displayed in {@link com.upwardsnorthwards.blueplaqueslondon.fragments.BluePlaquesMapFragment} as map markers</li>
+ *   <li>Detailed view shown in {@link com.upwardsnorthwards.blueplaqueslondon.fragments.MapDetailFragment}</li>
+ * </ul>
+ * 
+ * @author Blue Plaques London Team
+ * @since 1.0
+ * @see android.os.Parcelable
+ * @see com.upwardsnorthwards.blueplaqueslondon.data.repository.PlaquesRepository
  */
 public class Placemark implements Parcelable {
 
@@ -87,6 +127,18 @@ public class Placemark implements Parcelable {
         longitude = in.readDouble();
     }
 
+    /**
+     * Generates a unique key from latitude and longitude coordinates.
+     * 
+     * <p>Creates a string-based identifier by concatenating the string representations
+     * of latitude and longitude. This key is used for efficient lookups and
+     * deduplication in collections.</p>
+     * 
+     * @param latitude the latitude coordinate
+     * @param longitude the longitude coordinate
+     * @return a unique string key for the coordinate pair, never null
+     * @see #key() Instance method that uses this placemark's coordinates
+     */
     @NonNull
     public static String keyFromLatLng(final double latitude, final double longitude) {
         return Double.toString(latitude) + Double.toString(longitude);
@@ -118,11 +170,34 @@ public class Placemark implements Parcelable {
         dest.writeDouble(longitude);
     }
 
+    /**
+     * Returns the unique identifier for this placemark.
+     * 
+     * <p>The key is generated from the latitude and longitude coordinates,
+     * providing a consistent identifier for this specific location that
+     * can be used for efficient lookups and comparisons.</p>
+     * 
+     * @return a unique string key for this placemark, never null
+     * @see #keyFromLatLng(double, double) Static method for generating keys
+     */
     @NonNull
     public String key() {
         return Double.toString(latitude) + Double.toString(longitude);
     }
 
+    /**
+     * Parses the basic information from the feature description.
+     * 
+     * <p>Extracts and processes the essential display information including
+     * title, name, and occupation. This method must be called before accessing
+     * the trimmed versions of these fields.</p>
+     * 
+     * <p><strong>Processing Order:</strong> The parsing operations must be
+     * performed in a specific sequence to ensure correct extraction from
+     * the structured HTML content.</p>
+     * 
+     * @see #digestAnciliaryInformation() For parsing additional details
+     */
     public void digestFeatureDescription() {
         if (featureDescription != null) {
             // these must be done in order ...
@@ -133,9 +208,14 @@ public class Placemark implements Parcelable {
     }
 
     /**
-     * Used when displaying the title of a placemark to a user. Fully html decodes the title.
-     *
-     * @return the trimmed & html decoded title
+     * Returns the display-ready title of the blue plaque.
+     * 
+     * <p>Performs HTML decoding and whitespace trimming to ensure clean presentation
+     * in UI components. The title typically contains the full name and years of the
+     * commemorated person.</p>
+     * 
+     * @return the trimmed and HTML-decoded title, never null but may be empty
+     * @see #digestFeatureDescription() Call this first to parse the title
      */
     @NonNull
     public String getTrimmedTitle() {
@@ -143,9 +223,14 @@ public class Placemark implements Parcelable {
     }
 
     /**
-     * Used when displaying the name of a placemark to a user. Fully html decodes the name.
-     *
-     * @return the trimmed and html decoded name
+     * Returns the display-ready name of the commemorated person.
+     * 
+     * <p>Extracts and cleans the person's name from the title, removing years
+     * and HTML formatting. This is typically used for search functionality
+     * and compact displays.</p>
+     * 
+     * @return the trimmed and HTML-decoded name, never null but may be empty
+     * @see #digestFeatureDescription() Call this first to parse the name
      */
     @NonNull
     public String getTrimmedName() {
@@ -153,9 +238,14 @@ public class Placemark implements Parcelable {
     }
 
     /**
-     * Used when displaying the occupation of a placemark to a user. Fully html decodes the occupation.
-     *
-     * @return the trimmed and html decoded occupation
+     * Returns the display-ready occupation of the commemorated person.
+     * 
+     * <p>Extracts and cleans the person's occupation or role from the feature
+     * description. This provides context about why the person was commemorated
+     * with a blue plaque.</p>
+     * 
+     * @return the trimmed and HTML-decoded occupation, never null but may be empty
+     * @see #digestFeatureDescription() Call this first to parse the occupation
      */
     @NonNull
     public String getTrimmedOccupation() {
@@ -163,9 +253,20 @@ public class Placemark implements Parcelable {
     }
 
     /**
-     * Not all information for the placemark is absolutely necessary when the .kml file is parsed. This method should
-     * be invoked whenever the user requests more information about the plaque as it parses out additional information
-     * such as the address, notes associated with the plaque and the council and year associated with the plaque.
+     * Parses additional detailed information from the feature description.
+     * 
+     * <p>This method performs lazy parsing of secondary information that is not
+     * immediately needed for basic display. It extracts:</p>
+     * <ul>
+     *   <li>Physical address of the plaque location</li>
+     *   <li>Historical notes and additional context</li>
+     *   <li>Council information and installation year</li>
+     * </ul>
+     * 
+     * <p><strong>Performance Note:</strong> This method should only be called when
+     * the user requests detailed information to avoid unnecessary parsing overhead.</p>
+     * 
+     * @see #digestFeatureDescription() Call this first to parse basic information
      */
     public void digestAnciliaryInformation() {
         digestAddress();

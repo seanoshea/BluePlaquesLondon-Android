@@ -29,26 +29,81 @@
 package com.upwardsnorthwards.blueplaqueslondon.model;
 
 /**
- * Wrapper class used by the <code>WikipediaModel</code> to store the results of a wikipedia search.
+ * Data transfer object for Wikipedia search results.
+ * 
+ * <p>This class encapsulates the results of a Wikipedia API search operation,
+ * providing both the search result content and the associated name/query that
+ * was used to obtain the result.</p>
+ * 
+ * <p><strong>Usage Example:</strong></p>
+ * <pre>{@code
+ * WikipediaModelSearchResult result = new WikipediaModelSearchResult(
+ *     "Charles Dickens was an English writer...", 
+ *     "Charles Dickens"
+ * );
+ * 
+ * if (result.hasResult()) {
+ *     String content = result.getResult();
+ *     String searchTerm = result.getName();
+ *     // Display Wikipedia content in WebView
+ * }
+ * }</pre>
+ * 
+ * <p><strong>Architecture Integration:</strong></p>
+ * <ul>
+ *   <li>Created by {@link WikipediaModel} during search operations</li>
+ *   <li>Consumed by {@link com.upwardsnorthwards.blueplaqueslondon.fragments.WikipediaFragment}</li>
+ *   <li>Used to determine if valid Wikipedia content was found</li>
+ * </ul>
+ * 
+ * @author Blue Plaques London Team
+ * @since 1.0
+ * @see WikipediaModel
+ * @see com.upwardsnorthwards.blueplaqueslondon.fragments.WikipediaFragment
  */
 public class WikipediaModelSearchResult {
 
     private final String result;
     private final String name;
 
+    /**
+     * Constructs a new Wikipedia search result.
+     * 
+     * @param result the Wikipedia content or search result, may be null or empty
+     * @param name the search term or person name used for the query, may be null
+     */
     public WikipediaModelSearchResult(String result, String name) {
         this.result = result;
         this.name = name;
     }
 
+    /**
+     * Determines if this search result contains valid content.
+     * 
+     * <p>A result is considered valid if it is not null and contains
+     * at least one character of content.</p>
+     * 
+     * @return true if valid Wikipedia content is available, false otherwise
+     */
     public boolean hasResult() {
         return this.result != null && this.result.length() > 0;
     }
 
+    /**
+     * Returns the Wikipedia search result content.
+     * 
+     * @return the Wikipedia content, may be null or empty
+     * @see #hasResult() Check this first to verify content availability
+     */
     public String getResult() {
         return result;
     }
 
+    /**
+     * Returns the search term or name used for this query.
+     * 
+     * @return the original search term, may be null
+     */
     public String getName() {
         return name;
     }

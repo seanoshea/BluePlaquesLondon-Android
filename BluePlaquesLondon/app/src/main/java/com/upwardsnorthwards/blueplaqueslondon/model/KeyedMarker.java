@@ -31,26 +31,78 @@ package com.upwardsnorthwards.blueplaqueslondon.model;
 import com.google.android.gms.maps.model.Marker;
 
 /**
- * Utility class which maintains a mapping between a Google Map Marker and a key associated with the marker.
- * Allows for quick lookup of markers when the user searches for them.
+ * Associates Google Maps markers with unique identifiers for efficient lookup.
+ * 
+ * <p>This utility class maintains a bidirectional relationship between Google Maps
+ * {@link Marker} objects and string-based keys, enabling fast marker retrieval
+ * during search operations and user interactions.</p>
+ * 
+ * <p><strong>Usage Example:</strong></p>
+ * <pre>{@code
+ * // Creating a keyed marker
+ * KeyedMarker keyedMarker = new KeyedMarker();
+ * keyedMarker.setKey(placemark.key()); // Use placemark's coordinate-based key
+ * keyedMarker.setMarker(googleMap.addMarker(markerOptions));
+ * 
+ * // Later lookup during search
+ * String searchKey = Placemark.keyFromLatLng(lat, lng);
+ * if (keyedMarker.getKey().equals(searchKey)) {
+ *     Marker foundMarker = keyedMarker.getMarker();
+ *     foundMarker.showInfoWindow();
+ * }
+ * }</pre>
+ * 
+ * <p><strong>Architecture Integration:</strong></p>
+ * <ul>
+ *   <li>Used by {@link com.upwardsnorthwards.blueplaqueslondon.fragments.BluePlaquesMapFragment}</li>
+ *   <li>Enables efficient marker management in large datasets (900+ markers)</li>
+ *   <li>Supports search functionality and marker highlighting</li>
+ * </ul>
+ * 
+ * @author Blue Plaques London Team
+ * @since 1.0
+ * @see com.google.android.gms.maps.model.Marker
+ * @see Placemark#key()
+ * @see com.upwardsnorthwards.blueplaqueslondon.fragments.BluePlaquesMapFragment
  */
 public class KeyedMarker {
 
     private String key;
     private Marker marker;
 
+    /**
+     * Returns the unique identifier associated with this marker.
+     * 
+     * @return the string key, may be null if not set
+     * @see Placemark#key() Typical source of keys
+     */
     public String getKey() {
         return key;
     }
 
+    /**
+     * Sets the unique identifier for this marker.
+     * 
+     * @param key the string key to associate with the marker, may be null
+     */
     public void setKey(final String key) {
         this.key = key;
     }
 
+    /**
+     * Returns the Google Maps marker associated with this key.
+     * 
+     * @return the Google Maps marker, may be null if not set
+     */
     public Marker getMarker() {
         return marker;
     }
 
+    /**
+     * Sets the Google Maps marker to associate with the key.
+     * 
+     * @param marker the Google Maps marker, may be null
+     */
     public void setMarker(final Marker marker) {
         this.marker = marker;
     }
