@@ -23,7 +23,60 @@ import com.upwardsnorthwards.blueplaqueslondon.model.WikipediaModel;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 
 /**
- * Fragment for displaying Wikipedia articles about blue plaque subjects.
+ * Modern Wikipedia article display fragment using Navigation Component architecture.
+ * 
+ * <p>This fragment displays Wikipedia articles about blue plaque subjects using a WebView
+ * with intelligent article resolution. It represents the modern replacement for the legacy
+ * {@link com.upwardsnorthwards.blueplaqueslondon.activities.WikipediaActivity}.</p>
+ * 
+ * <h3>Key Features:</h3>
+ * <ul>
+ *   <li><strong>Smart Article Resolution:</strong> Uses Wikipedia Search API via {@link WikipediaModel}</li>
+ *   <li><strong>Fallback Strategy:</strong> Direct Wikipedia URLs if search fails</li>
+ *   <li><strong>Modern Architecture:</strong> Navigation Component integration</li>
+ *   <li><strong>Enhanced WebView:</strong> Optimized settings and error handling</li>
+ *   <li><strong>Comprehensive Logging:</strong> Detailed debugging and error tracking</li>
+ *   <li><strong>Lifecycle Management:</strong> Proper resource cleanup and state handling</li>
+ * </ul>
+ * 
+ * <h3>Article Resolution Process:</h3>
+ * <ol>
+ *   <li><strong>Primary:</strong> Wikipedia Search API query for plaque subject name</li>
+ *   <li><strong>Matching:</strong> Intelligent title matching against search results</li>
+ *   <li><strong>Fallback:</strong> Direct Wikipedia URL construction if search fails</li>
+ *   <li><strong>Loading:</strong> WebView displays the resolved article</li>
+ * </ol>
+ * 
+ * <h3>Architecture Integration:</h3>
+ * <p>Implements the delegate pattern with {@link IWikipediaModelDelegate}:</p>
+ * <ul>
+ *   <li>{@link #onRetriveWikipediaUrlSuccess(String)} - Handles successful URL resolution</li>
+ *   <li>{@link #onRetriveWikipediaUrlFailure()} - Handles search failures with fallback</li>
+ * </ul>
+ * 
+ * <h3>WebView Configuration:</h3>
+ * <ul>
+ *   <li>JavaScript enabled for modern Wikipedia features</li>
+ *   <li>DOM storage enabled for better performance</li>
+ *   <li>Wide viewport and overview mode for mobile optimization</li>
+ *   <li>Comprehensive error handling and progress tracking</li>
+ * </ul>
+ * 
+ * <h3>Usage Example:</h3>
+ * <pre>{@code
+ * // Navigation handled automatically by Navigation Component
+ * Bundle args = new Bundle();
+ * args.putParcelable(BluePlaquesConstants.WIKIPEDIA_CLICKED_PARCLEABLE_KEY, placemark);
+ * navController.navigate(R.id.action_mapDetailFragment_to_wikipediaFragment, args);
+ * }</pre>
+ * 
+ * @see WikipediaModel
+ * @see IWikipediaModelDelegate
+ * @see MapDetailFragment
+ * @see com.upwardsnorthwards.blueplaqueslondon.activities.WikipediaActivity
+ * 
+ * @author Blue Plaques London Team
+ * @since 3.0
  */
 public class WikipediaFragment extends Fragment implements IWikipediaModelDelegate {
 

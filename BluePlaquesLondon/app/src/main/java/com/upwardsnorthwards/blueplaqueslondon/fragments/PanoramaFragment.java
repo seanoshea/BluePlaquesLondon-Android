@@ -20,7 +20,61 @@ import com.upwardsnorthwards.blueplaqueslondon.model.Placemark;
 import com.upwardsnorthwards.blueplaqueslondon.utils.BluePlaquesConstants;
 
 /**
- * Fragment for displaying Street View panoramas for plaque locations.
+ * Street View panorama fragment for immersive plaque location viewing.
+ * 
+ * <p>This fragment provides Google Street View integration, allowing users to explore
+ * the actual street-level environment around blue plaque locations. It offers an
+ * immersive way to see the context and surroundings of historical plaques.</p>
+ * 
+ * <h3>Key Features:</h3>
+ * <ul>
+ *   <li><strong>Street View Integration:</strong> Google Street View panorama display</li>
+ *   <li><strong>Precise Positioning:</strong> Automatically positions view at plaque coordinates</li>
+ *   <li><strong>Interactive Navigation:</strong> Full Street View controls and navigation</li>
+ *   <li><strong>Error Handling:</strong> Comprehensive error handling and logging</li>
+ *   <li><strong>Analytics Tracking:</strong> User interaction monitoring</li>
+ *   <li><strong>Legacy Fragment Support:</strong> Uses legacy FragmentManager for Street View compatibility</li>
+ * </ul>
+ * 
+ * <h3>Technical Implementation:</h3>
+ * <p>The fragment uses Google's Street View API with specific considerations:</p>
+ * <ul>
+ *   <li><strong>Legacy FragmentManager:</strong> Required for {@link StreetViewPanoramaFragment} compatibility</li>
+ *   <li><strong>Async Initialization:</strong> Implements {@link OnStreetViewPanoramaReadyCallback}</li>
+ *   <li><strong>Coordinate Positioning:</strong> Uses plaque latitude/longitude for precise positioning</li>
+ *   <li><strong>Resource Management:</strong> Proper cleanup in {@link #onDestroyView()}</li>
+ * </ul>
+ * 
+ * <h3>Navigation Integration:</h3>
+ * <p>Accessed from {@link MapDetailFragment} when users tap the Street View button:</p>
+ * <ul>
+ *   <li><strong>Entry:</strong> Receives {@link Placemark} data via Bundle arguments</li>
+ *   <li><strong>Positioning:</strong> Automatically centers Street View on plaque location</li>
+ *   <li><strong>Analytics:</strong> Tracks Street View button press events</li>
+ * </ul>
+ * 
+ * <h3>Error Scenarios:</h3>
+ * <ul>
+ *   <li><strong>No Street View Data:</strong> Google Street View may not be available for all locations</li>
+ *   <li><strong>Fragment Initialization:</strong> Handles cases where StreetViewPanoramaFragment is not found</li>
+ *   <li><strong>Invalid Coordinates:</strong> Graceful handling of invalid plaque coordinates</li>
+ * </ul>
+ * 
+ * <h3>Usage Example:</h3>
+ * <pre>{@code
+ * // Navigation handled automatically by Navigation Component
+ * Bundle args = new Bundle();
+ * args.putParcelable(BluePlaquesConstants.PANORAMA_CLICKED_PARCLEABLE_KEY, placemark);
+ * navController.navigate(R.id.action_mapDetailFragment_to_panoramaFragment, args);
+ * }</pre>
+ * 
+ * @see MapDetailFragment
+ * @see StreetViewPanoramaFragment
+ * @see OnStreetViewPanoramaReadyCallback
+ * @see Placemark
+ * 
+ * @author Blue Plaques London Team
+ * @since 1.0
  */
 public class PanoramaFragment extends Fragment implements OnStreetViewPanoramaReadyCallback {
 

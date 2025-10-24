@@ -41,7 +41,52 @@ import android.widget.TextView;
 import com.upwardsnorthwards.blueplaqueslondon.R;
 
 /**
- * Shows some information about how the application was developed and some of the contributors to the app.
+ * About screen fragment displaying application information and credits.
+ * 
+ * <p>This fragment presents information about the Blue Plaques London application,
+ * including developer credits, data sources, and acknowledgments. It serves as
+ * the application's information and credits screen.</p>
+ * 
+ * <h3>Key Features:</h3>
+ * <ul>
+ *   <li><strong>Developer Credits:</strong> Information about the application developer</li>
+ *   <li><strong>Data Attribution:</strong> Credits for blue plaque data sources</li>
+ *   <li><strong>Interactive Links:</strong> Clickable links to external websites</li>
+ *   <li><strong>HTML Content:</strong> Rich text formatting with proper link handling</li>
+ *   <li><strong>Modern Compatibility:</strong> Uses {@code Html.FROM_HTML_MODE_LEGACY} for Android 11+</li>
+ * </ul>
+ * 
+ * <h3>Content Sections:</h3>
+ * <ul>
+ *   <li><strong>Developer Details:</strong> Links to developer's GitHub profile</li>
+ *   <li><strong>Map Data Details:</strong> Attribution for blue plaque data maintenance</li>
+ *   <li><strong>External Links:</strong> Properly configured clickable links</li>
+ * </ul>
+ * 
+ * <h3>Technical Implementation:</h3>
+ * <p>The fragment handles HTML content rendering with:</p>
+ * <ul>
+ *   <li>{@link Html#fromHtml(String, int)} with {@code FROM_HTML_MODE_LEGACY}</li>
+ *   <li>{@link LinkMovementMethod} for clickable link functionality</li>
+ *   <li>Proper TextView configuration for link interaction</li>
+ * </ul>
+ * 
+ * <h3>Navigation:</h3>
+ * <p>Accessed from the main menu in {@link com.upwardsnorthwards.blueplaqueslondon.activities.MainActivity}
+ * via the Navigation Component.</p>
+ * 
+ * <h3>Usage Example:</h3>
+ * <pre>{@code
+ * // Navigation handled automatically by Navigation Component
+ * navController.navigate(R.id.action_mapFragment_to_aboutFragment);
+ * }</pre>
+ * 
+ * @see com.upwardsnorthwards.blueplaqueslondon.activities.MainActivity
+ * @see Html#fromHtml(String, int)
+ * @see LinkMovementMethod
+ * 
+ * @author Blue Plaques London Team
+ * @since 1.0
  */
 public class AboutFragment extends Fragment {
 
