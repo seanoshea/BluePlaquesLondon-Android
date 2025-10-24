@@ -37,10 +37,33 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Check code formatting
+# Check code formatting and quality
 echo "📝 Checking code formatting..."
 if git diff --cached --name-only | grep -E "\.java$" | xargs grep -l "	" 2>/dev/null; then
     echo "⚠️  Warning: Tabs found in Java files, consider using spaces"
 fi
 
+# Check for trailing whitespace
+echo "🔍 Checking for trailing whitespace..."
+if git diff --cached --check; then
+    echo "✅ No trailing whitespace found"
+else
+    echo "⚠️  Warning: Trailing whitespace found"
+fi
+
+# Check for large files
+echo "📎 Checking for large files..."
+for file in $(git diff --cached --name-only); do
+    if [ -f "$file" ] && [ $(wc -c < "$file") -gt 1048576 ]; then
+        echo "⚠️  Warning: Large file detected: $file (>1MB)"
+    fi
+done
+
+# Run Detekt if Kotlin files are present
+if git diff --cached --name-only | grep -E "\.kt$" >/dev/null 2>&1; then
+    echo "🔍 Running Detekt on Kotlin files..."
+    ./gradlew detekt --quiet || echo "⚠️  Detekt found issues in Kotlin files"
+fi
+
+cd ..
 echo "✅ Pre-commit checks passed"
