@@ -51,7 +51,50 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Used to display the list of placemarks displayed when the user is searching for a particular placemark.
+ * Filterable adapter for blue plaque search functionality with real-time filtering.
+ * 
+ * <p>This adapter provides advanced search capabilities for the blue plaques dataset,
+ * supporting real-time filtering by person name, occupation, or location. It includes
+ * a special "Closest" option that allows users to find the nearest plaque to their
+ * current location.</p>
+ * 
+ * <p><strong>Key Features:</strong></p>
+ * <ul>
+ *   <li>Real-time text filtering with case-insensitive matching</li>
+ *   <li>Alphabetical sorting of filtered results</li>
+ *   <li>"Closest" option for location-based search</li>
+ *   <li>Optimized ViewHolder pattern for smooth scrolling</li>
+ *   <li>Custom styling for closest placemark option</li>
+ * </ul>
+ * 
+ * <p><strong>Usage Example:</strong></p>
+ * <pre>{@code
+ * List<Placemark> allPlacemarks = repository.getAllPlacemarks();
+ * SearchAdapter adapter = new SearchAdapter(context, allPlacemarks);
+ * 
+ * AutoCompleteTextView searchView = findViewById(R.id.search_view);
+ * searchView.setAdapter(adapter);
+ * searchView.setThreshold(1); // Start filtering after 1 character
+ * 
+ * searchView.setOnItemClickListener((parent, view, position, id) -> {
+ *     Placemark selected = adapter.getFilteredPlacemarkAtPosition(position);
+ *     // Handle placemark selection
+ * });
+ * }</pre>
+ * 
+ * <p><strong>Architecture Integration:</strong></p>
+ * <ul>
+ *   <li>Used by search functionality in {@link com.upwardsnorthwards.blueplaqueslondon.activities.MainActivity}</li>
+ *   <li>Integrates with {@link Placemark} model for data filtering and display</li>
+ *   <li>Supports location-based "closest" functionality via GPS</li>
+ * </ul>
+ * 
+ * @author Blue Plaques London Team
+ * @since 1.0
+ * @see android.widget.ArrayAdapter
+ * @see android.widget.Filterable
+ * @see Placemark
+ * @see PlacemarksFilter
  */
 public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable {
 
@@ -61,12 +104,27 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
     private List<Placemark> filteredPlacemarks;
     private PlacemarksFilter placemarksFilter;
 
+    /**
+     * Creates a new search adapter with the provided placemarks dataset.
+     * 
+     * @param context the application context for accessing resources and strings
+     * @param objects the complete list of placemarks to search through, must not be null
+     */
     public SearchAdapter(@NonNull final Context context, @NonNull final List<Placemark> objects) {
         super(context, R.layout.search_item, objects);
         closestPlacemarkTitle = context.getString(R.string.closest);
         placemarks = objects;
     }
 
+    /**
+     * Retrieves the placemark at the specified position in the filtered results.
+     * 
+     * <p>This method accounts for the "Closest" option that may be inserted at position 0,
+     * ensuring correct placemark retrieval regardless of filtering state.</p>
+     * 
+     * @param index the position in the filtered list
+     * @return the placemark at the specified position, or the closest placemark if index is 0
+     */
     public Placemark getFilteredPlacemarkAtPosition(final int index) {
         Placemark placemark = getClosestPlacemark();
         final List<Placemark> relevantPlacemarks = getRelevantPlacemarks();
@@ -76,6 +134,14 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
         return placemark;
     }
 
+    /**
+     * Returns the filter used for real-time search functionality.
+     * 
+     * <p>Creates a lazy-initialized PlacemarksFilter that performs case-insensitive
+     * text matching against placemark names and sorts results alphabetically.</p>
+     * 
+     * @return the filter instance for this adapter
+     */
     @Override
     public Filter getFilter() {
         if (placemarksFilter == null) {
@@ -169,6 +235,14 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
         }
     }
 
+    /**
+     * Updates the complete dataset of placemarks for searching.
+     * 
+     * <p>This method should be called when the underlying data changes,
+     * such as after loading new data from the repository.</p>
+     * 
+     * @param placemarks the new list of placemarks to search through
+     */
     public void setPlacemarks(final List<Placemark> placemarks) {
         this.placemarks = placemarks;
     }
@@ -184,15 +258,43 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
         return filteredPlacemarks != null && filteredPlacemarks.size() > 1 ? 0 : 1;
     }
 
+    /**
+     * ViewHolder pattern implementation for efficient search result display.
+     * 
+     * <p>Caches view references to improve scrolling performance and supports
+     * both regular placemark items and the special "Closest" option with
+     * different styling.</p>
+     */
     @SuppressWarnings("unused")
     public static class ViewHolder {
+        /** The placemark data associated with this view */
         public Placemark placemark;
+        
+        /** TextView displaying the placemark's name or "Closest" */
         public TextView title;
+        
+        /** TextView for additional subtitle information (currently unused) */
         public TextView subtitle;
     }
 
+    /**
+     * Custom filter implementation for real-time placemark searching.
+     * 
+     * <p>Performs case-insensitive text matching against placemark names,
+     * sorts results alphabetically, and automatically includes the "Closest"
+     * option in filtered results.</p>
+     */
     private class PlacemarksFilter extends Filter {
 
+        /**
+         * Performs the actual filtering operation on a background thread.
+         * 
+         * <p>Filters placemarks by name using case-insensitive matching,
+         * sorts results alphabetically, and prepends the "Closest" option.</p>
+         * 
+         * @param constraint the search text entered by the user
+         * @return FilterResults containing the filtered and sorted placemarks
+         */
         @NonNull
         @Override
         protected FilterResults performFiltering(@Nullable final CharSequence constraint) {
@@ -207,6 +309,15 @@ public class SearchAdapter extends ArrayAdapter<Placemark> implements Filterable
             return filterResults;
         }
 
+        /**
+         * Publishes the filtering results on the UI thread.
+         * 
+         * <p>Updates the adapter's filtered dataset and notifies observers
+         * of data changes to refresh the displayed search results.</p>
+         * 
+         * @param constraint the search constraint that was applied
+         * @param results the filtering results to publish
+         */
         @Override
         @SuppressWarnings("unchecked")
         protected void publishResults(final CharSequence constraint, @Nullable final FilterResults results) {

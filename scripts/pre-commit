@@ -14,10 +14,14 @@ if git diff --cached --name-only | grep -E "\.(java|xml|gradle|properties|json)$
 fi
 
 # Check for Firebase project numbers/IDs (but allow placeholder values)
-if git diff --cached --name-only | grep "google-services.json$" | xargs grep -l "[0-9]\{10,\}" 2>/dev/null | xargs grep -v "YOUR_PROJECT_NUMBER_HERE" 2>/dev/null; then
-    echo "❌ Error: Firebase configuration with real project data found"
-    echo "Use google-services.json.sample as template"
-    exit 1
+if git diff --cached --name-only | grep -E "app/google-services\.json$" >/dev/null 2>&1; then
+    for file in $(git diff --cached --name-only | grep -E "app/google-services\.json$"); do
+        if [ -f "$file" ] && grep -q "[0-9]\{10,\}" "$file" && ! grep -q "YOUR_PROJECT_NUMBER_HERE" "$file"; then
+            echo "❌ Error: Firebase configuration with real project data found in $file"
+            echo "Use google-services.json.sample as template"
+            exit 1
+        fi
+    done
 fi
 
 # Run lint checks
@@ -59,10 +63,13 @@ for file in $(git diff --cached --name-only); do
     fi
 done
 
-# Run Detekt if Kotlin files are present
+# Run Detekt and ktlint if Kotlin files are present
 if git diff --cached --name-only | grep -E "\.kt$" >/dev/null 2>&1; then
     echo "🔍 Running Detekt on Kotlin files..."
     ./gradlew detekt --quiet || echo "⚠️  Detekt found issues in Kotlin files"
+    
+    echo "📝 Running ktlint on Kotlin files..."
+    ./gradlew ktlintCheck --quiet || echo "⚠️  ktlint found formatting issues in Kotlin files"
 fi
 
 cd ..

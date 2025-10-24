@@ -8,6 +8,7 @@ plugins {
     id 'com.google.firebase.crashlytics'
     id 'org.owasp.dependencycheck' version '8.4.0'
     id 'io.gitlab.arturbosch.detekt' version '1.23.4'
+    id 'org.jlleitschuh.gradle.ktlint' version '12.1.0'
 }
 
 android {
@@ -279,4 +280,20 @@ detekt {
 
 dependencies {
     detektPlugins 'io.gitlab.arturbosch.detekt:detekt-formatting:1.23.4'
+}
+
+// ktlint configuration for Kotlin code formatting
+ktlint {
+    version = '1.0.1'
+    android = true
+    ignoreFailures = false
+    reporters {
+        reporter 'plain'
+        reporter 'checkstyle'
+        reporter 'sarif'
+    }
+    filter {
+        exclude('**/generated/**')
+        include('**/kotlin/**')
+    }
 }
