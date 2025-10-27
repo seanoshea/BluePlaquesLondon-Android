@@ -43,7 +43,7 @@ fun PanoramaScreen(
             }
         )
 
-        if (placemark != null && placemark.latitude != null && placemark.longitude != null) {
+        if (placemark != null) {
             Box(modifier = Modifier.fillMaxSize()) {
                 AndroidView(
                     factory = { context ->

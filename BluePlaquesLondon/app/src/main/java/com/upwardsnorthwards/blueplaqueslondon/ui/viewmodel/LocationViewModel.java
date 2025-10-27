@@ -27,8 +27,76 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
- * ViewModel for location services.
- * Manages user location and finding closest plaques.
+ * Location services ViewModel managing GPS functionality and proximity-based features.
+ * 
+ * <p>This ViewModel handles all location-related operations including GPS access,
+ * permission management, and proximity calculations for finding the closest blue plaques
+ * to the user's current location.</p>
+ * 
+ * <h3>Key Responsibilities:</h3>
+ * <ul>
+ *   <li><strong>Location Services:</strong> GPS location retrieval via FusedLocationProviderClient</li>
+ *   <li><strong>Permission Management:</strong> Tracks and manages location permission state</li>
+ *   <li><strong>Proximity Calculations:</strong> Finds closest plaques using distance algorithms</li>
+ *   <li><strong>State Management:</strong> Loading states, errors, and location data</li>
+ *   <li><strong>Reactive Updates:</strong> LiveData streams for UI observation</li>
+ * </ul>
+ * 
+ * <h3>Location Services Integration:</h3>
+ * <p>Uses Google Play Services for accurate location detection:</p>
+ * <ul>
+ *   <li><strong>FusedLocationProviderClient:</strong> High-accuracy location requests</li>
+ *   <li><strong>Priority.PRIORITY_HIGH_ACCURACY:</strong> GPS-level precision</li>
+ *   <li><strong>Permission Handling:</strong> Runtime permission state management</li>
+ *   <li><strong>Error Handling:</strong> Comprehensive error scenarios and user feedback</li>
+ * </ul>
+ * 
+ * <h3>Proximity Algorithm:</h3>
+ * <p>Implements efficient closest plaque detection:</p>
+ * <ol>
+ *   <li><strong>Distance Calculation:</strong> Uses {@link Location#distanceBetween} for accuracy</li>
+ *   <li><strong>Comparison:</strong> Iterates through all plaques to find minimum distance</li>
+ *   <li><strong>Background Processing:</strong> Computation performed on background thread</li>
+ *   <li><strong>Result Delivery:</strong> Updates UI thread via LiveData</li>
+ * </ol>
+ * 
+ * <h3>LiveData Streams:</h3>
+ * <ul>
+ *   <li><strong>Current Location:</strong> {@link #getCurrentLocation()} - User's GPS coordinates</li>
+ *   <li><strong>Closest Plaque:</strong> {@link #getClosestPlaque()} - Nearest blue plaque</li>
+ *   <li><strong>Loading State:</strong> {@link #getLoading()} - Location operation progress</li>
+ *   <li><strong>Permission State:</strong> {@link #getLocationPermissionGranted()} - Permission status</li>
+ *   <li><strong>Error Messages:</strong> {@link #getError()} - Error information and user guidance</li>
+ * </ul>
+ * 
+ * <h3>Usage Example:</h3>
+ * <pre>{@code
+ * // Observe location updates
+ * locationViewModel.getCurrentLocation().observe(this, location -> {
+ *     if (location != null) {
+ *         updateMapPosition(location);
+ *     }
+ * });
+ * 
+ * // Find closest plaque
+ * locationViewModel.getClosestPlaque().observe(this, closestPlaque -> {
+ *     if (closestPlaque != null) {
+ *         highlightPlaque(closestPlaque);
+ *     }
+ * });
+ * 
+ * // Request location and find closest plaque
+ * locationViewModel.setLocationPermissionGranted(true);
+ * locationViewModel.requestCurrentLocation();
+ * locationViewModel.findClosestPlaque(allPlaques);
+ * }</pre>
+ * 
+ * @see FusedLocationProviderClient
+ * @see com.upwardsnorthwards.blueplaqueslondon.activities.MainActivity
+ * @see Placemark
+ * 
+ * @author Blue Plaques London Team
+ * @since 3.0
  */
 @HiltViewModel
 public class LocationViewModel extends ViewModel {

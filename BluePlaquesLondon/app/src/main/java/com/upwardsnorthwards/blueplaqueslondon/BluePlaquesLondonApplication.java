@@ -38,7 +38,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.upwardsnorthwards.blueplaqueslondon.workers.WorkManagerInitializer;
 
 import javax.inject.Inject;
@@ -47,7 +46,7 @@ import dagger.hilt.android.HiltAndroidApp;
 
 /**
  * Application class with Hilt dependency injection.
- * Initializes Firebase Analytics and Crashlytics.
+ * Initializes Firebase Analytics.
  */
 @HiltAndroidApp
 public class BluePlaquesLondonApplication extends Application {
@@ -66,7 +65,6 @@ public class BluePlaquesLondonApplication extends Application {
 
         // Initialize Firebase
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
 
         // Schedule periodic background work
         // TODO: Fix WorkManager Hilt integration - currently disabled due to worker instantiation issues
@@ -93,7 +91,6 @@ public class BluePlaquesLondonApplication extends Application {
                     "Android 11+");
         } catch (NameNotFoundException e) {
             Log.e(TAG, "An error occurred when requesting the package information from the app", e);
-            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 }

@@ -22,8 +22,76 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
- * Repository for Blue Plaques data.
- * Single source of truth - handles both local (Room) and remote (KML file) data.
+ * Central repository managing blue plaque data from multiple sources.
+ * 
+ * <p>This repository serves as the single source of truth for blue plaque data,
+ * implementing the Repository pattern to abstract data sources and provide a
+ * clean API for the ViewModel layer. It coordinates between local database
+ * storage and KML file parsing.</p>
+ * 
+ * <h3>Key Responsibilities:</h3>
+ * <ul>
+ *   <li><strong>Data Abstraction:</strong> Unified interface for plaque data access</li>
+ *   <li><strong>Source Coordination:</strong> Manages Room database and KML file parsing</li>
+ *   <li><strong>Caching Strategy:</strong> Local database caching with asset-based refresh</li>
+ *   <li><strong>Reactive Streams:</strong> RxJava3 Flowable/Single for reactive data access</li>
+ *   <li><strong>Data Transformation:</strong> Entity-to-Model mapping and vice versa</li>
+ * </ul>
+ * 
+ * <h3>Data Sources:</h3>
+ * <ul>
+ *   <li><strong>Primary:</strong> Room database ({@link PlaqueDao}) for fast local access</li>
+ *   <li><strong>Secondary:</strong> KML assets ({@link BluePlaquesKMLParser}) for data loading</li>
+ * </ul>
+ * 
+ * <h3>Data Flow:</h3>
+ * <pre>{@code
+ * KML Assets -> BluePlaquesKMLParser -> PlaqueEntity -> Room Database
+ *                                                    |
+ * UI Layer <- Placemark <- Repository <- PlaqueDao <-+
+ * }</pre>
+ * 
+ * <h3>Caching Strategy:</h3>
+ * <p>Implements intelligent caching to optimize performance:</p>
+ * <ol>
+ *   <li><strong>Initial Load:</strong> Checks database count, loads from KML if empty</li>
+ *   <li><strong>Subsequent Access:</strong> Serves data directly from Room database</li>
+ *   <li><strong>Refresh:</strong> Clears database and reloads from KML assets</li>
+ *   <li><strong>Reactive Updates:</strong> Flowable streams automatically update UI</li>
+ * </ol>
+ * 
+ * <h3>Threading Model:</h3>
+ * <p>All database operations are performed on background threads:</p>
+ * <ul>
+ *   <li><strong>IO Scheduler:</strong> Database and file operations</li>
+ *   <li><strong>Computation Scheduler:</strong> Data transformation operations</li>
+ *   <li><strong>Main Thread:</strong> UI updates via ViewModel observation</li>
+ * </ul>
+ * 
+ * <h3>Usage Example:</h3>
+ * <pre>{@code
+ * // In ViewModel
+ * plaquesRepository.loadPlaquesFromAssets()
+ *     .andThen(plaquesRepository.getAllPlaques())
+ *     .observeOn(AndroidSchedulers.mainThread())
+ *     .subscribe(
+ *         plaques -> updateUI(plaques),
+ *         error -> handleError(error)
+ *     );
+ * 
+ * // Search functionality
+ * plaquesRepository.searchPlaquesByName("Churchill")
+ *     .observeOn(AndroidSchedulers.mainThread())
+ *     .subscribe(results -> displaySearchResults(results));
+ * }</pre>
+ * 
+ * @see PlaqueDao
+ * @see PlaqueEntity
+ * @see Placemark
+ * @see BluePlaquesKMLParser
+ * 
+ * @author Blue Plaques London Team
+ * @since 3.0
  */
 @Singleton
 public class PlaquesRepository {

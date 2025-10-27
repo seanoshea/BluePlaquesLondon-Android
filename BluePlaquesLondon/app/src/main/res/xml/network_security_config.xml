@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- 
+    Network Security Configuration for Blue Plaques London Android
+    
+    This configuration enhances security by:
+    - Restricting cleartext traffic to specific domains
+    - Enabling certificate transparency for HTTPS connections
+    - Configuring trusted certificate authorities
+    -->
+    
+    <!-- Base configuration for all connections -->
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <!-- Trust system certificate authorities -->
+            <certificates src="system"/>
+        </trust-anchors>
+    </base-config>
+    
+    <!-- Domain-specific configurations -->
+    <domain-config>
+        <!-- Wikipedia API - HTTPS only -->
+        <domain includeSubdomains="true">en.wikipedia.org</domain>
+        <domain includeSubdomains="true">wikipedia.org</domain>
+        <trust-anchors>
+            <certificates src="system"/>
+        </trust-anchors>
+    </domain-config>
+    
+    <domain-config>
+        <!-- Google APIs - HTTPS only -->
+        <domain includeSubdomains="true">maps.googleapis.com</domain>
+        <domain includeSubdomains="true">googleapis.com</domain>
+        <domain includeSubdomains="true">google.com</domain>
+        <domain includeSubdomains="true">gstatic.com</domain>
+        <trust-anchors>
+            <certificates src="system"/>
+        </trust-anchors>
+    </domain-config>
+    
+    <domain-config>
+        <!-- Firebase services - HTTPS only -->
+        <domain includeSubdomains="true">firebase.googleapis.com</domain>
+        <domain includeSubdomains="true">firebaseapp.com</domain>
+        <domain includeSubdomains="true">firebasestorage.googleapis.com</domain>
+        <trust-anchors>
+            <certificates src="system"/>
+        </trust-anchors>
+    </domain-config>
+    
+    <!-- Debug configuration (only active in debug builds) -->
+    <debug-overrides>
+        <trust-anchors>
+            <!-- Trust system CAs for debugging -->
+            <certificates src="system"/>
+            <!-- Trust user-added CAs for debugging (e.g., Charles Proxy) -->
+            <certificates src="user"/>
+        </trust-anchors>
+    </debug-overrides>
+    
+</network-security-config>

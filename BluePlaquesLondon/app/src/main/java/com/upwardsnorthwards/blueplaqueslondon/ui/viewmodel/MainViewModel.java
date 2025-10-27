@@ -18,8 +18,67 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 
 /**
- * ViewModel for MainActivity and BluePlaquesMapFragment.
- * Manages plaque data and map state.
+ * Primary ViewModel managing blue plaque data and application state.
+ * 
+ * <p>This ViewModel serves as the central data management component for the main application
+ * screens, coordinating between the UI layer and the data repository. It follows MVVM
+ * architecture principles and provides reactive data streams via LiveData.</p>
+ * 
+ * <h3>Key Responsibilities:</h3>
+ * <ul>
+ *   <li><strong>Data Management:</strong> Loads and manages blue plaque data from repository</li>
+ *   <li><strong>State Management:</strong> Tracks loading states, errors, and user selections</li>
+ *   <li><strong>Search Functionality:</strong> Provides plaque search capabilities</li>
+ *   <li><strong>Reactive Updates:</strong> Exposes data via LiveData for UI observation</li>
+ *   <li><strong>Resource Management:</strong> Proper RxJava disposable handling</li>
+ * </ul>
+ * 
+ * <h3>Architecture Integration:</h3>
+ * <p>Integrates with the application architecture as follows:</p>
+ * <ul>
+ *   <li><strong>Repository Layer:</strong> Uses {@link PlaquesRepository} for data operations</li>
+ *   <li><strong>Dependency Injection:</strong> Hilt-managed ViewModel with injected dependencies</li>
+ *   <li><strong>Reactive Programming:</strong> RxJava3 for asynchronous operations</li>
+ *   <li><strong>UI Layer:</strong> Observed by {@link com.upwardsnorthwards.blueplaqueslondon.activities.MainActivity} and fragments</li>
+ * </ul>
+ * 
+ * <h3>Data Flow:</h3>
+ * <pre>{@code
+ * Assets/Database -> PlaquesRepository -> MainViewModel -> UI Components
+ *                                      (RxJava3)      (LiveData)
+ * }</pre>
+ * 
+ * <h3>LiveData Streams:</h3>
+ * <ul>
+ *   <li><strong>Plaques:</strong> {@link #getPlaques()} - Complete list of blue plaques</li>
+ *   <li><strong>Selected Plaque:</strong> {@link #getSelectedPlaque()} - Currently selected plaque</li>
+ *   <li><strong>Loading State:</strong> {@link #getLoading()} - Data loading indicator</li>
+ *   <li><strong>Error Messages:</strong> {@link #getError()} - Error information for user feedback</li>
+ *   <li><strong>Data Loaded:</strong> {@link #getDataLoaded()} - Initial data load completion</li>
+ * </ul>
+ * 
+ * <h3>Usage Example:</h3>
+ * <pre>{@code
+ * // In Activity/Fragment
+ * mainViewModel.getPlaques().observe(this, plaques -> {
+ *     // Update UI with plaque data
+ *     updateMapMarkers(plaques);
+ * });
+ * 
+ * mainViewModel.getLoading().observe(this, isLoading -> {
+ *     progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+ * });
+ * 
+ * // Load data
+ * mainViewModel.loadPlaques();
+ * }</pre>
+ * 
+ * @see PlaquesRepository
+ * @see com.upwardsnorthwards.blueplaqueslondon.activities.MainActivity
+ * @see com.upwardsnorthwards.blueplaqueslondon.fragments.BluePlaquesMapFragment
+ * 
+ * @author Blue Plaques London Team
+ * @since 3.0
  */
 @HiltViewModel
 public class MainViewModel extends ViewModel {

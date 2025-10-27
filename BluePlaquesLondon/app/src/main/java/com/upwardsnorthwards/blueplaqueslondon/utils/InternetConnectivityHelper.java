@@ -41,39 +41,129 @@ import android.widget.Toast;
 import com.upwardsnorthwards.blueplaqueslondon.R;
 
 /**
- * Helper class which listens for internet connectivity events.
+ * Network connectivity monitor and helper for the Blue Plaques London application.
+ * 
+ * <p>This class provides real-time monitoring of internet connectivity status,
+ * automatically registering broadcast receivers to detect network state changes
+ * and notifying delegates of connectivity events.</p>
+ * 
+ * <p><strong>Key Features:</strong></p>
+ * <ul>
+ *   <li>Real-time connectivity monitoring via BroadcastReceiver</li>
+ *   <li>Delegate pattern for connectivity event notifications</li>
+ *   <li>Automatic lifecycle management (onResume/onPause)</li>
+ *   <li>User-friendly connectivity status toasts</li>
+ * </ul>
+ * 
+ * <p><strong>Usage Example:</strong></p>
+ * <pre>{@code
+ * public class MainActivity extends AppCompatActivity 
+ *         implements InternetConnectivityHelperDelegate {
+ *     
+ *     private InternetConnectivityHelper connectivityHelper;
+ *     
+ *     @Override
+ *     protected void onCreate(Bundle savedInstanceState) {
+ *         super.onCreate(savedInstanceState);
+ *         connectivityHelper = new InternetConnectivityHelper(this);
+ *         connectivityHelper.setDelegate(this);
+ *     }
+ *     
+ *     @Override
+ *     protected void onResume() {
+ *         super.onResume();
+ *         connectivityHelper.onResume(); // Start monitoring
+ *     }
+ *     
+ *     @Override
+ *     protected void onPause() {
+ *         super.onPause();
+ *         connectivityHelper.onPause(); // Stop monitoring
+ *     }
+ *     
+ *     @Override
+ *     public void lostInternetConnectivity() {
+ *         // Handle offline state
+ *         showOfflineMessage();
+ *     }
+ *     
+ *     @Override
+ *     public void regainedInternetConnectivity() {
+ *         // Handle online state
+ *         refreshData();
+ *     }
+ * }
+ * }</pre>
+ * 
+ * <p><strong>Architecture Integration:</strong></p>
+ * <ul>
+ *   <li>Used by Activities to monitor network state for Wikipedia and Maps functionality</li>
+ *   <li>Integrates with {@link InternetConnectivityHelperDelegate} for event callbacks</li>
+ *   <li>Supports graceful degradation when offline</li>
+ * </ul>
+ * 
+ * <p><strong>Lifecycle Management:</strong></p>
+ * <p>This class requires proper lifecycle management to avoid memory leaks.
+ * Always call {@link #onResume()} and {@link #onPause()} from the corresponding
+ * Activity lifecycle methods.</p>
+ * 
+ * @author Blue Plaques London Team
+ * @since 1.0
+ * @see InternetConnectivityHelperDelegate
+ * @see android.content.BroadcastReceiver
+ * @see android.net.ConnectivityManager
  */
 public class InternetConnectivityHelper {
 
     private static final String TAG = "ConnectivityHelper";
 
     /**
-     * Weak reference to the context in which this helper was instantiated.
+     * Application context for accessing system services and registering receivers.
+     * Maintained as a reference to enable connectivity monitoring and toast display.
      */
     private final Context context;
 
     /**
-     * Used for communicating connectivity events back to client code.
+     * Delegate for receiving connectivity change notifications.
+     * Implements the observer pattern for loose coupling between this helper
+     * and client code that needs to respond to network state changes.
      */
     private InternetConnectivityHelperDelegate delegate;
     /**
-     * The current state of internet connectivity.
+     * Current network connectivity state.
+     * Tracks whether the device currently has an active internet connection,
+     * used to detect state transitions and avoid duplicate notifications.
      */
     private InternetConnectivity currentInternetConnectivity;
     /**
-     * The receiver responsible for indicating whether or not the device has regained or lost internet connectivity.
+     * Broadcast receiver for network connectivity change events.
+     * Automatically registered/unregistered during onResume/onPause lifecycle
+     * to monitor ConnectivityManager.CONNECTIVITY_ACTION broadcasts.
      */
     private BroadcastReceiver networkConnectivityReceiver;
 
     /**
-     * Simple constructor.
-     *
-     * @param context the activity context.
+     * Creates a new internet connectivity helper.
+     * 
+     * <p>The provided context will be used for accessing system services
+     * and displaying connectivity-related toasts to the user.</p>
+     * 
+     * @param context the application or activity context, must not be null
      */
     public InternetConnectivityHelper(Context context) {
         this.context = context;
     }
 
+    /**
+     * Starts monitoring network connectivity changes.
+     * 
+     * <p>This method should be called from the Activity's onResume() method
+     * to begin listening for connectivity changes. It registers a broadcast
+     * receiver and performs an initial connectivity check.</p>
+     * 
+     * <p><strong>Important:</strong> Must be paired with {@link #onPause()}
+     * to avoid memory leaks.</p>
+     */
     public void onResume() {
         networkConnectivityReceiver = new BroadcastReceiver() {
             @Override
@@ -95,12 +185,25 @@ public class InternetConnectivityHelper {
         updateCurrentInternetConnectivity();
     }
 
+    /**
+     * Stops monitoring network connectivity changes.
+     * 
+     * <p>This method should be called from the Activity's onPause() method
+     * to unregister the broadcast receiver and prevent memory leaks.</p>
+     */
     public void onPause() {
         if (networkConnectivityReceiver != null) {
             context.unregisterReceiver(networkConnectivityReceiver);
         }
     }
 
+    /**
+     * Displays a user-friendly connectivity status message.
+     * 
+     * <p>Shows a short toast message informing the user about the current
+     * internet connectivity status. Useful for providing immediate feedback
+     * when network-dependent features are accessed.</p>
+     */
     public void showConnectivityToast() {
         if (context != null) {
             Toast toast = Toast.makeText(context, context.getString(R.string.internet_connectivity_message), Toast.LENGTH_SHORT);
@@ -109,7 +212,11 @@ public class InternetConnectivityHelper {
     }
 
     /**
-     * Executed callback when the device loses internet connectivity
+     * Handles loss of internet connectivity.
+     * 
+     * <p>Updates internal state and notifies the delegate if one is set.
+     * This method is called automatically when the system broadcasts
+     * a connectivity change indicating network loss.</p>
      */
     private void lostInternetConnectivity() {
         currentInternetConnectivity = InternetConnectivity.InternetConnectivityNoConnection;
@@ -119,7 +226,11 @@ public class InternetConnectivityHelper {
     }
 
     /**
-     * Executed callback when the device regains internet connectivity
+     * Handles restoration of internet connectivity.
+     * 
+     * <p>Updates internal state and notifies the delegate if one is set.
+     * This method is called automatically when the system broadcasts
+     * a connectivity change indicating network restoration.</p>
      */
     private void regainedInternetConnectivity() {
         currentInternetConnectivity = InternetConnectivity.InternetConnectivityConnected;
@@ -144,15 +255,27 @@ public class InternetConnectivityHelper {
         }
     }
 
+    /**
+     * Sets the delegate to receive connectivity change notifications.
+     * 
+     * @param delegate the delegate to notify of connectivity changes, may be null
+     * @see InternetConnectivityHelperDelegate
+     */
     public void setDelegate(InternetConnectivityHelperDelegate delegate) {
         this.delegate = delegate;
     }
 
     /**
-     * Gives an understanding of whether or not the application has an internet connection.
+     * Internal enumeration representing internet connectivity states.
+     * 
+     * <p>Used internally to track the current connectivity status and
+     * detect state transitions for delegate notifications.</p>
      */
     private enum InternetConnectivity {
+        /** Device has an active internet connection */
         InternetConnectivityConnected,
+        
+        /** Device has no internet connection */
         InternetConnectivityNoConnection,
     }
 }

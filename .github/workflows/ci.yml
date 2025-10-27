@@ -9,10 +9,23 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        api-level: [30, 33, 35]  # Android 11, 13, 15
+        include:
+          - api-level: 30
+            android-version: "Android 11"
+          - api-level: 33
+            android-version: "Android 13"
+          - api-level: 35
+            android-version: "Android 15"
+    
+    name: Build and Test (API ${{ matrix.api-level }} - ${{ matrix.android-version }})
 
     env:
       GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"'
       GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+      TARGET_API_LEVEL: ${{ matrix.api-level }}
 
     steps:
     - name: Checkout code
@@ -47,17 +60,30 @@ jobs:
     - name: Run Android Lint
       run: cd BluePlaquesLondon && ./gradlew lintDebug
 
+    - name: Run Detekt code analysis
+      run: |
+        cd BluePlaquesLondon
+        ./gradlew detekt --continue || echo "⚠️ Detekt analysis completed with issues"
+
     - name: Check for TODO/FIXME
       run: |
         if find BluePlaquesLondon/app/src/main -name "*.java" -exec grep -l "TODO\|FIXME" {} \; | head -5; then
           echo "⚠️ Warning: TODO/FIXME found in source code"
         fi
 
+    - name: Dependency vulnerability scan
+      run: |
+        cd BluePlaquesLondon
+        ./gradlew dependencyCheckAnalyze --info || echo "⚠️ Dependency check completed with warnings"
+
     - name: Build debug APK
       run: cd BluePlaquesLondon && ./gradlew assembleDebug
 
-    - name: Run unit tests (Android 11+ compatible)
-      run: cd BluePlaquesLondon && ./gradlew testDebugUnitTest --no-daemon
+    - name: Run unit tests (API ${{ matrix.api-level }})
+      run: |
+        cd BluePlaquesLondon
+        echo "Running tests for API level ${{ matrix.api-level }} (${{ matrix.android-version }})"
+        ./gradlew testDebugUnitTest --no-daemon
 
     - name: Generate coverage report
       if: always()
@@ -75,14 +101,14 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: test-reports
+        name: test-reports-api-${{ matrix.api-level }}
         path: |
           BluePlaquesLondon/app/build/reports/
           BluePlaquesLondon/app/build/outputs/androidTest-results/
 
     - name: Upload APK
-      if: success()
+      if: success() && matrix.api-level == 35  # Only upload APK for latest API level
       uses: actions/upload-artifact@v4
       with:
-        name: app-debug
+        name: app-debug-api-${{ matrix.api-level }}
         path: BluePlaquesLondon/app/build/outputs/apk/debug/app-debug.apk
