@@ -28,6 +28,7 @@
 
 package com.upwardsnorthwards.blueplaqueslondon.views;
 
+import android.app.Activity;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
@@ -94,33 +95,61 @@ public class ArrayAdapterSearchView extends SearchView implements SearchView.OnQ
     }
 
     public void onItemClick(final AdapterView<?> p, final View v, final int pos, final long id) {
+        android.util.Log.d("ArrayAdapterSearchView", "onItemClick called with pos: " + pos);
         navigateToPlacemarkAtIndex(pos);
     }
 
     private void navigateToPlacemarkAtIndex(final int index) {
+        android.util.Log.d("ArrayAdapterSearchView", "navigateToPlacemarkAtIndex called with index: " + index);
         final Placemark placemark = searchAdapter.getFilteredPlacemarkAtPosition(index);
-        // Notify the MapFragment directly instead of using Otto bus
+        android.util.Log.d("ArrayAdapterSearchView", "placemark: " + (placemark != null ? placemark.getName() : "null"));
+
         try {
-            if (getContext() instanceof androidx.appcompat.app.AppCompatActivity) {
-                androidx.appcompat.app.AppCompatActivity activity = (androidx.appcompat.app.AppCompatActivity) getContext();
+            androidx.appcompat.app.AppCompatActivity activity = getActivityFromContext();
+            android.util.Log.d("ArrayAdapterSearchView", "activity: " + activity);
+
+            if (activity != null) {
                 androidx.fragment.app.Fragment navHostFragment = activity.getSupportFragmentManager()
                         .findFragmentById(R.id.nav_host_fragment);
+                android.util.Log.d("ArrayAdapterSearchView", "navHostFragment: " + navHostFragment);
+
                 if (navHostFragment != null) {
                     androidx.fragment.app.Fragment mapFragment = navHostFragment.getChildFragmentManager()
                             .getPrimaryNavigationFragment();
+                    android.util.Log.d("ArrayAdapterSearchView", "mapFragment: " + mapFragment);
+
                     if (mapFragment != null && mapFragment.getClass().getSimpleName().equals("BluePlaquesMapFragment")) {
+                        android.util.Log.d("ArrayAdapterSearchView", "Calling onPlacemarkSelected for: " + placemark.getName());
                         ((com.upwardsnorthwards.blueplaqueslondon.fragments.BluePlaquesMapFragment) (Object) mapFragment)
                                 .onPlacemarkSelected(placemark);
+                    } else {
+                        android.util.Log.w("ArrayAdapterSearchView", "mapFragment not found or not BluePlaquesMapFragment");
                     }
+                } else {
+                    android.util.Log.w("ArrayAdapterSearchView", "navHostFragment not found");
                 }
+
                 // Also notify MainActivity to clear the search view
                 if (activity instanceof com.upwardsnorthwards.blueplaqueslondon.activities.MainActivity) {
                     ((com.upwardsnorthwards.blueplaqueslondon.activities.MainActivity) activity).onPlacemarkSelected(placemark);
                 }
+            } else {
+                android.util.Log.w("ArrayAdapterSearchView", "activity is null");
             }
         } catch (Exception e) {
             android.util.Log.e("ArrayAdapterSearchView", "Error navigating to placemark", e);
         }
+    }
+
+    private androidx.appcompat.app.AppCompatActivity getActivityFromContext() {
+        Context context = getContext();
+        while (context instanceof android.content.ContextWrapper) {
+            if (context instanceof androidx.appcompat.app.AppCompatActivity) {
+                return (androidx.appcompat.app.AppCompatActivity) context;
+            }
+            context = ((android.content.ContextWrapper) context).getBaseContext();
+        }
+        return null;
     }
 
     private void initialize(final Context context) {

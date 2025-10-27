@@ -58,7 +58,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.upwardsnorthwards.blueplaqueslondon.BluePlaquesLondonApplication;
 import com.upwardsnorthwards.blueplaqueslondon.R;
 import com.upwardsnorthwards.blueplaqueslondon.activities.MainActivity;
-import com.upwardsnorthwards.blueplaqueslondon.activities.MapDetailActivity;
 import com.upwardsnorthwards.blueplaqueslondon.data.preferences.AppPreferencesDataStore;
 import com.upwardsnorthwards.blueplaqueslondon.model.KeyedMarker;
 import com.upwardsnorthwards.blueplaqueslondon.model.MapModel;
@@ -335,8 +334,15 @@ public class BluePlaquesMapFragment extends SupportMapFragment implements OnCame
         } else if (placemarks != null && placemarks.size() > 0) {
             Log.v(TAG, "Creating the placemarks for the map");
             for (final Placemark placemark : placemarks) {
+                // Skip placemarks with invalid coordinates (latitude or longitude is 0)
+                if (placemark.getLatitude() == 0.0 || placemark.getLongitude() == 0.0) {
+                    Log.v(TAG, "Skipping placemark with invalid coordinates: " + placemark.getName());
+                    continue;
+                }
+
                 int iconResource = R.drawable.blue;
-                if (!placemark.getStyleUrl().equalsIgnoreCase("#myDefaultStyles")) {
+                // Check if style is not blueStyle (use green for greyStyle or other styles)
+                if (!placemark.getStyleUrl().equalsIgnoreCase("#blueStyle")) {
                     iconResource = R.drawable.green;
                 }
                 final Marker marker = googleMap.addMarker(new MarkerOptions()
