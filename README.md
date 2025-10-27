@@ -71,7 +71,7 @@ Android Application for finding Blue Plaques through London. **Requires Android 
    cd BluePlaquesLondon-Android
    ```
 
-2. Configure API keys in `local.properties`:
+2. Configure API keys in `BluePlaquesLondon/local.properties`:
    ```properties
    GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
    ```
@@ -84,6 +84,7 @@ Android Application for finding Blue Plaques through London. **Requires Android 
 
 4. Build and run:
    ```bash
+   cd BluePlaquesLondon
    ./gradlew assembleDebug
    ```
 

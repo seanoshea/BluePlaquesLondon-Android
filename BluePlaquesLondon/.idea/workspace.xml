@@ -17,21 +17,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f7850dee-b5be-4f34-a349-5c88633d5286" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/androidTest/java/com/upwardsnorthwards/blueplaqueslondon/activities/MapDetailActivityInstrumentedTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/assets/blueplaques.kml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/blueplaques.kml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/BluePlaquesLondonApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/BluePlaquesLondonApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/activities/MapDetailActivity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/activities/WikipediaActivity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/fragments/BluePlaquesMapFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/fragments/BluePlaquesMapFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/views/ArrayAdapterSearchView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/views/ArrayAdapterSearchView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_map_detail.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_map_detail.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/ui/compose/MapScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/ui/compose/MapScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/ui/compose/PanoramaScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/upwardsnorthwards/blueplaqueslondon/ui/compose/PanoramaScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local.defaults.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.defaults.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DEVELOPMENT.md" beforeDir="false" afterPath="$PROJECT_DIR$/../DEVELOPMENT.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
